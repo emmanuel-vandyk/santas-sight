@@ -21,7 +21,7 @@ export const ErrorPage = () => {
         </CardHeader>
         <CardContent>
           <CardDescription className="text-gray-600 mb-4">
-            We can't seem to find the page you're looking for.
+            We can&apos;t seem to find the page you&apos;re looking for.
           </CardDescription>
           <Link to={"/"}>
             <Button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200">
