@@ -11,7 +11,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ErrorPage } from "@/pages/errorPage.jsx";
 import { ElvesPage } from "@/pages/elvesPage.jsx";
 import { ReindeerPage } from "@/pages/reindeerPage.jsx";
-import { DashboardPage } from "@/pages/dashboardPage.jsx";
+import { DashboardPage } from "@/pages/dashboardPage";
+import App from "./App.jsx";
 
 const queryClient = new QueryClient();
 
@@ -40,8 +41,6 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-
-import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

@@ -5,7 +5,7 @@ export const SnowDecoration = () => (
     {[...Array(20)].map((_, i) => (
       <Snowflake
         key={i}
-        className="absolute text-white opacity-50"
+        className="absolute text-gray-300 opacity-50"
         style={{
           top: `${Math.random() * 100}%`,
           left: `${Math.random() * 100}%`,
