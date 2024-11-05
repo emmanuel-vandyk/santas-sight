@@ -1,4 +1,5 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import { Calendar, Home, Inbox, Settings } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import {
   Sidebar,
@@ -9,8 +10,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarRail,
+  SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar";
-import { Link } from "react-router-dom";
 
 // Menu items.
 const items = [
@@ -37,19 +40,27 @@ const items = [
 ];
 
 export const SideBar = () => {
+  const { state } = useSidebar();
+  const isCollapsed = state === "collapsed";
+
   return (
-    <Sidebar variant="sidebar | floating | inset">
+    <Sidebar collapsible="icon">
       <SidebarContent>
+        <div className="relative h-14 px-4 flex items-center justify-end">
+          <SidebarTrigger className={`absolute ${isCollapsed ? 'left-1/2 -translate-x-1/2' : 'right-4'} transition-all duration-300 ease-in-out`} />
+        </div>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel className="group-data-[collapsible=icon]:hidden">
+            Application
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild tooltip={isCollapsed ? item.title : undefined}>
                     <Link to={item.url}>
                       <item.icon />
-                      <span>{item.title}</span>
+                      <span className="group-data-[collapsible=icon]:hidden">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -58,6 +69,7 @@ export const SideBar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarRail />
     </Sidebar>
   );
 };
