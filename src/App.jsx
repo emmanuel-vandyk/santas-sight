@@ -1,19 +1,19 @@
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
-import { SideBar } from "@/components/global/sideBar.jsx";
+import { SideBar } from "@/components/global/sideBar";
 import { Outlet } from "react-router-dom";
 import "./App.css";
 
 function App() {
   return (
     <SidebarProvider>
-      <SideBar />
-      <SidebarInset>
-        <main>
-          <div className="flex-1 p-4">
+      <div className="flex h-screen overflow-hidden">
+        <SideBar />
+        <SidebarInset className="flex-1 overflow-auto">
+          <main className="p-4">
             <Outlet />
-          </div>
-        </main>
-      </SidebarInset>
+          </main>
+        </SidebarInset>
+      </div>
     </SidebarProvider>
   );
 }
