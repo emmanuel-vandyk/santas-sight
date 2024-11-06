@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -10,9 +11,6 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
-/* import {
-    Select,
-} from "@/components/ui/select" */
 
 export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
     const [amount, setAmount] = useState(initialData ? initialData.amount.toString() : '')
@@ -27,7 +25,6 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
         } else {
             setAmount('')
             setStatus('')
-            setEmail('')
         }
     }, [initialData])
 
@@ -53,8 +50,8 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit}>
-                    <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
+                    <div className="flex flex-col space-y-4 py-4">
+                        <div className="flex flex-row items-center space-x-4">
                             <Label htmlFor="email" className="text-right">
                                 Emails
                             </Label>
@@ -64,11 +61,11 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
                                 value={email}
                                 type="email"
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="col-span-3"
+                                className="flex-grow"
                                 required
                             />
                         </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
+                        <div className="flex flex-row items-center space-x-4">
                             <Label htmlFor="amount" className="text-right">
                                 Amount
                             </Label>
@@ -78,11 +75,11 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
                                 type="number"
                                 value={amount}
                                 onChange={(e) => setAmount(e.target.value)}
-                                className="col-span-3"
+                                className="flex-grow"
                                 required
                             />
                         </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
+                        <div className="flex flex-row items-center space-x-4">
                             <Label htmlFor="status" className="text-right">
                                 Status
                             </Label>
@@ -90,12 +87,11 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
                                 onChange={(e) => setStatus(e.target.value)}
                                 id="status"
                                 name="status"
-                                className="col-span-3"
+                                className="flex-grow"
                                 value={status}
                                 type="text"
                                 required
-                            >
-                            </Input>
+                            />
                         </div>
                     </div>
                     <DialogFooter>
@@ -106,3 +102,15 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
         </Dialog>
     )
 }
+
+ElveModal.propTypes = {
+    isOpen: PropTypes.bool.isRequired,
+    isClose: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    initialData: PropTypes.shape({
+        amount: PropTypes.number,
+        status: PropTypes.string,
+        email: PropTypes.string,
+    }),
+}
+

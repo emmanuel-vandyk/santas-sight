@@ -1,4 +1,3 @@
-
 import {
   flexRender,
   getCoreRowModel,
@@ -14,8 +13,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import PropTypes from 'prop-types';
 
-export default function DeletedTableElve({ deletedElves, onRestore }) {
+function DeletedTableElve({ deletedElves, onRestore }) {
   const columns = [
     {
       accessorKey: "status",
@@ -38,7 +38,7 @@ export default function DeletedTableElve({ deletedElves, onRestore }) {
           style: "currency",
           currency: "USD",
         }).format(amount);
-        return <div className="text-right font-medium">{formatted}</div>;
+        return <div className="font-medium">{formatted}</div>;
       },
     },
     {
@@ -66,12 +66,12 @@ export default function DeletedTableElve({ deletedElves, onRestore }) {
   return (
     <div className="w-full">
       <div className="rounded-md border">
-        <Table>
-          <TableHeader>
+        <Table className="table-auto">
+          <TableHeader className="bg-gradient-to-b from-red-500 to-white font-bold">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
+                  <TableHead key={header.id} className="px-20 py-1 text-zinc-800">
                     {flexRender(
                       header.column.columnDef.header,
                       header.getContext()
@@ -86,7 +86,7 @@ export default function DeletedTableElve({ deletedElves, onRestore }) {
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="px-20 py-1">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
@@ -123,3 +123,10 @@ export default function DeletedTableElve({ deletedElves, onRestore }) {
     </div>
   );
 }
+
+DeletedTableElve.propTypes = {
+  deletedElves: PropTypes.array.isRequired,
+  onRestore: PropTypes.func.isRequired,
+};
+
+export default DeletedTableElve;

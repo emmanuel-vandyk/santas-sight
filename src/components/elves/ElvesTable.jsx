@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -6,18 +6,18 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, Pencil } from "lucide-react"
+} from "@tanstack/react-table";
+import { ArrowUpDown, ChevronDown, Pencil } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -25,9 +25,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import ElveModal from "@/components/elves/ElveModal"
-import DeletedTableElve from "@/components/elves/DeletedTableElve"
+} from "@/components/ui/table";
+import ElveModal from "@/components/elves/ElveModal";
+import DeletedTableElve from "@/components/elves/DeletedTableElve";
 
 const elvesData = [
   {
@@ -60,17 +60,17 @@ const elvesData = [
     status: "failed",
     email: "carmella@hotmail.com",
   },
-]
+];
 
 export default function ElvesTable() {
-  const [sorting, setSorting] = React.useState([])
-  const [columnFilters, setColumnFilters] = React.useState([])
-  const [columnVisibility, setColumnVisibility] = React.useState({})
-  const [rowSelection, setRowSelection] = React.useState({})
-  const [data, setData] = React.useState(elvesData)
+  const [sorting, setSorting] = React.useState([]);
+  const [columnFilters, setColumnFilters] = React.useState([]);
+  const [columnVisibility, setColumnVisibility] = React.useState({});
+  const [rowSelection, setRowSelection] = React.useState({});
+  const [data, setData] = React.useState(elvesData);
   const [deletedElves, setDeletedElves] = React.useState([]);
-  const [isModalOpen, setIsModalOpen] = React.useState(false)
-  const [editingElve, setEditingElve] = React.useState(null)
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [editingElve, setEditingElve] = React.useState(null);
 
   const columns = [
     {
@@ -113,42 +113,43 @@ export default function ElvesTable() {
             Email
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
-        )
+        );
       },
-      cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+      cell: ({ row }) => (
+        <div className="lowercase">{row.getValue("email")}</div>
+      ),
     },
     {
       accessorKey: "amount",
       header: () => <div className="text-right">Amount</div>,
       cell: ({ row }) => {
-        const amount = parseFloat(row.getValue("amount"))
+        const amount = parseFloat(row.getValue("amount"));
         const formatted = new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: "USD",
-        }).format(amount)
-  
-        return <div className="text-right font-medium">{formatted}</div>
+        }).format(amount);
+
+        return <div className="text-right font-medium">{formatted}</div>;
       },
     },
     {
       accessorKey: "actions",
       header: "Actions",
       cell: ({ row }) => {
-        const elve = row.original
+        const elve = row.original;
         return (
           <Button
             className="size-8"
             variant="ghost"
             onClick={() => editElve(elve)}
           >
-            Edit
-            <Pencil className="size-4" />
             <span className="sr-only">Edit</span>
+            <Pencil className="size-8" />
           </Button>
-        )
+        );
       },
     },
-  ]
+  ];
 
   const table = useReactTable({
     data,
@@ -168,12 +169,13 @@ export default function ElvesTable() {
       columnVisibility,
       rowSelection,
     },
-  })
+  });
 
   const deleteRows = () => {
     const rowsToDelete = table.getFilteredSelectedRowModel().rows;
     const newData = data.filter(
-      (row) => !rowsToDelete.some((selectedRow) => selectedRow.original.id === row.id)
+      (row) =>
+        !rowsToDelete.some((selectedRow) => selectedRow.original.id === row.id)
     );
     const newDeletedElves = [
       ...deletedElves,
@@ -186,30 +188,36 @@ export default function ElvesTable() {
 
   const restoreElve = (elve) => {
     setData([...data, elve]);
-    setDeletedElves(deletedElves.filter((deletedElve) => deletedElve.id !== elve.id));
+    setDeletedElves(
+      deletedElves.filter((deletedElve) => deletedElve.id !== elve.id)
+    );
   };
 
   const addNewElve = (newElve) => {
-    setData([...data, newElve])
-  }
+    setData([...data, newElve]);
+  };
 
   const editElve = (elve) => {
-    setEditingElve(elve)
-    setIsModalOpen(true)
-  }
+    setEditingElve(elve);
+    setIsModalOpen(true);
+  };
 
   const updateElve = (elveUpdated) => {
-    setData(data.map((elve) => (elve.id === editingElve.id ? { ...elve, ...elveUpdated } : elve)))
-    setEditingElve(null)
-    
-  }
-  
+    setData(
+      data.map((elve) =>
+        elve.id === editingElve.id ? { ...elve, ...elveUpdated } : elve
+      )
+    );
+    setEditingElve(null);
+  };
+
   return (
-    <div className="w-full">
-      <div className="flex items-center py-4 gap-2">
+    <div className="w-11/12">
+      <h1 className="text-2xl font-bold">Elves Table</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 py-1">
         <Input
           placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() ?? "")}
+          value={table.getColumn("email")?.getFilterValue() ?? ""}
           onChange={(event) =>
             table.getColumn("email")?.setFilterValue(event.target.value)
           }
@@ -217,19 +225,19 @@ export default function ElvesTable() {
         />
         <div className="flex items-center space-x-2">
           <Button
-            variant="destructive"
-            className="ml-auto"
-            onClick={deleteRows}
-            disabled={table.getFilteredSelectedRowModel().rows.length == 0}
-          >
-            Delete
-          </Button>
-          <Button
             variant="outline"
             className="ml-auto"
             onClick={() => setIsModalOpen(true)}
           >
             + New Elve
+          </Button>
+          <Button
+            variant="destructive"
+            className="ml-auto bg-green-500"
+            onClick={deleteRows}
+            disabled={table.getFilteredSelectedRowModel().rows.length == 0}
+          >
+            Delete
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -253,28 +261,28 @@ export default function ElvesTable() {
                     >
                       {column.id}
                     </DropdownMenuCheckboxItem>
-                  )
+                  );
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </div>
       <div className="rounded-md border">
-        <Table>
-          <TableHeader>
+        <Table className="table-auto">
+          <TableHeader className="bg-gradient-to-b from-red-500 to-white font-bold">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="h-8">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="px-20 py-1 text-zinc-800">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -285,10 +293,10 @@ export default function ElvesTable() {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-
+                  className="h-8"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="px-20 py-1">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -298,7 +306,7 @@ export default function ElvesTable() {
                 </TableRow>
               ))
             ) : (
-              <TableRow>
+              <TableRow className="h-8">
                 <TableCell
                   colSpan={columns.length}
                   className="h-24 text-center"
@@ -337,13 +345,14 @@ export default function ElvesTable() {
       <ElveModal
         isOpen={isModalOpen}
         isClose={() => {
-          setIsModalOpen(false)
-          setEditingElve(null)
+          setIsModalOpen(false);
+          setEditingElve(null);
         }}
         onSubmit={editingElve ? updateElve : addNewElve}
-        initialData={editingElve} />
-        <h2 className="text-2xl font-bold mt-8 mb-4">Deleted Elves</h2>
-        <DeletedTableElve deletedElves={deletedElves} onRestore={restoreElve} />
+        initialData={editingElve}
+      />
+      <h2 className="text-2xl font-bold mt-8 mb-4">Deleted Elves</h2>
+      <DeletedTableElve deletedElves={deletedElves} onRestore={restoreElve} />
     </div>
-  )
+  );
 }
