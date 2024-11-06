@@ -12,11 +12,11 @@ jobs:
     steps:
       # Checkout del repositorio
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Configuración de Node.js (puedes cambiar a otra versión si es necesario)
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20'  # Cambia la versión si tu proyecto requiere otra
 
@@ -33,4 +33,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npx gh-pages -d build -b gh-pages
+          npx gh-pages -d dist -b gh-pages
