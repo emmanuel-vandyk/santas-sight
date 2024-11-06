@@ -15,9 +15,6 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
@@ -30,6 +27,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import ElveModal from "@/components/elves/ElveModal"
+import DeletedTableElve from "@/components/elves/DeletedTableElve"
 
 const elvesData = [
   {
@@ -70,6 +68,7 @@ export default function ElvesTable() {
   const [columnVisibility, setColumnVisibility] = React.useState({})
   const [rowSelection, setRowSelection] = React.useState({})
   const [data, setData] = React.useState(elvesData)
+  const [deletedElves, setDeletedElves] = React.useState([]);
   const [isModalOpen, setIsModalOpen] = React.useState(false)
   const [editingElve, setEditingElve] = React.useState(null)
 
@@ -172,12 +171,23 @@ export default function ElvesTable() {
   })
 
   const deleteRows = () => {
-    const rowSelected = table.getFilteredSelectedRowModel().rows
+    const rowsToDelete = table.getFilteredSelectedRowModel().rows;
     const newData = data.filter(
-      (row) => !rowSelected.some((rowSelected) => rowSelected.original.id === row.id))
-    setData(newData)
-    setRowSelection({})
-  }
+      (row) => !rowsToDelete.some((selectedRow) => selectedRow.original.id === row.id)
+    );
+    const newDeletedElves = [
+      ...deletedElves,
+      ...rowsToDelete.map((row) => row.original),
+    ];
+    setData(newData);
+    setDeletedElves(newDeletedElves);
+    setRowSelection({});
+  };
+
+  const restoreElve = (elve) => {
+    setData([...data, elve]);
+    setDeletedElves(deletedElves.filter((deletedElve) => deletedElve.id !== elve.id));
+  };
 
   const addNewElve = (newElve) => {
     setData([...data, newElve])
@@ -332,6 +342,8 @@ export default function ElvesTable() {
         }}
         onSubmit={editingElve ? updateElve : addNewElve}
         initialData={editingElve} />
+        <h2 className="text-2xl font-bold mt-8 mb-4">Deleted Elves</h2>
+        <DeletedTableElve deletedElves={deletedElves} onRestore={restoreElve} />
     </div>
   )
 }
