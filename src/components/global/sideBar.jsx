@@ -72,31 +72,31 @@ export const SideBar = () => {
                 <div key={item.title} className="group">
                   <Link
                     to={item.url}
-                    className="flex items-center px-4 py-3 w-full hover:bg-red-500 hover:text-white font-bold transition-colors duration-200 rounded-lg overflow-hidden"
+                    className="flex items-center px-4 py-3 w-full hover:bg-red-500 text-zinc-800 hover:text-white font-bold transition-colors duration-200 rounded-lg overflow-hidden"
                   >
                     <item.icon className="h-6 w-6 flex-shrink-0" />
                     <span className={`ml-3 ${isCollapsed ? "hidden" : ""}`}>{item.title}</span>
-                    <div className="absolute inset-y-0 left-0 w-1 bg-red-600 transform scale-y-0 group-hover:scale-y-100 transition-transform duration-200 origin-top"></div>
+                    {/* <div className="absolute inset-y-0 left-0 w-1 bg-red-600 transform scale-y-0 group-hover:scale-y-100 transition-transform duration-200 origin-top"></div> */}
                   </Link>
                 </div>
               ))}
             </div>
           </div>
         </div>
-        <div className="relative z-10 p-4 bg-green-600 rounded-t-3xl shadow-[0_-10px_20px_-5px_rgba(0,0,0,0.1)] mt-auto">
+        <div className="relative z-10 p-4 bg-red-300 rounded-t-3xl shadow-xl mt-auto">
           <div className={`flex flex-col items-center gap-4 mb-4 transition-all duration-300 ease-in-out ${isCollapsed ? "mb-0" : ""}`}>
-            <Avatar className={`border-4 border-red-500 ${isCollapsed ? "w-10 h-10" : "w-16 h-16"}`}>
+            <Avatar className={`border-4 border-red-200 ${isCollapsed ? "w-10 h-10" : "w-16 h-16"}`}>
               <AvatarImage src="https://github.com/shadcn.png" alt="Santa Claus" />
               <AvatarFallback>SC</AvatarFallback>
             </Avatar>
             <div className={`text-center ${isCollapsed ? "hidden" : ""}`}>
-              <p className="font-bold text-white text-lg">Santa Claus</p>
-              <p className="text-sm text-green-100">santa@northpole.com</p>
+              <p className="font-bold text-zinc-800 text-lg">Santa Claus</p>
+              <p className="text-sm text-zinc-800">santa@northpole.com</p>
             </div>
           </div>
           <Button
             variant="ghost"
-            className={`w-full ${isCollapsed ? "p-2 aspect-square" : ""} text-white hover:bg-green-700 hover:text-white transition-all duration-200 font-bold flex items-center justify-center`}
+            className={`w-full ${isCollapsed ? "p-2 aspect-square" : ""} text-slate-950 hover:bg-red-500 hover:text-white transition-all duration-200 font-bold flex items-center justify-center`}
           >
             <ChristmasLogout className={`h-5 w-5 ${isCollapsed ? "h-6 w-6" : ""}`} />
             <span className={`${isCollapsed ? "hidden" : "ml-2"}`}>Log out</span>

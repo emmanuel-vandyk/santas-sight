@@ -2,7 +2,7 @@ import { Snowflake } from "lucide-react"
 
 export const SnowDecoration = () => (
   <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-    {[...Array(20)].map((_, i) => (
+    {[...Array(10)].map((_, i) => (
       <Snowflake
         key={i}
         className="absolute text-gray-300 opacity-50"
