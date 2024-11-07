@@ -43,7 +43,7 @@ export default function ElvesTable() {
   const updateElveMutation = useUpdateElves();
   const logicalDeleteMutation = useLogicalDeleteElves();
   const restoreMutation = useRestoreElves();
-  
+
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -52,11 +52,11 @@ export default function ElvesTable() {
   const [editingElve, setEditingElve] = React.useState(null);
 
   const data = React.useMemo(() => {
-    return elves ? elves.filter(elve => !elve.isDeleted) : [];
+    return elves ? elves.filter((elve) => !elve.isDeleted) : [];
   }, [elves]);
 
   const deletedElves = React.useMemo(() => {
-    return elves ? elves.filter(elve => elve.isDeleted) : [];
+    return elves ? elves.filter((elve) => elve.isDeleted) : [];
   }, [elves]);
 
   const columns = [
@@ -64,7 +64,10 @@ export default function ElvesTable() {
       id: "select",
       header: ({ table }) => (
         <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
         />
@@ -82,44 +85,71 @@ export default function ElvesTable() {
     {
       accessorKey: "id",
       header: "Id",
-      cell: ({ row }) => <div className="text-right font-medium">{row.getValue("id")}</div>,
+      cell: ({ row }) => (
+        <div className="text-right font-medium">{row.getValue("id")}</div>
+      ),
     },
     {
       accessorKey: "name",
-      header: "Name",
-      cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("name")}</div>
+      ),
     },
     {
       accessorKey: "height",
       header: "Height",
-      cell: ({ row }) => <div className="capitalize">{row.getValue("height")}</div>,
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("height")}</div>
+      ),
     },
     {
       accessorKey: "age",
       header: "Age",
-      cell: ({ row }) => <div className="text-right font-medium">{row.getValue("age")}</div>,
+      cell: ({ row }) => (
+        <div className="text-right font-medium">{row.getValue("age")}</div>
+      ),
     },
     {
       accessorKey: "address",
       header: "Address",
-      cell: ({ row }) => <div className="capitalize">{row.getValue("address")}</div>,
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("address")}</div>
+      ),
     },
     {
       accessorKey: "email",
       header: ({ column }) => (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
           Email
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-      cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+      cell: ({ row }) => (
+        <div className="lowercase">{row.getValue("email")}</div>
+      ),
     },
     {
       id: "actions",
       cell: ({ row }) => {
         const elve = row.original;
         return (
-          <Button className="size-8" variant="ghost" onClick={() => editElve(elve)}>
+          <Button
+            className="size-8"
+            variant="ghost"
+            onClick={() => editElve(elve)}
+          >
             <span className="sr-only">Edit</span>
             <Pencil className="size-4" />
           </Button>
@@ -188,9 +218,11 @@ export default function ElvesTable() {
       <div className="w-full max-w-7xl">
         <div className="mb-4 flex justify-between">
           <Input
-            placeholder="Filter emails..."
-            value={table.getColumn("email")?.getFilterValue() ?? ""}
-            onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)}
+            placeholder="Filter names..."
+            value={table.getColumn("name")?.getFilterValue() ?? ""}
+            onChange={(event) =>
+              table.getColumn("name")?.setFilterValue(event.target.value)
+            }
             className="max-w-sm"
           />
           <div className="flex gap-2">
@@ -220,7 +252,9 @@ export default function ElvesTable() {
                         key={column.id}
                         className="capitalize"
                         checked={column.getIsVisible()}
-                        onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                        onCheckedChange={(value) =>
+                          column.toggleVisibility(!!value)
+                        }
                       >
                         {column.id}
                       </DropdownMenuCheckboxItem>
@@ -236,10 +270,16 @@ export default function ElvesTable() {
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id} className="text-center font-bold text-zinc-800">
+                    <TableHead
+                      key={header.id}
+                      className="text-center font-bold text-zinc-800"
+                    >
                       {header.isPlaceholder
                         ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   ))}
                 </TableRow>
@@ -248,17 +288,26 @@ export default function ElvesTable() {
             <TableBody>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} className="text-center">
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
                       </TableCell>
                     ))}
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={columns.length} className="h-24 text-center">
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
                     No results.
                   </TableCell>
                 </TableRow>
