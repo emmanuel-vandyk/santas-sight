@@ -212,9 +212,9 @@ export default function ElvesTable() {
   };
 
   return (
-    <div className="w-11/12">
+    <div className="flex flex-col items-center gap-1">
       <h1 className="text-2xl font-bold">Elves Table</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 py-1">
+      <div className="flex w-5/6 gap-2 py-1">
         <Input
           placeholder="Filter emails..."
           value={table.getColumn("email")?.getFilterValue() ?? ""}
@@ -223,17 +223,16 @@ export default function ElvesTable() {
           }
           className="max-w-sm"
         />
-        <div className="flex items-center space-x-2">
+        <div className="grid grid-cols-3 gap-2">
           <Button
             variant="outline"
-            className="ml-auto"
             onClick={() => setIsModalOpen(true)}
           >
             + New Elve
           </Button>
           <Button
             variant="destructive"
-            className="ml-auto bg-green-500"
+            className=" bg-green-500"
             onClick={deleteRows}
             disabled={table.getFilteredSelectedRowModel().rows.length == 0}
           >
@@ -241,8 +240,8 @@ export default function ElvesTable() {
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                Columns <ChevronDown className="ml-2 h-4 w-4" />
+              <Button variant="outline">
+                Columns <ChevronDown className="size-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -267,20 +266,20 @@ export default function ElvesTable() {
           </DropdownMenu>
         </div>
       </div>
-      <div className="rounded-md border">
-        <Table className="table-auto">
+      <div className="rounded-md border w-5/6">
+        <Table className="table-fixed">
           <TableHeader className="bg-gradient-to-b from-red-500 to-white font-bold">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="h-8">
+              <TableRow key={headerGroup.id} className="h-8 ">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="px-20 py-1 text-zinc-800">
+                    <TableHead key={header.id} className="px-10 py-1 text-zinc-800">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
@@ -296,7 +295,7 @@ export default function ElvesTable() {
                   className="h-8"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="px-20 py-1">
+                    <TableCell key={cell.id} className="px-10 py-1">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -352,7 +351,9 @@ export default function ElvesTable() {
         initialData={editingElve}
       />
       <h2 className="text-2xl font-bold mt-8 mb-4">Deleted Elves</h2>
-      <DeletedTableElve deletedElves={deletedElves} onRestore={restoreElve} />
+      <div className="w-5/6">
+        <DeletedTableElve deletedElves={deletedElves} onRestore={restoreElve} />
+      </div>
     </div>
   );
 }

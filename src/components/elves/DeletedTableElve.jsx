@@ -64,14 +64,14 @@ function DeletedTableElve({ deletedElves, onRestore }) {
   });
 
   return (
-    <div className="w-full">
+    <div>
       <div className="rounded-md border">
         <Table className="table-auto">
-          <TableHeader className="bg-gradient-to-b from-red-500 to-white font-bold">
+          <TableHeader className="bg-gradient-to-b from-red-500 to-white font-bold w-5/6">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="px-20 py-1 text-zinc-800">
+                  <TableHead key={header.id} className="py-1 text-zinc-800">
                     {flexRender(
                       header.column.columnDef.header,
                       header.getContext()
@@ -86,7 +86,7 @@ function DeletedTableElve({ deletedElves, onRestore }) {
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="px-20 py-1">
+                    <TableCell key={cell.id} className="py-1">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
@@ -120,7 +120,7 @@ function DeletedTableElve({ deletedElves, onRestore }) {
           Next
         </Button>
       </div>
-    </div>
+      </div>
   );
 }
 
