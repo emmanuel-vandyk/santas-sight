@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { ChristmasTree, Reindeer, ChristmasElf, ChristmasSnowflake, ChristmasLogout } from "@/components/global/iconsChristmas"
 import { SnowDecoration } from "@/components/global/snowDecoration"
-import logo from "@/assets/react.svg"
+import logo from "@/assets/sslogo.webp"
 
 // Menu items.
 const items = [
@@ -52,22 +52,22 @@ export const SideBar = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-red-100 via-green-100 to-red-100 pointer-events-none">
           <SnowDecoration />
         </div>
-        <div className="relative z-10 flex flex-col items-center pt-6 flex-grow">
+        <div className="relative z-10 flex flex-col items-center pt-2 flex-grow">
           <div className="flex justify-between items-center w-full mb-6 px-4">
             <img
               src={logo}
               alt="Logo"
-              className={`transition-all duration-300 ease-in-out ${isCollapsed ? "w-2 h-2 opacity-0" : "w-12 h-12"}`}
+              className={`transition-all duration-300 ease-in-out ${isCollapsed ? "w-2 h-2 opacity-0" : "w-48 h-20"}`}
             />
             <button
               onClick={toggleSidebar}
-              className={`transition-all duration-300 ease-in-out text-red-600 hover:text-red-700 ${isCollapsed ? "absolute top-6 ml-2" : ""}`}
+              className={`transition-all duration-300 ease-in-out text-green-600 hover:text-red-700 ${isCollapsed ? "absolute top-6 ml-2" : ""}`}
             >
               <AlignCenter className="h-6 w-6" />
             </button>
           </div>
           <div className="w-full flex-grow">
-            <div className="space-y-2 px-2">
+            <div className={`space-y-2 px-2 ${isCollapsed ? "py-6" : ""}`}>
               {items.map((item) => (
                 <div key={item.title} className="group">
                   <Link
@@ -83,7 +83,7 @@ export const SideBar = () => {
             </div>
           </div>
         </div>
-        <div className="relative z-10 p-4 bg-red-300 rounded-t-3xl shadow-xl mt-auto">
+        <div className="relative z-10 p-4 bg-red-300 rounded-t-full shadow-xl mt-auto">
           <div className={`flex flex-col items-center gap-4 mb-4 transition-all duration-300 ease-in-out ${isCollapsed ? "mb-0" : ""}`}>
             <Avatar className={`border-4 border-red-200 ${isCollapsed ? "w-10 h-10" : "w-16 h-16"}`}>
               <AvatarImage src="https://github.com/shadcn.png" alt="Santa Claus" />
@@ -98,7 +98,7 @@ export const SideBar = () => {
             variant="ghost"
             className={`w-full ${isCollapsed ? "p-2 aspect-square" : ""} text-slate-950 hover:bg-red-500 hover:text-white transition-all duration-200 font-bold flex items-center justify-center`}
           >
-            <ChristmasLogout className={`h-5 w-5 ${isCollapsed ? "h-6 w-6" : ""}`} />
+            <ChristmasLogout className={`h-5 w-10 ${isCollapsed ? "h-6 w-6" : ""}`} />
             <span className={`${isCollapsed ? "hidden" : "ml-2"}`}>Log out</span>
           </Button>
         </div>
