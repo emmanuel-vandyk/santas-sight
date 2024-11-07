@@ -28,49 +28,21 @@ import {
 } from "@/components/ui/table";
 import ElveModal from "@/components/elves/ElveModal";
 import DeletedTableElve from "@/components/elves/DeletedTableElve";
-
-const elvesData = [
-  {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@yahoo.com",
-  },
-  {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@gmail.com",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@gmail.com",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@gmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-];
+import { useElves } from "@/services/elvescrud/elvesapi";
+import SantaChristmasSpinner from "@/components/global/spinner";
 
 export default function ElvesTable() {
+  const { data: elves, isLoading, isError } = useElves();
+  const [data, setData] = React.useState([elves]);
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
-  const [data, setData] = React.useState(elvesData);
   const [deletedElves, setDeletedElves] = React.useState([]);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [editingElve, setEditingElve] = React.useState(null);
+
+  console.log(elves);
 
   const columns = [
     {
@@ -148,6 +120,7 @@ export default function ElvesTable() {
           </Button>
         );
       },
+      enableHiding: false,
     },
   ];
 
@@ -211,6 +184,14 @@ export default function ElvesTable() {
     setEditingElve(null);
   };
 
+  if (isLoading)
+    return (
+      <div className="grid place-content-center place-items-center h-full">
+        <SantaChristmasSpinner />
+      </div>
+    );
+  if (isError) return <div>Error fetching elves</div>;
+
   return (
     <div className="flex flex-col items-center gap-8 p-8">
       <h1 className="text-3xl font-bold">Elves Management</h1>
@@ -219,7 +200,9 @@ export default function ElvesTable() {
           <Input
             placeholder="Filter emails..."
             value={table.getColumn("email")?.getFilterValue() ?? ""}
-            onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)}
+            onChange={(event) =>
+              table.getColumn("email")?.setFilterValue(event.target.value)
+            }
             className="max-w-sm"
           />
           <div className="flex gap-2">
@@ -249,11 +232,13 @@ export default function ElvesTable() {
                         key={column.id}
                         className="capitalize"
                         checked={column.getIsVisible()}
-                        onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                        onCheckedChange={(value) =>
+                          column.toggleVisibility(!!value)
+                        }
                       >
                         {column.id}
                       </DropdownMenuCheckboxItem>
-                    )
+                    );
                   })}
               </DropdownMenuContent>
             </DropdownMenu>
@@ -265,10 +250,16 @@ export default function ElvesTable() {
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id} className="text-center font-bold text-zinc-800">
+                    <TableHead
+                      key={header.id}
+                      className="text-center font-bold text-zinc-800"
+                    >
                       {header.isPlaceholder
                         ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   ))}
                 </TableRow>
@@ -277,17 +268,26 @@ export default function ElvesTable() {
             <TableBody>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} className="text-center">
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
                       </TableCell>
                     ))}
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={columns.length} className="h-24 text-center">
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
                     No results.
                   </TableCell>
                 </TableRow>
@@ -297,8 +297,8 @@ export default function ElvesTable() {
         </div>
         <div className="mt-4 flex items-center justify-between">
           <div className="text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
-            selected.
+            {table.getFilteredSelectedRowModel().rows.length} of{" "}
+            {table.getFilteredRowModel().rows.length} row(s) selected.
           </div>
           <div className="space-x-2">
             <Button
@@ -309,7 +309,12 @@ export default function ElvesTable() {
             >
               Previous
             </Button>
-            <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
               Next
             </Button>
           </div>
