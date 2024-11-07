@@ -28,12 +28,17 @@ import {
 } from "@/components/ui/table";
 import ElveModal from "@/components/elves/ElveModal";
 import DeletedTableElve from "@/components/elves/DeletedTableElve";
-import { useElves, useAddElves } from "@/services/elvescrud/elvesapi";
+import {
+  useElves,
+  useAddElves,
+  useUpdateElves,
+} from "@/services/elvescrud/elvesapi";
 import SantaChristmasSpinner from "@/components/global/spinner";
 
 export default function ElvesTable() {
   const { data: elves, isLoading, isError } = useElves();
   const addElveMutation = useAddElves();
+  const updateElveMutation = useUpdateElves();
   const [data, setData] = React.useState([]);
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
@@ -196,12 +201,16 @@ export default function ElvesTable() {
     setIsModalOpen(true);
   };
 
-  const updateElve = (elveUpdated) => {
+  const updateElve = async (elveUpdated) => {
+    const updatedElve = await updateElveMutation.mutateAsync({
+      ...editingElve,
+      ...elveUpdated,
+    });
+
     setData(
-      data.map((elve) =>
-        elve.id === editingElve.id ? { ...elve, ...elveUpdated } : elve
-      )
+      data.map((elve) => (elve.id === updatedElve.id ? updatedElve : elve))
     );
+
     setEditingElve(null);
   };
 

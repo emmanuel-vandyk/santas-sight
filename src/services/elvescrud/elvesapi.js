@@ -22,7 +22,32 @@ export const useElves = () => {
 export const useAddElves = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (newElve) => axios.post(`${URL2}/allElves`),
+    mutationFn: (newElve) => axios.post(`${URL2}/allElves`, newElve),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["elves"] });
+    },
+  });
+};
+
+// update elve
+
+export const useUpdateElves = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (updatedElve) =>
+      axios.put(`${URL2}/allElves/${updatedElve.id}`, updatedElve),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["elves"] });
+    },
+  });
+};
+
+// delete elve
+
+export const useDeleteElves = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (elvesId) => axios.delete(`${URL2}/allElves/${elvesId}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["elves"] });
     },

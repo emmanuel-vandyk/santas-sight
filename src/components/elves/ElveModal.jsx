@@ -14,7 +14,9 @@ import {
 
 export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
   const [name, setName] = useState(initialData ? initialData.name : "");
-  const [height, setHeight] = useState(initialData ? initialData.height : "");
+  const [height, setHeight] = useState(
+    initialData ? initialData.height.toString() : ""
+  );
   const [age, setAge] = useState(initialData ? initialData.age : "");
   const [address, setAddress] = useState(
     initialData ? initialData.address : ""
@@ -39,12 +41,12 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const id = Math.random() * 100;
+    const id = Math.round(Math.random() * 100);
     onSubmit({
       id,
       name,
       height,
-      age,
+      age: parseInt(age),
       address,
       email,
     });
@@ -86,7 +88,7 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
                 name="height"
                 className="flex-grow"
                 value={height}
-                type="number"
+                type="text"
                 required
               />
             </div>
@@ -150,7 +152,7 @@ ElveModal.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   initialData: PropTypes.shape({
     name: PropTypes.string,
-    height: PropTypes.number,
+    height: PropTypes.string,
     age: PropTypes.number,
     address: PropTypes.string,
     email: PropTypes.string,
