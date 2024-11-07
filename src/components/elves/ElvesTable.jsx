@@ -32,6 +32,8 @@ import {
   useElves,
   useAddElves,
   useUpdateElves,
+  useLogicalDeleteElves,
+  useRestoreElves,
 } from "@/services/elvescrud/elvesapi";
 import SantaChristmasSpinner from "@/components/global/spinner";
 
@@ -39,17 +41,22 @@ export default function ElvesTable() {
   const { data: elves, isLoading, isError } = useElves();
   const addElveMutation = useAddElves();
   const updateElveMutation = useUpdateElves();
-  const [data, setData] = React.useState([]);
+  const logicalDeleteMutation = useLogicalDeleteElves();
+  const restoreMutation = useRestoreElves();
+  
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
-  const [deletedElves, setDeletedElves] = React.useState([]);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [editingElve, setEditingElve] = React.useState(null);
 
-  React.useEffect(() => {
-    if (elves) setData(elves);
+  const data = React.useMemo(() => {
+    return elves ? elves.filter(elve => !elve.isDeleted) : [];
+  }, [elves]);
+
+  const deletedElves = React.useMemo(() => {
+    return elves ? elves.filter(elve => elve.isDeleted) : [];
   }, [elves]);
 
   const columns = [
@@ -57,10 +64,7 @@ export default function ElvesTable() {
       id: "select",
       header: ({ table }) => (
         <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
         />
@@ -78,74 +82,49 @@ export default function ElvesTable() {
     {
       accessorKey: "id",
       header: "Id",
-      cell: ({ row }) => {
-        const formatted = Number(row.getValue("id"));
-        return <div className="text-right font-medium">{formatted}</div>;
-      },
+      cell: ({ row }) => <div className="text-right font-medium">{row.getValue("id")}</div>,
     },
     {
       accessorKey: "name",
       header: "Name",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("name")}</div>
-      ),
+      cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
     },
     {
       accessorKey: "height",
       header: "Height",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("height")}</div>
-      ),
+      cell: ({ row }) => <div className="capitalize">{row.getValue("height")}</div>,
     },
     {
       accessorKey: "age",
       header: "Age",
-      cell: ({ row }) => {
-        const formatted = Number(row.getValue("age"));
-        return <div className="text-right font-medium">{formatted}</div>;
-      },
+      cell: ({ row }) => <div className="text-right font-medium">{row.getValue("age")}</div>,
     },
     {
       accessorKey: "address",
       header: "Address",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("address")}</div>
-      ),
+      cell: ({ row }) => <div className="capitalize">{row.getValue("address")}</div>,
     },
     {
       accessorKey: "email",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Email
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => (
-        <div className="lowercase">{row.getValue("email")}</div>
+      header: ({ column }) => (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          Email
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
       ),
+      cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
     },
     {
-      accessorKey: "actions",
-      header: "Actions",
+      id: "actions",
       cell: ({ row }) => {
         const elve = row.original;
         return (
-          <Button
-            className="size-8"
-            variant="ghost"
-            onClick={() => editElve(elve)}
-          >
+          <Button className="size-8" variant="ghost" onClick={() => editElve(elve)}>
             <span className="sr-only">Edit</span>
-            <Pencil className="size-8" />
+            <Pencil className="size-4" />
           </Button>
         );
       },
-      enableHiding: false,
     },
   ];
 
@@ -160,7 +139,6 @@ export default function ElvesTable() {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
-
     state: {
       sorting,
       columnFilters,
@@ -169,31 +147,24 @@ export default function ElvesTable() {
     },
   });
 
-  const deleteRows = () => {
+  const addNewElve = async (newElve) => {
+    await addElveMutation.mutateAsync(newElve);
+  };
+
+  const updateElve = async (elveUpdated) => {
+    await updateElveMutation.mutateAsync(elveUpdated);
+  };
+
+  const deleteRows = async () => {
     const rowsToDelete = table.getFilteredSelectedRowModel().rows;
-    const newData = data.filter(
-      (row) =>
-        !rowsToDelete.some((selectedRow) => selectedRow.original.id === row.id)
-    );
-    const newDeletedElves = [
-      ...deletedElves,
-      ...rowsToDelete.map((row) => row.original),
-    ];
-    setData(newData);
-    setDeletedElves(newDeletedElves);
+    for (const row of rowsToDelete) {
+      await logicalDeleteMutation.mutateAsync(row.original.id);
+    }
     setRowSelection({});
   };
 
-  const restoreElve = (elve) => {
-    setData([...data, elve]);
-    setDeletedElves(
-      deletedElves.filter((deletedElve) => deletedElve.id !== elve.id)
-    );
-  };
-
-  const addNewElve = async (newElve) => {
-    setData([...data, newElve]);
-    await addElveMutation.mutateAsync(newElve);
+  const restoreElve = async (elve) => {
+    await restoreMutation.mutateAsync(elve.id);
   };
 
   const editElve = (elve) => {
@@ -201,25 +172,14 @@ export default function ElvesTable() {
     setIsModalOpen(true);
   };
 
-  const updateElve = async (elveUpdated) => {
-    const updatedElve = await updateElveMutation.mutateAsync({
-      ...editingElve,
-      ...elveUpdated,
-    });
-
-    setData(
-      data.map((elve) => (elve.id === updatedElve.id ? updatedElve : elve))
-    );
-
-    setEditingElve(null);
-  };
-
-  if (isLoading)
+  if (isLoading) {
     return (
       <div className="grid place-content-center place-items-center h-full">
         <SantaChristmasSpinner />
       </div>
     );
+  }
+
   if (isError) return <div>Error fetching elves</div>;
 
   return (
@@ -230,9 +190,7 @@ export default function ElvesTable() {
           <Input
             placeholder="Filter emails..."
             value={table.getColumn("email")?.getFilterValue() ?? ""}
-            onChange={(event) =>
-              table.getColumn("email")?.setFilterValue(event.target.value)
-            }
+            onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)}
             className="max-w-sm"
           />
           <div className="flex gap-2">
@@ -262,9 +220,7 @@ export default function ElvesTable() {
                         key={column.id}
                         className="capitalize"
                         checked={column.getIsVisible()}
-                        onCheckedChange={(value) =>
-                          column.toggleVisibility(!!value)
-                        }
+                        onCheckedChange={(value) => column.toggleVisibility(!!value)}
                       >
                         {column.id}
                       </DropdownMenuCheckboxItem>
@@ -280,16 +236,10 @@ export default function ElvesTable() {
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
-                    <TableHead
-                      key={header.id}
-                      className="text-center font-bold text-zinc-800"
-                    >
+                    <TableHead key={header.id} className="text-center font-bold text-zinc-800">
                       {header.isPlaceholder
                         ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                        : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   ))}
                 </TableRow>
@@ -298,26 +248,17 @@ export default function ElvesTable() {
             <TableBody>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
+                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} className="text-center">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
                     ))}
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
+                  <TableCell colSpan={columns.length} className="h-24 text-center">
                     No results.
                   </TableCell>
                 </TableRow>

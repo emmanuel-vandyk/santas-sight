@@ -1,28 +1,25 @@
 import axios from "axios";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 
-const URL = import.meta.env.VITE_API_URL;
+// const URL = import.meta.env.VITE_API_URL;
 const MOCKURL = import.meta.env.VITE_MOCK_API_URL;
-const URL2 = "http://localhost:3000";
 
 // fetch all elves
-
 export const useElves = () => {
   return useQuery({
     queryKey: ["elves"],
     queryFn: async () => {
-      const { data } = await axios.get(`${URL2}/allElves`);
+      const { data } = await axios.get(`${MOCKURL}/allElves`);
       return data;
     },
   });
 };
 
 // add new elve
-
 export const useAddElves = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (newElve) => axios.post(`${URL2}/allElves`, newElve),
+    mutationFn: (newElve) => axios.post(`${MOCKURL}/allElves`, newElve),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["elves"] });
     },
@@ -30,26 +27,41 @@ export const useAddElves = () => {
 };
 
 // update elve
-
 export const useUpdateElves = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (updatedElve) =>
-      axios.put(`${URL2}/allElves/${updatedElve.id}`, updatedElve),
+      axios.put(`${MOCKURL}/allElves/${updatedElve.id}`, updatedElve),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["elves"] });
     },
   });
 };
 
-// delete elve
-
-export const useDeleteElves = () => {
+// logical delete elve
+export function useLogicalDeleteElves() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (elvesId) => axios.delete(`${URL2}/allElves/${elvesId}`),
+    mutationFn: async (elveId) => {
+      const response = await axios.patch(`${MOCKURL}/allElves/${elveId}`, { isDeleted: true });
+      return response.data;
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["elves"] });
+      queryClient.invalidateQueries({ queryKey: ['elves'] });
     },
   });
-};
+}
+
+// restore elve
+export function useRestoreElves() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (elveId) => {
+      const response = await axios.patch(`${MOCKURL}/allElves/${elveId}`, { isDeleted: false });
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['elves'] });
+    },
+  });
+}

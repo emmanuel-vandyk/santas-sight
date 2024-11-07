@@ -41,7 +41,7 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const id = Math.round(Math.random() * 100);
+    const id = initialData ? initialData.id : Math.round(Math.random() * 100);
     onSubmit({
       id,
       name,
@@ -49,6 +49,7 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
       age: parseInt(age),
       address,
       email,
+      isDeleted: false,
     });
     isClose();
   };
@@ -151,6 +152,7 @@ ElveModal.propTypes = {
   isClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   initialData: PropTypes.shape({
+    id: PropTypes.number,
     name: PropTypes.string,
     height: PropTypes.string,
     age: PropTypes.number,
