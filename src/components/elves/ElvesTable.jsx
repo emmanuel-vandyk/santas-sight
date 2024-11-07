@@ -28,12 +28,13 @@ import {
 } from "@/components/ui/table";
 import ElveModal from "@/components/elves/ElveModal";
 import DeletedTableElve from "@/components/elves/DeletedTableElve";
-import { useElves } from "@/services/elvescrud/elvesapi";
+import { useElves, useAddElves } from "@/services/elvescrud/elvesapi";
 import SantaChristmasSpinner from "@/components/global/spinner";
 
 export default function ElvesTable() {
   const { data: elves, isLoading, isError } = useElves();
-  const [data, setData] = React.useState([elves]);
+  const addElveMutation = useAddElves();
+  const [data, setData] = React.useState([]);
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -42,7 +43,9 @@ export default function ElvesTable() {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [editingElve, setEditingElve] = React.useState(null);
 
-  console.log(elves);
+  React.useEffect(() => {
+    if (elves) setData(elves);
+  }, [elves]);
 
   const columns = [
     {
@@ -68,10 +71,40 @@ export default function ElvesTable() {
       enableHiding: false,
     },
     {
-      accessorKey: "status",
-      header: "Status",
+      accessorKey: "id",
+      header: "Id",
+      cell: ({ row }) => {
+        const formatted = Number(row.getValue("id"));
+        return <div className="text-right font-medium">{formatted}</div>;
+      },
+    },
+    {
+      accessorKey: "name",
+      header: "Name",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("status")}</div>
+        <div className="capitalize">{row.getValue("name")}</div>
+      ),
+    },
+    {
+      accessorKey: "height",
+      header: "Height",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("height")}</div>
+      ),
+    },
+    {
+      accessorKey: "age",
+      header: "Age",
+      cell: ({ row }) => {
+        const formatted = Number(row.getValue("age"));
+        return <div className="text-right font-medium">{formatted}</div>;
+      },
+    },
+    {
+      accessorKey: "address",
+      header: "Address",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("address")}</div>
       ),
     },
     {
@@ -90,19 +123,6 @@ export default function ElvesTable() {
       cell: ({ row }) => (
         <div className="lowercase">{row.getValue("email")}</div>
       ),
-    },
-    {
-      accessorKey: "amount",
-      header: () => <div className="text-right">Amount</div>,
-      cell: ({ row }) => {
-        const amount = parseFloat(row.getValue("amount"));
-        const formatted = new Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: "USD",
-        }).format(amount);
-
-        return <div className="text-right font-medium">{formatted}</div>;
-      },
     },
     {
       accessorKey: "actions",
@@ -166,8 +186,9 @@ export default function ElvesTable() {
     );
   };
 
-  const addNewElve = (newElve) => {
+  const addNewElve = async (newElve) => {
     setData([...data, newElve]);
+    await addElveMutation.mutateAsync(newElve);
   };
 
   const editElve = (elve) => {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 
 const URL = import.meta.env.VITE_API_URL;
 const MOCKURL = import.meta.env.VITE_MOCK_API_URL;
@@ -13,6 +13,18 @@ export const useElves = () => {
     queryFn: async () => {
       const { data } = await axios.get(`${URL2}/allElves`);
       return data;
+    },
+  });
+};
+
+// add new elve
+
+export const useAddElves = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (newElve) => axios.post(`${URL2}/allElves`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["elves"] });
     },
   });
 };
