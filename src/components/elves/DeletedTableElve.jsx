@@ -64,18 +64,15 @@ function DeletedTableElve({ deletedElves, onRestore }) {
   });
 
   return (
-    <div>
+    <div className="w-full max-w-7xl">
       <div className="rounded-md border">
-        <Table className="table-auto">
-          <TableHeader className="bg-gradient-to-b from-red-500 to-white font-bold w-5/6">
+        <Table>
+          <TableHeader className="bg-gradient-to-b from-red-500 to-white">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="py-1 text-zinc-800">
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
+                  <TableHead key={header.id} className="text-center font-bold text-zinc-800">
+                    {flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 ))}
               </TableRow>
@@ -86,7 +83,7 @@ function DeletedTableElve({ deletedElves, onRestore }) {
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="py-1">
+                    <TableCell key={cell.id} className="text-center">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
@@ -102,7 +99,7 @@ function DeletedTableElve({ deletedElves, onRestore }) {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="mt-4 flex items-center justify-end space-x-2">
         <Button
           variant="outline"
           size="sm"
@@ -111,16 +108,11 @@ function DeletedTableElve({ deletedElves, onRestore }) {
         >
           Previous
         </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
+        <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
           Next
         </Button>
       </div>
-      </div>
+    </div>
   );
 }
 

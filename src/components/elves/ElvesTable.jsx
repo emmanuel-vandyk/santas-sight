@@ -212,146 +212,118 @@ export default function ElvesTable() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-1">
-      <h1 className="text-2xl font-bold">Elves Table</h1>
-      <div className="flex w-5/6 gap-2 py-1">
-        <Input
-          placeholder="Filter emails..."
-          value={table.getColumn("email")?.getFilterValue() ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        <div className="grid grid-cols-3 gap-2">
-          <Button
-            variant="outline"
-            onClick={() => setIsModalOpen(true)}
-          >
-            + New Elve
-          </Button>
-          <Button
-            variant="destructive"
-            className=" bg-green-500"
-            onClick={deleteRows}
-            disabled={table.getFilteredSelectedRowModel().rows.length == 0}
-          >
-            Delete
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                Columns <ChevronDown className="size-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
+    <div className="flex flex-col items-center gap-8 p-8">
+      <h1 className="text-3xl font-bold">Elves Management</h1>
+      <div className="w-full max-w-7xl">
+        <div className="mb-4 flex justify-between">
+          <Input
+            placeholder="Filter emails..."
+            value={table.getColumn("email")?.getFilterValue() ?? ""}
+            onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)}
+            className="max-w-sm"
+          />
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => setIsModalOpen(true)}>
+              + New Elve
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={deleteRows}
+              disabled={table.getFilteredSelectedRowModel().rows.length === 0}
+            >
+              Delete
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  Columns <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {table
+                  .getAllColumns()
+                  .filter((column) => column.getCanHide())
+                  .map((column) => {
+                    return (
+                      <DropdownMenuCheckboxItem
+                        key={column.id}
+                        className="capitalize"
+                        checked={column.getIsVisible()}
+                        onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                      >
+                        {column.id}
+                      </DropdownMenuCheckboxItem>
+                    )
+                  })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
-      </div>
-      <div className="rounded-md border w-5/6">
-        <Table className="table-fixed">
-          <TableHeader className="bg-gradient-to-b from-red-500 to-white font-bold">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="h-8 ">
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} className="px-10 py-1 text-zinc-800">
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader className="bg-gradient-to-b from-red-500 to-white">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead key={header.id} className="text-center font-bold text-zinc-800">
                       {header.isPlaceholder
                         ? null
-                        : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                  className="h-8"
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="px-10 py-1">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
                   ))}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow className="h-8">
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className="text-center">
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={columns.length} className="h-24 text-center">
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
         </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
+        <div className="mt-4 flex items-center justify-between">
+          <div className="text-sm text-muted-foreground">
+            {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
+            selected.
+          </div>
+          <div className="space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              Previous
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+              Next
+            </Button>
+          </div>
         </div>
-      </div>
-      <ElveModal
-        isOpen={isModalOpen}
-        isClose={() => {
-          setIsModalOpen(false);
-          setEditingElve(null);
-        }}
-        onSubmit={editingElve ? updateElve : addNewElve}
-        initialData={editingElve}
-      />
-      <h2 className="text-2xl font-bold mt-8 mb-4">Deleted Elves</h2>
-      <div className="w-5/6">
+        <ElveModal
+          isOpen={isModalOpen}
+          isClose={() => {
+            setIsModalOpen(false);
+            setEditingElve(null);
+          }}
+          onSubmit={editingElve ? updateElve : addNewElve}
+          initialData={editingElve}
+        />
+        <h2 className="text-3xl font-bold text-center pb-4">Deleted Elves</h2>
         <DeletedTableElve deletedElves={deletedElves} onRestore={restoreElve} />
       </div>
     </div>
