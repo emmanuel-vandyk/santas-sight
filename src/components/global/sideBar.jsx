@@ -40,28 +40,20 @@ export const SideBar = () => {
 
   return (
     <>
-      <button
-        onClick={toggleSidebar}
-        className="fixed top-4 left-4 z-50 md:hidden bg-red-600 text-white p-2 rounded-full shadow-lg hover:bg-red-700 transition-colors duration-200"
-        aria-label={isCollapsed ? "Open sidebar" : "Close sidebar"}
-      >
-        <AlignCenter className="h-6 w-6" />
-      </button>
-
       <div className={`relative flex flex-col h-screen ${isCollapsed ? "w-20" : "w-64"} transition-all duration-300`}>
         <div className="absolute inset-0 bg-gradient-to-b from-red-100 via-green-100 to-red-100 pointer-events-none">
           <SnowDecoration />
         </div>
         <div className="relative z-10 flex flex-col items-center pt-2 flex-grow">
-          <div className="flex justify-between items-center w-full mb-6 px-4">
+          <div className="flex justify-around items-center w-full mb-6 px-4">
             <img
               src={logo}
               alt="Logo"
-              className={`transition-all duration-300 ease-in-out ${isCollapsed ? "w-2 h-2 opacity-0" : "w-48 h-20"}`}
+              className={`transition-all duration-300 ease-in-out ${isCollapsed ? "hidden" : "w-64 h-30 mt-2"}`}
             />
             <button
               onClick={toggleSidebar}
-              className={`transition-all duration-300 ease-in-out text-green-600 hover:text-red-700 ${isCollapsed ? "absolute top-6 ml-2" : ""}`}
+              className={`transition-all duration-300 ease-in-out text-green-600 hover:text-red-700 ${isCollapsed ? "absolute top-6 mr-2" : "absolute top-3 right-6"}`}
             >
               <AlignCenter className="h-6 w-6" />
             </button>
@@ -76,7 +68,6 @@ export const SideBar = () => {
                   >
                     <item.icon className="h-6 w-6 flex-shrink-0" />
                     <span className={`ml-3 ${isCollapsed ? "hidden" : ""}`}>{item.title}</span>
-                    {/* <div className="absolute inset-y-0 left-0 w-1 bg-red-600 transform scale-y-0 group-hover:scale-y-100 transition-transform duration-200 origin-top"></div> */}
                   </Link>
                 </div>
               ))}
@@ -86,7 +77,7 @@ export const SideBar = () => {
         <div className="relative z-10 p-4 bg-red-300 rounded-t-full shadow-xl mt-auto">
           <div className={`flex flex-col items-center gap-4 mb-4 transition-all duration-300 ease-in-out ${isCollapsed ? "mb-0" : ""}`}>
             <Avatar className={`border-4 border-red-200 ${isCollapsed ? "w-10 h-10" : "w-16 h-16"}`}>
-              <AvatarImage src="https://github.com/shadcn.png" alt="Santa Claus" />
+              <AvatarImage src="https://www.svgrepo.com/show/222575/santa-claus-christmas.svg" alt="Santa Claus" />
               <AvatarFallback>SC</AvatarFallback>
             </Avatar>
             <div className={`text-center ${isCollapsed ? "hidden" : ""}`}>
