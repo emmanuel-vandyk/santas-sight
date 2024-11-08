@@ -86,7 +86,7 @@ export default function ElvesTable() {
       accessorKey: "id",
       header: "Id",
       cell: ({ row }) => (
-        <div className="text-right font-medium">{row.getValue("id")}</div>
+        <div className="text-center font-medium">{row.getValue("id")}</div>
       ),
     },
     {
@@ -115,7 +115,7 @@ export default function ElvesTable() {
       accessorKey: "age",
       header: "Age",
       cell: ({ row }) => (
-        <div className="text-right font-medium">{row.getValue("age")}</div>
+        <div className="text-center font-medium">{row.getValue("age")}</div>
       ),
     },
     {
