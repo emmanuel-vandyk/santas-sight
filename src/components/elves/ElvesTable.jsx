@@ -36,6 +36,7 @@ import {
   useRestoreElves,
 } from "@/services/elvescrud/elvesapi";
 import SantaChristmasSpinner from "@/components/global/spinner";
+import { ElvesAvatar } from "@/components/elves/ElvesAvatar";
 
 export default function ElvesTable() {
   const { data: elves, isLoading, isError } = useElves();
@@ -83,10 +84,21 @@ export default function ElvesTable() {
       enableHiding: false,
     },
     {
+      header: "Avatar",
+      cell: ({ row }) => {
+        const initials = (row.getValue("name") || "").slice(0, 2).toUpperCase();
+        return (
+          <div className="grid place-items-center">
+            <ElvesAvatar initials={initials} />
+          </div>
+        );
+      },
+    },
+    {
       accessorKey: "id",
       header: "Id",
       cell: ({ row }) => (
-        <div className="text-right font-medium">{row.getValue("id")}</div>
+        <div className="text-center font-medium">{row.getValue("id")}</div>
       ),
     },
     {
@@ -115,7 +127,7 @@ export default function ElvesTable() {
       accessorKey: "age",
       header: "Age",
       cell: ({ row }) => (
-        <div className="text-right font-medium">{row.getValue("age")}</div>
+        <div className="text-center font-medium">{row.getValue("age")}</div>
       ),
     },
     {
@@ -204,7 +216,7 @@ export default function ElvesTable() {
 
   if (isLoading) {
     return (
-      <div className="grid place-content-center place-items-center h-full">
+      <div className="grid place-items-center h-full">
         <SantaChristmasSpinner />
       </div>
     );
