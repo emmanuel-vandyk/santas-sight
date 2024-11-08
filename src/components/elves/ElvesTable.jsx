@@ -167,6 +167,7 @@ export default function ElvesTable() {
           </Button>
         );
       },
+      enableHiding: false,
     },
   ];
 
