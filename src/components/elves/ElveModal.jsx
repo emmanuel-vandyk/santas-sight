@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import PropTypes from "prop-types";
+import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,44 +12,46 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
+import santahat from "@/assets/santahat.svg";
 
 export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
-  const [name, setName] = useState(initialData ? initialData.name : "");
-  const [height, setHeight] = useState(
-    initialData ? initialData.height.toString() : ""
-  );
-  const [age, setAge] = useState(initialData ? initialData.age : "");
-  const [address, setAddress] = useState(
-    initialData ? initialData.address : ""
-  );
-  const [email, setEmail] = useState(initialData ? initialData.email : "");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: initialData || {
+      name: "",
+      height: "",
+      age: "",
+      address: "",
+      email: "",
+    },
+  });
 
   useEffect(() => {
     if (initialData) {
-      setName(initialData.name);
-      setHeight(initialData.height);
-      setAge(initialData.age);
-      setAddress(initialData.address);
-      setEmail(initialData.email);
+      reset(initialData);
     } else {
-      setName("");
-      setHeight("");
-      setAge("");
-      setAddress("");
-      setEmail("");
+      reset({
+        name: "",
+        height: "",
+        age: "",
+        address: "",
+        email: "",
+      });
     }
-  }, [initialData]);
+  }, [initialData, reset]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const onSubmitForm = (data) => {
     const id = initialData ? initialData.id : Math.round(Math.random() * 100);
     onSubmit({
       id,
-      name,
-      height,
-      age: parseInt(age),
-      address,
-      email,
+      ...data,
+      age: parseInt(data.age),
       isDeleted: false,
     });
     isClose();
@@ -56,89 +59,146 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={isClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] bg-gradient-to-b from-red-100 to-green-100">
         <DialogHeader>
-          <DialogTitle>{initialData ? "Edit Elve" : "+ New Elve"}</DialogTitle>
-          <DialogDescription>
-            {initialData ? "Edit the details of the Elve" : "Add a new Elve"}
+          <DialogTitle className="flex items-center justify-center text-2xl font-bold text-red-600">
+            <span className="relative">
+              {initialData ? "Edit Elve" : "+ New Elve"}
+              <img
+                src={santahat}
+                alt="Santa Hat"
+                className="absolute -top-11 -left-2 w-12 h-12"
+              />
+            </span>
+          </DialogTitle>
+          <DialogDescription className="text-center text-green-700">
+            {initialData ? "Edit the details of the Elve" : "Add a new Elve to Santa's workshop"}
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="flex flex-col space-y-4 py-4">
-            <div className="flex flex-row items-center space-x-4">
-              <Label htmlFor="name" className="text-right">
-                Name
-              </Label>
+        <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-6">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="name" className="text-right text-zinc-500">
+              Name
+            </Label>
+            <div className="col-span-3">
               <Input
-                onChange={(e) => setName(e.target.value)}
-                id="name"
-                name="name"
-                className="flex-grow"
-                value={name}
-                type="text"
-                required
+                {...register("name", {
+                  required: "Name is required",
+                  validate: (value) => {
+                    if (!/^[A-Z]/.test(value)) {
+                      return "First letter must be capital";
+                    }
+                    if (!/^[A-Za-z]+\s[A-Za-z]+$/.test(value)) {
+                      return "Must be full name (first and last name)";
+                    }
+                    return true;
+                  },
+                })}
+                className="border border-gray-400 rounded-md px-3 py-2"
               />
+              {errors.name && (
+                <Alert variant="destructive" className="mt-2">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{errors.name.message}</AlertDescription>
+                </Alert>
+              )}
             </div>
-            <div className="flex flex-row items-center space-x-4">
-              <Label htmlFor="height" className="text-right">
-                Height
-              </Label>
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="height" className="text-right text-zinc-500">
+              Height
+            </Label>
+            <div className="col-span-3">
               <Input
-                onChange={(e) => setHeight(e.target.value)}
-                id="height"
-                name="height"
-                className="flex-grow"
-                value={height}
-                type="text"
-                required
+                {...register("height", {
+                  required: "Height is required",
+                  validate: (value) => {
+                    if (/[a-zA-Z]/.test(value)) {
+                      return "Height must not contain letters";
+                    }
+                    return true;
+                  },
+                })}
+                className="border border-gray-400 rounded-md px-3 py-2"
               />
+              {errors.height && (
+                <Alert variant="destructive" className="mt-2">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{errors.height.message}</AlertDescription>
+                </Alert>
+              )}
             </div>
-            <div className="flex flex-row items-center space-x-4">
-              <Label htmlFor="age" className="text-right">
-                Age
-              </Label>
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="age" className="text-right text-zinc-500">
+              Age
+            </Label>
+            <div className="col-span-3">
               <Input
-                onChange={(e) => setAge(e.target.value)}
-                id="age"
-                name="age"
-                className="flex-grow"
-                value={age}
+                {...register("age", {
+                  required: "Age is required",
+                  validate: (value) => {
+                    if (isNaN(Number(value))) {
+                      return "Age must be a valid number";
+                    }
+                    return true;
+                  },
+                })}
                 type="number"
-                required
+                className="border border-gray-400 rounded-md px-3 py-2"
               />
+              {errors.age && (
+                <Alert variant="destructive" className="mt-2">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{errors.age.message}</AlertDescription>
+                </Alert>
+              )}
             </div>
-            <div className="flex flex-row items-center space-x-4">
-              <Label htmlFor="address" className="text-right">
-                Address
-              </Label>
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="address" className="text-right text-zinc-500">
+              Address
+            </Label>
+            <div className="col-span-3">
               <Input
-                onChange={(e) => setAddress(e.target.value)}
-                id="address"
-                name="address"
-                className="flex-grow"
-                value={address}
-                type="text"
-                required
+                {...register("address", { required: "Address is required" })}
+                className="border border-gray-400 rounded-md px-3 py-2"
               />
+              {errors.address && (
+                <Alert variant="destructive" className="mt-2">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{errors.address.message}</AlertDescription>
+                </Alert>
+              )}
             </div>
-            <div className="flex flex-row items-center space-x-4">
-              <Label htmlFor="email" className="text-right">
-                Emails
-              </Label>
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="email" className="text-right text-zinc-500">
+              Email
+            </Label>
+            <div className="col-span-3">
               <Input
-                id="email"
-                name="email"
-                value={email}
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /\S+@\S+\.\S+/,
+                    message: "Must be a valid email address",
+                  },
+                })}
                 type="email"
-                onChange={(e) => setEmail(e.target.value)}
-                className="flex-grow"
-                required
+                className="border border-gray-400 rounded-md px-3 py-2"
               />
+              {errors.email && (
+                <Alert variant="destructive" className="mt-2">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{errors.email.message}</AlertDescription>
+                </Alert>
+              )}
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit">
-              {initialData ? "Save data" : "Add Elve"}
+            <Button type="submit" className="bg-green-600 hover:bg-green-700 text-white">
+              {initialData ? "Save Elve" : "Add Elve"}
             </Button>
           </DialogFooter>
         </form>
