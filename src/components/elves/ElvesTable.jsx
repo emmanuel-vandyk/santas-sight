@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useMemo, useState } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -45,18 +45,18 @@ export default function ElvesTable() {
   const logicalDeleteMutation = useLogicalDeleteElves();
   const restoreMutation = useRestoreElves();
 
-  const [sorting, setSorting] = React.useState([]);
-  const [columnFilters, setColumnFilters] = React.useState([]);
-  const [columnVisibility, setColumnVisibility] = React.useState({});
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [editingElve, setEditingElve] = React.useState(null);
+  const [sorting, setSorting] = useState([]);
+  const [columnFilters, setColumnFilters] = useState([]);
+  const [columnVisibility, setColumnVisibility] = useState({});
+  const [rowSelection, setRowSelection] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingElve, setEditingElve] = useState(null);
 
-  const data = React.useMemo(() => {
+  const data = useMemo(() => {
     return elves ? elves.filter((elve) => !elve.isDeleted) : [];
   }, [elves]);
 
-  const deletedElves = React.useMemo(() => {
+  const deletedElves = useMemo(() => {
     return elves ? elves.filter((elve) => elve.isDeleted) : [];
   }, [elves]);
 
@@ -138,18 +138,18 @@ export default function ElvesTable() {
       ),
     },
     {
-      accessorKey: "email",
+      accessorKey: "mail",
       header: ({ column }) => (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Email
+          EMail
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
       cell: ({ row }) => (
-        <div className="lowercase">{row.getValue("email")}</div>
+        <div className="lowercase">{row.getValue("mail")}</div>
       ),
     },
     {

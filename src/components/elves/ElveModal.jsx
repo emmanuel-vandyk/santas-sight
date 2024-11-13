@@ -28,7 +28,7 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
       height: "",
       age: "",
       address: "",
-      email: "",
+      mail: "",
     },
   });
 
@@ -41,20 +41,19 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
         height: "",
         age: "",
         address: "",
-        email: "",
+        mail: "",
       });
     }
   }, [initialData, reset]);
 
   const onSubmitForm = (data) => {
-    const id = initialData ? initialData.id : Math.round(Math.random() * 100);
+    
     onSubmit({
-      id,
       ...data,
-      age: parseInt(data.age),
       isDeleted: false,
     });
     isClose();
+    reset();
   };
 
   return (
@@ -94,7 +93,7 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
                     return true;
                   },
                 })}
-                className="border border-gray-400 rounded-md px-3 py-2"
+                className="border border-red-400 rounded-md px-3 py-2"
               />
               {errors.name && (
                 <Alert variant="destructive" className="mt-2">
@@ -119,7 +118,7 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
                     return true;
                   },
                 })}
-                className="border border-gray-400 rounded-md px-3 py-2"
+                className="border border-red-400 rounded-md px-3 py-2"
               />
               {errors.height && (
                 <Alert variant="destructive" className="mt-2">
@@ -145,7 +144,7 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
                   },
                 })}
                 type="number"
-                className="border border-gray-400 rounded-md px-3 py-2"
+                className="border border-red-400 rounded-md px-3 py-2"
               />
               {errors.age && (
                 <Alert variant="destructive" className="mt-2">
@@ -162,7 +161,7 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
             <div className="col-span-3">
               <Input
                 {...register("address", { required: "Address is required" })}
-                className="border border-gray-400 rounded-md px-3 py-2"
+                className="border border-red-400 rounded-md px-3 py-2"
               />
               {errors.address && (
                 <Alert variant="destructive" className="mt-2">
@@ -173,12 +172,12 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
             </div>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="email" className="text-right text-zinc-500">
+            <Label htmlFor="email" className="text-right text-slate-200 text-bold">
               Email
             </Label>
             <div className="col-span-3">
               <Input
-                {...register("email", {
+                {...register("mail", {
                   required: "Email is required",
                   pattern: {
                     value: /\S+@\S+\.\S+/,
@@ -186,7 +185,7 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
                   },
                 })}
                 type="email"
-                className="border border-gray-400 rounded-md px-3 py-2"
+                className="border border-red-400 rounded-md px-3 py-2"
               />
               {errors.email && (
                 <Alert variant="destructive" className="mt-2">
@@ -215,7 +214,7 @@ ElveModal.propTypes = {
     id: PropTypes.number,
     name: PropTypes.string,
     height: PropTypes.string,
-    age: PropTypes.number,
+    age: PropTypes.string,
     address: PropTypes.string,
     email: PropTypes.string,
   }),

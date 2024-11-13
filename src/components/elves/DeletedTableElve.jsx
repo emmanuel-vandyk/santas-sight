@@ -23,7 +23,7 @@ function DeletedTableElve({ deletedElves, onRestore }) {
       header: "Id",
       cell: ({ row }) => {
         const formatted = Number(row.getValue("id"));
-        return <div className="text-right font-medium">{formatted}</div>;
+        return <div className="text-center font-medium">{formatted}</div>;
       },
     },
     {
@@ -45,7 +45,7 @@ function DeletedTableElve({ deletedElves, onRestore }) {
       header: "Age",
       cell: ({ row }) => {
         const formatted = Number(row.getValue("age"));
-        return <div className="text-right font-medium">{formatted}</div>;
+        return <div className="text-center font-medium">{formatted}</div>;
       },
     },
     {
@@ -56,7 +56,7 @@ function DeletedTableElve({ deletedElves, onRestore }) {
       ),
     },
     {
-      accessorKey: "email",
+      accessorKey: "mail",
       header: ({ column }) => {
         return (
           <Button
@@ -69,7 +69,7 @@ function DeletedTableElve({ deletedElves, onRestore }) {
         );
       },
       cell: ({ row }) => (
-        <div className="lowercase">{row.getValue("email")}</div>
+        <div className="lowercase">{row.getValue("mail")}</div>
       ),
     },
     {
