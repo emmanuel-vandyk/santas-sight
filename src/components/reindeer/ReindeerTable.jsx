@@ -3,6 +3,7 @@ import {
   useUpdateReindeers,
   useAddReindeer,
 } from "@/services/reindeer/reindeerapi";
+import { ReindeerModalInfo } from "@/components/reindeer/reindeerModalInfo";
 import {
   flexRender,
   getCoreRowModel,
@@ -56,6 +57,8 @@ export default function ReindeersTable({ data }) {
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const [selectedReindeer, setSelectedReindeer] = React.useState(null)
+  const [isModalOpen, setIsModalOpen] = React.useState(false)
 
   const columns = [
     {
@@ -174,7 +177,13 @@ export default function ReindeersTable({ data }) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Options</DropdownMenuLabel>
-              <DropdownMenuItem className="cursor-pointer">
+              <DropdownMenuItem
+                onClick={() => {
+                  setSelectedReindeer(row.original)
+                  setIsModalOpen(true)
+                }}
+                className="cursor-pointer"
+              >
                 View Stats
               </DropdownMenuItem>
               <DropdownMenuSeparator />
@@ -402,6 +411,11 @@ export default function ReindeersTable({ data }) {
           </div>
         </div>
       </div>
+      <ReindeerModalInfo
+        reindeer={selectedReindeer}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }
