@@ -1,7 +1,9 @@
+import ElvesTable from "@/components/elves/ElvesTable";
+
 export const ElvesPage = () => {
   return (
-    <div>
-      <h1>Elves</h1>
-    </div>
+    <>
+      <ElvesTable />
+    </>
   );
 };
