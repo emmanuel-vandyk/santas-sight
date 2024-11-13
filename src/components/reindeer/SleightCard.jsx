@@ -42,48 +42,17 @@ export default function SleightCard({ data }) {
               Select Reindeers 🦌
             </h3>
             <div className="grid grid-cols-3 gap-3 place-items-center">
-              <ReindeerComboBox
-                reindeers={listReindeers}
-                value={
-                  listReindeers.find((reindeer) => reindeer.position === 1)
-                    ?.id ?? 0
-                }
-              />
-              <ReindeerComboBox
-                reindeers={listReindeers}
-                value={
-                  listReindeers.find((reindeer) => reindeer.position === 2)
-                    ?.id ?? 0
-                }
-              />
-              <ReindeerComboBox
-                reindeers={listReindeers}
-                value={
-                  listReindeers.find((reindeer) => reindeer.position === 3)
-                    ?.id ?? 0
-                }
-              />
-              <ReindeerComboBox
-                reindeers={listReindeers}
-                value={
-                  listReindeers.find((reindeer) => reindeer.position === 4)
-                    ?.id ?? 0
-                }
-              />
-              <ReindeerComboBox
-                reindeers={listReindeers}
-                value={
-                  listReindeers.find((reindeer) => reindeer.position === 5)
-                    ?.id ?? 0
-                }
-              />
-              <ReindeerComboBox
-                reindeers={listReindeers}
-                value={
-                  listReindeers.find((reindeer) => reindeer.position === 6)
-                    ?.id ?? 0
-                }
-              />
+              {Array.from({ length: 6 }).map((_, index) => (
+                <ReindeerComboBox
+                  key={index + 1}
+                  reindeers={listReindeers}
+                  value={
+                    listReindeers.find(
+                      (reindeer) => reindeer.position === index + 1
+                    )?.id ?? 0
+                  }
+                />
+              ))}
             </div>
           </div>
         </CardContent>
