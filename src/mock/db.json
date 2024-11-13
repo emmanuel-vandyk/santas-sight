@@ -79,5 +79,343 @@
       "email": "dd@dd.com",
       "isDeleted": false
     }
+  ],
+  "allReindeers": [
+    {
+      "id": "1",
+      "name": "Rudolph",
+      "skills": [
+        {
+          "skill": "Speed",
+          "value": 8
+        },
+        {
+          "skill": "Stamina",
+          "value": 9
+        },
+        {
+          "skill": "Maneuverability",
+          "value": 7
+        },
+        {
+          "skill": "Night Vision",
+          "value": 10
+        },
+        {
+          "skill": "Strength",
+          "value": 7
+        },
+        {
+          "skill": "Climate Adaptability",
+          "value": 8
+        },
+        {
+          "skill": "Teamwork",
+          "value": 8
+        },
+        {
+          "skill": "Navigation Intelligence",
+          "value": 9
+        }
+      ],
+      "type": "master",
+      "available": true,
+      "assignedToSanta": true,
+      "position": 6
+    },
+    {
+      "id": "2",
+      "name": "Dasher",
+      "skills": [
+        {
+          "skill": "Speed",
+          "value": 10
+        },
+        {
+          "skill": "Stamina",
+          "value": 8
+        },
+        {
+          "skill": "Maneuverability",
+          "value": 7
+        },
+        {
+          "skill": "Night Vision",
+          "value": 6
+        },
+        {
+          "skill": "Strength",
+          "value": 7
+        },
+        {
+          "skill": "Climate Adaptability",
+          "value": 7
+        },
+        {
+          "skill": "Teamwork",
+          "value": 6
+        },
+        {
+          "skill": "Navigation Intelligence",
+          "value": 5
+        }
+      ],
+      "type": "trainee",
+      "available": true,
+      "assignedToSanta": true,
+      "position": 5
+    },
+    {
+      "id": "3",
+      "name": "Dancer",
+      "skills": [
+        {
+          "skill": "Speed",
+          "value": 7
+        },
+        {
+          "skill": "Stamina",
+          "value": 7
+        },
+        {
+          "skill": "Maneuverability",
+          "value": 9
+        },
+        {
+          "skill": "Night Vision",
+          "value": 6
+        },
+        {
+          "skill": "Strength",
+          "value": 6
+        },
+        {
+          "skill": "Climate Adaptability",
+          "value": 6
+        },
+        {
+          "skill": "Teamwork",
+          "value": 8
+        },
+        {
+          "skill": "Navigation Intelligence",
+          "value": 7
+        }
+      ],
+      "type": "trainee",
+      "available": true,
+      "assignedToSanta": true,
+      "position": 4
+    },
+    {
+      "id": "4",
+      "name": "Prancer",
+      "skills": [
+        {
+          "skill": "Speed",
+          "value": 6
+        },
+        {
+          "skill": "Stamina",
+          "value": 7
+        },
+        {
+          "skill": "Maneuverability",
+          "value": 8
+        },
+        {
+          "skill": "Night Vision",
+          "value": 5
+        },
+        {
+          "skill": "Strength",
+          "value": 7
+        },
+        {
+          "skill": "Climate Adaptability",
+          "value": 6
+        },
+        {
+          "skill": "Teamwork",
+          "value": 8
+        },
+        {
+          "skill": "Navigation Intelligence",
+          "value": 6
+        }
+      ],
+      "type": "trainee",
+      "available": true,
+      "assignedToSanta": true,
+      "position": 3
+    },
+    {
+      "id": "5",
+      "name": "Vixen",
+      "skills": [
+        {
+          "skill": "Speed",
+          "value": 6
+        },
+        {
+          "skill": "Stamina",
+          "value": 6
+        },
+        {
+          "skill": "Maneuverability",
+          "value": 6
+        },
+        {
+          "skill": "Night Vision",
+          "value": 7
+        },
+        {
+          "skill": "Strength",
+          "value": 5
+        },
+        {
+          "skill": "Climate Adaptability",
+          "value": 8
+        },
+        {
+          "skill": "Teamwork",
+          "value": 7
+        },
+        {
+          "skill": "Navigation Intelligence",
+          "value": 6
+        }
+      ],
+      "type": "junior",
+      "available": true,
+      "assignedToSanta": true,
+      "position": 2
+    },
+    {
+      "id": "6",
+      "name": "Comet",
+      "skills": [
+        {
+          "skill": "Speed",
+          "value": 8
+        },
+        {
+          "skill": "Stamina",
+          "value": 8
+        },
+        {
+          "skill": "Maneuverability",
+          "value": 6
+        },
+        {
+          "skill": "Night Vision",
+          "value": 5
+        },
+        {
+          "skill": "Strength",
+          "value": 9
+        },
+        {
+          "skill": "Climate Adaptability",
+          "value": 7
+        },
+        {
+          "skill": "Teamwork",
+          "value": 6
+        },
+        {
+          "skill": "Navigation Intelligence",
+          "value": 6
+        }
+      ],
+      "type": "junior",
+      "available": true,
+      "assignedToSanta": true,
+      "position": 1
+    },
+    {
+      "id": "7",
+      "name": "Cupid",
+      "skills": [
+        {
+          "skill": "Speed",
+          "value": 5
+        },
+        {
+          "skill": "Stamina",
+          "value": 6
+        },
+        {
+          "skill": "Maneuverability",
+          "value": 6
+        },
+        {
+          "skill": "Night Vision",
+          "value": 5
+        },
+        {
+          "skill": "Strength",
+          "value": 6
+        },
+        {
+          "skill": "Climate Adaptability",
+          "value": 7
+        },
+        {
+          "skill": "Teamwork",
+          "value": 9
+        },
+        {
+          "skill": "Navigation Intelligence",
+          "value": 7
+        }
+      ],
+      "type": "junior",
+      "available": false,
+      "assignedToSanta": false,
+      "position": 0
+    },
+    {
+      "id": "8",
+      "name": "Max",
+      "skills": [
+        {
+          "skill": "Speed",
+          "value": 5
+        },
+        {
+          "skill": "Stamina",
+          "value": 6
+        },
+        {
+          "skill": "Maneuverability",
+          "value": 6
+        },
+        {
+          "skill": "Night Vision",
+          "value": 5
+        },
+        {
+          "skill": "Strength",
+          "value": 6
+        },
+        {
+          "skill": "Climate Adaptability",
+          "value": 7
+        },
+        {
+          "skill": "Teamwork",
+          "value": 9
+        },
+        {
+          "skill": "Navigation Intelligence",
+          "value": 7
+        }
+      ],
+      "type": "trainee",
+      "available": true,
+      "assignedToSanta": false,
+      "position": 0
+    }
   ]
 }

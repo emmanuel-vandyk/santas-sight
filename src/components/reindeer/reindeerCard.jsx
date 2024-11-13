@@ -9,5 +9,5 @@ export function ReindeerCard({ reindeer }) {
         <span className="text-white text-2xl">🦌</span>
       </div>
     </Card>
-  )
+  );
 }
