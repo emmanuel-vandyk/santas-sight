@@ -1,12 +1,11 @@
 name: Deploy to GitHub Pages
 
 on:
-  pull_request:
-    types: [closed]
+  push:
+    branches: develop
 
 jobs:
   deploy:
-    if: github.event.pull_request.merged == true # Solo se ejecuta si la PR está cerrada y ha sido mergeada
     runs-on: ubuntu-latest
 
     steps:
@@ -28,9 +27,10 @@ jobs:
       - name: Build project
         run: npm run build
 
-      # Publicar a GitHub Pages usando `gh-pages`
+      # Publicar a GitHub Pages usando `peaceiris/actions-gh-pages`
       - name: Deploy to GitHub Pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npx gh-pages -d dist -b gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist  # Cambia `dist` si tu directorio de salida es diferente
+          publish_branch: gh-pages
