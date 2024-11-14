@@ -9,7 +9,7 @@ export const useElves = () => {
   return useQuery({
     queryKey: ["elves"],
     queryFn: async () => {
-      const { data } = await axios.get(`${MOCKURL}/api/elve`);
+      const { data } = await axios.get(`${MOCKURL}/allElves`);
       return data;
     },
   });
@@ -19,7 +19,7 @@ export const useElves = () => {
 export const useAddElves = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (newElve) => axios.post(`${MOCKURL}/api/elve`, newElve),
+    mutationFn: (newElve) => axios.post(`${MOCKURL}/allElves`, newElve),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["elves"] });
     },
@@ -31,7 +31,7 @@ export const useUpdateElves = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (updatedElve) =>
-      axios.put(`${MOCKURL}/api/elve/${updatedElve.id}`, updatedElve),
+      axios.put(`${MOCKURL}/allElves/${updatedElve.id}`, updatedElve),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["elves"] });
     },
@@ -57,7 +57,7 @@ export function useRestoreElves() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (elveId) => {
-      const response = await axios.patch(`${MOCKURL}/api/elve/delete/${elveId}`, { isDeleted: false });
+      const response = await axios.patch(`${MOCKURL}/allElves/delete/${elveId}`, { isDeleted: false });
       return response.data;
     },
     onSuccess: () => {

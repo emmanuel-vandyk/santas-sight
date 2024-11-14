@@ -3,6 +3,7 @@ import {
   useUpdateReindeers,
   useAddReindeer,
 } from "@/services/reindeer/reindeerapi";
+import { ReindeerModalInfo } from "@/components/reindeer/reindeerModalInfo";
 import {
   flexRender,
   getCoreRowModel,
@@ -56,6 +57,8 @@ export default function ReindeersTable({ data }) {
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const [selectedReindeer, setSelectedReindeer] = React.useState(null)
+  const [isModalOpen, setIsModalOpen] = React.useState(false)
 
   const columns = [
     {
@@ -167,14 +170,20 @@ export default function ReindeersTable({ data }) {
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
+              <Button variant="ghost" className="size-8 p-0">
                 <span className="sr-only">Open menu</span>
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Options</DropdownMenuLabel>
-              <DropdownMenuItem className="cursor-pointer">
+              <DropdownMenuItem
+                onClick={() => {
+                  setSelectedReindeer(row.original)
+                  setIsModalOpen(true)
+                }}
+                className="cursor-pointer"
+              >
                 View Stats
               </DropdownMenuItem>
               <DropdownMenuSeparator />
@@ -279,17 +288,17 @@ export default function ReindeersTable({ data }) {
   });
 
   return (
-    <div className="flex flex-col items-center gap-8 p-8">
+    <div className="flex flex-col items-center gap-8 py-8">
       <h1 className="text-3xl font-bold">Reindeer Management</h1>
       <div className="w-full max-w-7xl">
-        <div className="mb-4 flex justify-between">
+        <div className="mb-4 flex gap-2 justify-between">
           <Input
             placeholder="Filter names..."
             value={table.getColumn("name")?.getFilterValue() ?? ""}
             onChange={(event) =>
               table.getColumn("name")?.setFilterValue(event.target.value)
             }
-            className="max-w-sm"
+            className=""
           />
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => setIsModalOpen(true)}>
@@ -326,9 +335,9 @@ export default function ReindeersTable({ data }) {
             </DropdownMenu>
           </div>
         </div>
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader className="bg-gradient-to-b from-green-400 to-white">
+        <div className="rounded-md border w-full">
+          <Table className="w-full">
+            <TableHeader className="bg-gradient-to-b from-green-600 to-green-400 whitespace-nowrap">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
@@ -402,6 +411,11 @@ export default function ReindeersTable({ data }) {
           </div>
         </div>
       </div>
+      <ReindeerModalInfo
+        reindeer={selectedReindeer}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }

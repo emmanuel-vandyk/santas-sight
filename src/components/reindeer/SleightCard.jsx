@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Check } from "lucide-react";
-import { ChristmasSantaSleight } from "@/components/global/iconsChristmas";
+import ChristmasSantaSleight from "@/assets/santasleigh.webp";
 import ReindeerComboBox from "@/components/reindeer/ReindeerComboBox";
 
 export default function SleightCard({ data }) {
@@ -35,55 +35,24 @@ export default function SleightCard({ data }) {
         </CardDescription>
       </CardHeader>
       <form onSubmit={saveOrderReinnders}>
-        <CardContent className="flex items-center justify-center p-5 w-full gap-3">
-          <ChristmasSantaSleight className="w-1/2" />
-          <div className="flex flex-col w-1/2 gap-5">
+        <CardContent className="flex flex-col md:flex-row items-center justify-center p-5 w-full gap-3">
+          <img src={ChristmasSantaSleight} className="object-cover w-72 md:w-1/2" />
+          <div className="flex flex-col md:w-1/2 gap-5">
             <h3 className="ml-5 text-center font-semibold">
               Select Reindeers 🦌
             </h3>
             <div className="grid grid-cols-3 gap-3 place-items-center">
+            {Array.from({ length: 6 }).map((_, index) => (
               <ReindeerComboBox
+                key={index + 1}
                 reindeers={listReindeers}
                 value={
-                  listReindeers.find((reindeer) => reindeer.position === 1)
-                    ?.id ?? 0
+                  listReindeers.find(
+                    (reindeer) => reindeer.position === index + 1
+                  )?.id ?? 0
                 }
               />
-              <ReindeerComboBox
-                reindeers={listReindeers}
-                value={
-                  listReindeers.find((reindeer) => reindeer.position === 2)
-                    ?.id ?? 0
-                }
-              />
-              <ReindeerComboBox
-                reindeers={listReindeers}
-                value={
-                  listReindeers.find((reindeer) => reindeer.position === 3)
-                    ?.id ?? 0
-                }
-              />
-              <ReindeerComboBox
-                reindeers={listReindeers}
-                value={
-                  listReindeers.find((reindeer) => reindeer.position === 4)
-                    ?.id ?? 0
-                }
-              />
-              <ReindeerComboBox
-                reindeers={listReindeers}
-                value={
-                  listReindeers.find((reindeer) => reindeer.position === 5)
-                    ?.id ?? 0
-                }
-              />
-              <ReindeerComboBox
-                reindeers={listReindeers}
-                value={
-                  listReindeers.find((reindeer) => reindeer.position === 6)
-                    ?.id ?? 0
-                }
-              />
+            ))}
             </div>
           </div>
         </CardContent>

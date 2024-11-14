@@ -20,7 +20,7 @@ function DeletedTableElve({ deletedElves, onRestore }) {
   const columns = [
     {
       accessorKey: "id",
-      header: "Id",
+      header: "ID",
       cell: ({ row }) => {
         const formatted = Number(row.getValue("id"));
         return <div className="text-center font-medium">{formatted}</div>;
@@ -30,46 +30,53 @@ function DeletedTableElve({ deletedElves, onRestore }) {
       accessorKey: "name",
       header: "Name",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("name")}</div>
+        <div className="capitalize w-full">{row.getValue("name")}</div>
       ),
     },
     {
       accessorKey: "height",
-      header: "Height",
+      header: ({ column }) => (
+        <p className="hidden md:block">Height</p>
+      ),
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("height")}</div>
+        <div className="capitalize hidden md:block">{row.getValue("height")}</div>
       ),
     },
     {
       accessorKey: "age",
-      header: "Age",
+      header: ({ column }) => (
+        <p className="hidden md:block">Age</p>
+      ),
       cell: ({ row }) => {
         const formatted = Number(row.getValue("age"));
-        return <div className="text-center font-medium">{formatted}</div>;
+        return <div className="hidden md:block text-center font-medium">{formatted}</div>;
       },
     },
     {
       accessorKey: "address",
-      header: "Address",
+      header: ({ column }) => (
+        <p className="hidden md:block">Address</p>
+      ),
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("address")}</div>
+        <div className="hidden md:block capitalize">{row.getValue("address")}</div>
       ),
     },
     {
-      accessorKey: "mail",
+      accessorKey: "email",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            className="hidden md:flex w-full"
           >
             Email
-            <ArrowUpDown className="ml-2 h-4 w-4" />
+            <ArrowUpDown className="hidden md:flex size-4" />
           </Button>
         );
       },
       cell: ({ row }) => (
-        <div className="lowercase">{row.getValue("mail")}</div>
+        <div className="hidden md:block lowercase">{row.getValue("email")}</div>
       ),
     },
     {
@@ -98,7 +105,7 @@ function DeletedTableElve({ deletedElves, onRestore }) {
     <div className="w-full max-w-7xl">
       <div className="rounded-md border">
         <Table>
-          <TableHeader className="bg-gradient-to-b from-red-500 to-white">
+          <TableHeader className="bg-gradient-to-b from-red-500 to-red-300">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (

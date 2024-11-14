@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { ChristmasTree, Reindeer, ChristmasElf, ChristmasSnowflake, ChristmasLogout } from "@/components/global/iconsChristmas"
 import { SnowDecoration } from "@/components/global/snowDecoration"
-import logo from "@/assets/sslogo.webp"
+import logo from "@/assets/sslogo2.webp"
 
 // Menu items.
 const items = [
@@ -41,7 +41,7 @@ export const SideBar = () => {
   return (
     <>
       <div className={`relative flex flex-col h-screen ${isCollapsed ? "w-20" : "w-64"} transition-all duration-300`}>
-        <div className="absolute inset-0 bg-gradient-to-b from-red-100 via-green-100 to-red-100 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-b from-red-900 via-red-600 to-black pointer-events-none">
           <SnowDecoration />
         </div>
         <div className="relative z-10 flex flex-col items-center pt-2 flex-grow">
@@ -53,7 +53,7 @@ export const SideBar = () => {
             />
             <button
               onClick={toggleSidebar}
-              className={`transition-all duration-300 ease-in-out text-green-600 hover:text-red-700 ${isCollapsed ? "absolute top-6 mr-2" : "absolute top-3 right-6"}`}
+              className={`transition-all duration-300 ease-in-out text-white hover:text-green-600 ${isCollapsed ? "absolute top-6 mr-2" : "absolute top-3 right-6"}`}
             >
               <AlignCenter className="h-6 w-6" />
             </button>
@@ -64,7 +64,7 @@ export const SideBar = () => {
                 <div key={item.title} className="group">
                   <Link
                     to={item.url}
-                    className="flex items-center px-4 py-3 w-full hover:bg-red-500 text-zinc-800 hover:text-white font-bold transition-colors duration-200 rounded-lg overflow-hidden"
+                    className="flex items-center px-4 py-3 w-full hover:bg-green-500 hover:text-zinc-800 text-white font-bold transition-colors duration-200 rounded-lg overflow-hidden"
                   >
                     <item.icon className="h-6 w-6 flex-shrink-0" />
                     <span className={`ml-3 ${isCollapsed ? "hidden" : ""}`}>{item.title}</span>
@@ -74,20 +74,20 @@ export const SideBar = () => {
             </div>
           </div>
         </div>
-        <div className="relative z-10 p-4 bg-red-300 rounded-t-full shadow-xl mt-auto">
+        <div className="relative z-10 p-4 bg-green-700 rounded-t-full shadow-xl mt-auto">
           <div className={`flex flex-col items-center gap-4 mb-4 transition-all duration-300 ease-in-out ${isCollapsed ? "mb-0" : ""}`}>
             <Avatar className={`border-4 border-red-200 ${isCollapsed ? "w-10 h-10" : "w-16 h-16"}`}>
               <AvatarImage src="https://www.svgrepo.com/show/222575/santa-claus-christmas.svg" alt="Santa Claus" />
               <AvatarFallback>SC</AvatarFallback>
             </Avatar>
             <div className={`text-center ${isCollapsed ? "hidden" : ""}`}>
-              <p className="font-bold text-zinc-800 text-lg">Santa Claus</p>
-              <p className="text-sm text-zinc-800">santa@northpole.com</p>
+              <p className="font-bold text-white text-lg">Santa Claus</p>
+              <p className="text-sm text-white">santa@northpole.com</p>
             </div>
           </div>
           <Button
             variant="ghost"
-            className={`w-full ${isCollapsed ? "p-2 aspect-square" : ""} text-slate-950 hover:bg-red-500 hover:text-white transition-all duration-200 font-bold flex items-center justify-center`}
+            className={`w-full ${isCollapsed ? "p-2 aspect-square" : ""} text-slate-950 hover:bg-red-700 hover:text-white transition-all duration-200 font-bold flex items-center justify-center`}
           >
             <ChristmasLogout className={`h-5 w-10 ${isCollapsed ? "h-6 w-6" : ""}`} />
             <span className={`${isCollapsed ? "hidden" : "ml-2"}`}>Log out</span>
