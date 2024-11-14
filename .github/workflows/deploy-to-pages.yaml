@@ -26,11 +26,16 @@ jobs:
       # Construir el proyecto para producción (asegúrate de que el script de build esté en package.json)
       - name: Build project
         run: npm run build
+      
+      # Configure Git Identity
+      - name: Configure Git Identity
+        run: |
+          git config --global user.email "emmaaavd@gmail.com"
+          git config --global user.name "Emmanuel Van Dick"
 
       # Publicar a GitHub Pages usando `peaceiris/actions-gh-pages`
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          publish_dir: ./dist  # Cambia `dist` si tu directorio de salida es diferente
-          publish_branch: build/gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npx gh-pages -d dist -b gh-pages
