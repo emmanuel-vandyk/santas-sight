@@ -217,7 +217,15 @@ export default function ReindeersTable({
                     {!row.getValue("available") ? (
                       <>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="cursor-pointer text-green-600">
+                        <DropdownMenuItem
+                          className="cursor-pointer text-green-600"
+                          onClick={() =>
+                            updateReindeer({
+                              ...reindeer,
+                              available: true,
+                            })
+                          }
+                        >
                           Active
                         </DropdownMenuItem>
                       </>
@@ -226,7 +234,16 @@ export default function ReindeersTable({
                         <DropdownMenuSeparator />
                         {data[row.index].assignedToSanta ? (
                           <>
-                            <DropdownMenuItem className="cursor-pointer text-orange-600">
+                            <DropdownMenuItem
+                              className="cursor-pointer text-orange-600"
+                              onClick={() =>
+                                updateReindeer({
+                                  ...reindeer,
+                                  assignedToSanta: false,
+                                  position: 0,
+                                })
+                              }
+                            >
                               Unequip
                             </DropdownMenuItem>
                           </>
@@ -237,7 +254,17 @@ export default function ReindeersTable({
                             </DropdownMenuItem>
                           </>
                         )}
-                        <DropdownMenuItem className="cursor-pointer text-red-600">
+                        <DropdownMenuItem
+                          className="cursor-pointer text-red-600"
+                          onClick={() =>
+                            updateReindeer({
+                              ...reindeer,
+                              assignedToSanta: false,
+                              position: 0,
+                              available: false,
+                            })
+                          }
+                        >
                           Deactivate
                         </DropdownMenuItem>
                       </>
