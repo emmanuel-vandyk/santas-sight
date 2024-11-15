@@ -176,7 +176,9 @@ export default function ReindeerModal({
                   </Label>
                   <Input
                     type="number"
-                    {...register(`skills.${index}.value`)}
+                    {...register(`skills.${index}.value`, {
+                      valueAsNumber: true,
+                    })}
                     placeholder="0-10"
                     min="0"
                     max="10"
