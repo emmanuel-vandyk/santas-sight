@@ -1,5 +1,9 @@
-
-import { useReindeers } from "@/services/reindeer/reindeerapi";
+import { useState } from "react";
+import {
+  useReindeers,
+  useAddReindeer,
+  useUpdateReindeers,
+} from "@/services/reindeer/reindeerapi";
 import SantaChristmasSpinner from "@/components/global/spinner";
 import ReindeersTable from "@/components/reindeer/ReindeerTable";
 import SleightCard from "@/components/reindeer/SleightCard";
@@ -9,6 +13,17 @@ import { Card } from "@/components/ui/card";
 
 export const ReindeerPage = () => {
   const { data, isLoading, isError } = useReindeers();
+  const addReindeerMutation = useAddReindeer();
+  const updateReindeerMutation = useUpdateReindeers();
+
+  const addNewReindeer = async (newReindeer) => {
+    await addReindeerMutation.mutateAsync(newReindeer);
+  };
+
+  const updateReindeer = async (reindeerUpdated) => {
+    await updateReindeerMutation.mutateAsync(reindeerUpdated);
+  };
+
   if (isLoading) {
     return (
       <div className="grid place-items-center h-full">
@@ -43,7 +58,11 @@ export const ReindeerPage = () => {
             <OrderCard data={data} />
           </div>
         </div>
-        <ReindeersTable data={data} />
+        <ReindeersTable
+          data={data}
+          addNewReindeer={addNewReindeer}
+          updateReindeer={updateReindeer}
+        />
       </div>
     </div>
   );

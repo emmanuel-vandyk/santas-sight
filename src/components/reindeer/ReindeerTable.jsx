@@ -1,9 +1,6 @@
 import * as React from "react";
-import {
-  useUpdateReindeers,
-  useAddReindeer,
-} from "@/services/reindeer/reindeerapi";
 import { ReindeerModalInfo } from "@/components/reindeer/reindeerModalInfo";
+import ReindeerModal from "@/components/reindeer/ReindeerModal";
 import {
   flexRender,
   getCoreRowModel,
@@ -52,13 +49,21 @@ import {
 } from "@/components/ui/table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
-export default function ReindeersTable({ data }) {
+export default function ReindeersTable({
+  data,
+  updateReindeer,
+  addNewReindeer,
+}) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
-  const [selectedReindeer, setSelectedReindeer] = React.useState(null)
-  const [isModalOpen, setIsModalOpen] = React.useState(false)
+  const [selectedReindeer, setSelectedReindeer] = React.useState(null);
+  const [isModalOpen, setIsModalOpen] = React.useState({
+    ReindeerModal: false,
+    ReindeerModalInfo: false,
+  });
+  const [editingReindeer, setEditingReindeer] = React.useState(null);
 
   const columns = [
     {
@@ -167,6 +172,7 @@ export default function ReindeersTable({ data }) {
       id: "options",
       enableHiding: false,
       cell: ({ row }) => {
+        const reindeer = row.original;
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -179,15 +185,27 @@ export default function ReindeersTable({ data }) {
               <DropdownMenuLabel>Options</DropdownMenuLabel>
               <DropdownMenuItem
                 onClick={() => {
-                  setSelectedReindeer(row.original)
-                  setIsModalOpen(true)
+                  setSelectedReindeer(reindeer);
+                  setIsModalOpen((state) => ({
+                    ...state,
+                    ReindeerModalInfo: true,
+                  }));
                 }}
                 className="cursor-pointer"
               >
                 View Stats
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer">
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => {
+                  setEditingReindeer(reindeer);
+                  setIsModalOpen((state) => ({
+                    ...state,
+                    ReindeerModal: true,
+                  }));
+                }}
+              >
                 Edit {row.getValue("name")}
               </DropdownMenuItem>
               <DropdownMenuSub>
@@ -199,7 +217,15 @@ export default function ReindeersTable({ data }) {
                     {!row.getValue("available") ? (
                       <>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="cursor-pointer text-green-600">
+                        <DropdownMenuItem
+                          className="cursor-pointer text-green-600"
+                          onClick={() =>
+                            updateReindeer({
+                              ...reindeer,
+                              available: true,
+                            })
+                          }
+                        >
                           Active
                         </DropdownMenuItem>
                       </>
@@ -208,7 +234,16 @@ export default function ReindeersTable({ data }) {
                         <DropdownMenuSeparator />
                         {data[row.index].assignedToSanta ? (
                           <>
-                            <DropdownMenuItem className="cursor-pointer text-orange-600">
+                            <DropdownMenuItem
+                              className="cursor-pointer text-orange-600"
+                              onClick={() =>
+                                updateReindeer({
+                                  ...reindeer,
+                                  assignedToSanta: false,
+                                  position: 0,
+                                })
+                              }
+                            >
                               Unequip
                             </DropdownMenuItem>
                           </>
@@ -219,7 +254,17 @@ export default function ReindeersTable({ data }) {
                             </DropdownMenuItem>
                           </>
                         )}
-                        <DropdownMenuItem className="cursor-pointer text-red-600">
+                        <DropdownMenuItem
+                          className="cursor-pointer text-red-600"
+                          onClick={() =>
+                            updateReindeer({
+                              ...reindeer,
+                              assignedToSanta: false,
+                              position: 0,
+                              available: false,
+                            })
+                          }
+                        >
                           Deactivate
                         </DropdownMenuItem>
                       </>
@@ -301,12 +346,18 @@ export default function ReindeersTable({ data }) {
             className=""
           />
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => setIsModalOpen(true)}>
+            <Button
+              variant="outline"
+              onClick={() =>
+                setIsModalOpen((state) => ({
+                  ...state,
+                  ReindeerModal: true,
+                }))
+              }
+            >
               + New Reindeer
             </Button>
-            <Button variant="outline" onClick={() => setIsModalOpen(true)}>
-              Change Status
-            </Button>
+            <Button variant="outline">Change Status</Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline">
@@ -413,8 +464,25 @@ export default function ReindeersTable({ data }) {
       </div>
       <ReindeerModalInfo
         reindeer={selectedReindeer}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isModalOpen.ReindeerModalInfo}
+        onClose={() =>
+          setIsModalOpen((state) => ({
+            ...state,
+            ReindeerModalInfo: false,
+          }))
+        }
+      />
+      <ReindeerModal
+        isOpen={isModalOpen.ReindeerModal}
+        isClose={() => {
+          setIsModalOpen((state) => ({
+            ...state,
+            ReindeerModal: false,
+          }));
+          setEditingReindeer(null);
+        }}
+        onSubmit={editingReindeer ? updateReindeer : addNewReindeer}
+        initialData={editingReindeer}
       />
     </div>
   );
