@@ -69,7 +69,9 @@ export default function ReindeerModal({
 
   const onSubmitForm = handleSubmit((data) => {
     onSubmit({
-      id: initialData ? initialData.id : Math.round(Math.random() * 100),
+      id: initialData
+        ? initialData.id
+        : Math.round(Math.random() * 100).toString(),
       ...data,
       available: initialData ? initialData.available : true,
       assignedToSanta: initialData ? initialData.assignedToSanta : false,
@@ -203,7 +205,7 @@ ReindeerModal.propTypes = {
   isClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   initialData: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.string, // This is a number, I use string because i can't query with ID number on json server
     name: PropTypes.string,
     type: PropTypes.string,
     skills: PropTypes.arrayOf(
