@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import { useReindeers } from "@/services/reindeer/reindeerapi";
 import SantaChristmasSpinner from "@/components/global/spinner";
 import ReindeersTable from "@/components/reindeer/ReindeerTable";
@@ -17,7 +17,7 @@ export const ReindeerPage = () => {
     );
   }
 
-  if (isError) return <div>Error fetching elves</div>;
+  if (isError) return <div>Error fetching Reindeer</div>;
 
   return (
     <div className="min-h-screen text-green-900 p-4 sm:p-8 relative overflow-hidden">

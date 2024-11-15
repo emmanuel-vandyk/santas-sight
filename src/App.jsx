@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { SideBar } from "@/components/global/sideBar";
+import  SideBar  from "@/components/global/sideBar";
 import { Separator } from "@/components/ui/separator";
 import SnowFlakeTop from "@/components/global/snowFlakeTop";
 
