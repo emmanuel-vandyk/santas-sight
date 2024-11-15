@@ -39,4 +39,4 @@ jobs:
       - name: Deploy to GitHub Pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx gh-pages -d dist -b gh-pages
+        run: npx gh-pages -d dist -b gh-pages repo=https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/TEAM3-ED8/front-end.git
