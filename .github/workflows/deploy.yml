@@ -28,8 +28,8 @@ jobs:
       # Configurar identidad de Git para los commits
       - name: Configure Git Identity
         run: |
-          git config --global user.email "emmaaavd@gmail.com"
-          git config --global user.name "Emmanuel"
+          git config --global user.email "team3@actions.com"
+          git config --global user.name "TEAM3-ED8"
       
       # Construir el proyecto
       - name: Build Project
@@ -39,4 +39,4 @@ jobs:
       - name: Deploy to GitHub Pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx gh-pages -d dist -b gh-pages repo=https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/TEAM3-ED8/front-end.git
+        run: npx gh-pages -d dist -b gh-pages
