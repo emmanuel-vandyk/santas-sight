@@ -1,0 +1,42 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - develop  # Solo se ejecuta cuando hay un push en la rama develop
+  workflow_dispatch:  # Permite ejecución manual del workflow
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout del repositorio en la rama develop
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Configuración de Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      # Instalar dependencias
+      - name: Install Dependencies
+        run: npm install
+      
+      # Configurar identidad de Git para los commits
+      - name: Configure Git Identity
+        run: |
+          git config --global user.email "emmaaavd@gmail.com"
+          git config --global user.name "Emmanuel"
+      
+      # Construir el proyecto
+      - name: Build Project
+        run: npm run build
+
+      # Desplegar en GitHub Pages
+      - name: Deploy to GitHub Pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx gh-pages -d dist -b gh-pages
