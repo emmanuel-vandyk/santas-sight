@@ -36,12 +36,12 @@ export default function SleightCard({ data }) {
       </CardHeader>
       <form onSubmit={saveOrderReinnders}>
         <CardContent className="flex flex-col md:flex-row items-center justify-center p-5 w-full gap-3">
-          <img src={ChristmasSantaSleight} className="object-cover w-72 md:w-1/2" />
+          <img src={ChristmasSantaSleight} className="object-cover w-56 md:w-56" />
           <div className="flex flex-col md:w-1/2 gap-5">
             <h3 className="ml-5 text-center font-semibold">
               Select Reindeers 🦌
             </h3>
-            <div className="grid grid-cols-3 gap-3 place-items-center">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 place-items-center">
             {Array.from({ length: 6 }).map((_, index) => (
               <ReindeerComboBox
                 key={index + 1}

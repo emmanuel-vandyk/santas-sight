@@ -41,7 +41,7 @@ const items = [
 export default function SideBar() {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const isMobile = useMediaQuery("(max-width: 768px)")
+  const isMobile = useMediaQuery("(max-width: 730px)")
 
   const toggleSidebar = () => {
     if (isMobile) {

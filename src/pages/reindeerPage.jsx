@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   useReindeers,
   useAddReindeer,
@@ -8,8 +7,7 @@ import SantaChristmasSpinner from "@/components/global/spinner";
 import ReindeersTable from "@/components/reindeer/ReindeerTable";
 import SleightCard from "@/components/reindeer/SleightCard";
 import OrderCard from "@/components/reindeer/OrderCard";
-import { SunIcon, Snowflake } from "lucide-react";
-import { Card } from "@/components/ui/card";
+import { WeatherCard } from "@/components/reindeer/WeatherCard";
 
 export const ReindeerPage = () => {
   const { data, isLoading, isError } = useReindeers();
@@ -35,21 +33,12 @@ export const ReindeerPage = () => {
   if (isError) return <div>Error fetching Reindeer</div>;
 
   return (
-    <div className="min-h-screen text-green-900 p-4 sm:p-8 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto space-y-8 relative z-10">
+    <div className="min-h-screen w-auto text-green-900 sm:p-8 relative overflow-hidden">
+      <div className="min-w-7xl mx-auto space-y-8 relative z-10">
         <h1 className="text-4xl font-bold text-red-600 text-center mb-8">
           Santas Reindeer Dashboard
         </h1>
-        <Card className="flex flex-col gap-5 w-7/8 bg-gradient-to-b from-sky-500 via-sky-300 to-sky-400 p-4 text-white h-32">
-          <section className="gap-3 font-semibold flex">
-            <Snowflake />
-            <h2 className="whitespace-nowrap">North Pole Weather</h2>
-          </section>
-          <section className="flex gap-2">
-            <SunIcon />
-            <h2>0°C</h2>
-          </section>
-        </Card>
+        <WeatherCard />
         <div className="flex flex-col md:flex-row items-start gap-3">
           <div className="md:w-3/5">
             <SleightCard data={data} />

@@ -5,7 +5,7 @@ import SnowFlakeTop from "@/components/global/snowFlakeTop";
 
 export default function Component() {
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-dvh overflow-hidden">
       <SideBar />
       <div className="flex flex-col flex-1 relative">
         <Separator className="relative z-20" />
@@ -14,7 +14,7 @@ export default function Component() {
             <SnowFlakeTop />
           </div>
         </div>
-        <main className="flex-1 overflow-auto p-4 relative z-20 pt-16"> 
+        <main className="flex-1 overflow-auto px-1 relative z-20 pt-16"> 
           <Outlet />
         </main>
       </div>
