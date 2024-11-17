@@ -78,51 +78,6 @@
       "address": "dasdas",
       "mail": "dd@dd.com",
       "isDeleted": false
-    },
-    {
-      "id": "b3a1",
-      "name": "Maxi Alex",
-      "height": "10",
-      "age": "10",
-      "address": "10",
-      "mail": "email@email.com",
-      "isDeleted": false
-    },
-    {
-      "id": "70",
-      "name": "Roberto A",
-      "height": "10",
-      "age": "10",
-      "address": "10",
-      "mail": "email@e.com",
-      "isDeleted": false
-    },
-    {
-      "id": "17",
-      "name": "Shakira Pique",
-      "height": "10",
-      "age": "10",
-      "address": "10",
-      "mail": "shakira@email.com",
-      "isDeleted": false
-    },
-    {
-      "id": 65,
-      "name": "Alex Coca",
-      "height": "10",
-      "age": "10",
-      "address": "10",
-      "mail": "email@e.com",
-      "isDeleted": false
-    },
-    {
-      "id": "54",
-      "name": "Carlos Roberto",
-      "height": "10",
-      "age": "10",
-      "address": "maxi",
-      "mail": "maxi@gmail.com",
-      "isDeleted": true
     }
   ],
   "allReindeers": [
@@ -337,48 +292,6 @@
       "position": 0
     },
     {
-      "id": "6",
-      "name": "Comet",
-      "skills": [
-        {
-          "skill": "Speed",
-          "value": 8
-        },
-        {
-          "skill": "Stamina",
-          "value": 8
-        },
-        {
-          "skill": "Maneuverability",
-          "value": 6
-        },
-        {
-          "skill": "Night Vision",
-          "value": 5
-        },
-        {
-          "skill": "Strength",
-          "value": 9
-        },
-        {
-          "skill": "Climate Adaptability",
-          "value": 7
-        },
-        {
-          "skill": "Teamwork",
-          "value": 6
-        },
-        {
-          "skill": "Navigation Intelligence",
-          "value": 6
-        }
-      ],
-      "type": "junior",
-      "available": true,
-      "assignedToSanta": false,
-      "position": 0
-    },
-    {
       "id": "7",
       "name": "Cupid",
       "skills": [
@@ -416,7 +329,7 @@
         }
       ],
       "type": "junior",
-      "available": true,
+      "available": false,
       "assignedToSanta": false,
       "position": 0
     },
@@ -500,7 +413,7 @@
         }
       ],
       "type": "trainee",
-      "available": true,
+      "available": false,
       "assignedToSanta": false,
       "position": 0
     },
@@ -836,49 +749,7 @@
         }
       ],
       "type": "trainee",
-      "available": true,
-      "assignedToSanta": false,
-      "position": 0
-    },
-    {
-      "id": "19",
-      "name": "The King Of The North",
-      "skills": [
-        {
-          "skill": "Speed",
-          "value": 5
-        },
-        {
-          "skill": "Stamina",
-          "value": 6
-        },
-        {
-          "skill": "Maneuverability",
-          "value": 6
-        },
-        {
-          "skill": "Night Vision",
-          "value": 5
-        },
-        {
-          "skill": "Strength",
-          "value": 6
-        },
-        {
-          "skill": "Climate Adaptability",
-          "value": 7
-        },
-        {
-          "skill": "Teamwork",
-          "value": 9
-        },
-        {
-          "skill": "Navigation Intelligence",
-          "value": 7
-        }
-      ],
-      "type": "trainee",
-      "available": true,
+      "available": false,
       "assignedToSanta": false,
       "position": 0
     },

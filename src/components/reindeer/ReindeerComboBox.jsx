@@ -31,10 +31,12 @@ export default function ReindeerComboBox(props) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className=" justify-between "
+          className=" justify-between"
         >
           {value ? (
-            reindeers.find((reindeer) => reindeer.id === value)?.name
+            reindeers.find((reindeer) => reindeer.id === value)?.name || (
+              <SquarePlus className="text-amber-900" />
+            )
           ) : (
             <SquarePlus className="text-amber-900" />
           )}
