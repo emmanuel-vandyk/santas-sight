@@ -47,10 +47,10 @@ export const useUpdateReindeer = () => {
 export const useUpdateCheckedReindeers = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (updatedcheckedreindeer) =>
-      Promise.all(
-        updatedcheckedreindeer.map((reindeers) =>
-          axios.put(`${MOCKURL}/allReindeers/${reindeers.id}`, reindeers)
+    mutationFn: (updatedCheckedReindeers) =>
+      axios.all(
+        updatedCheckedReindeers.map((reindeer) =>
+          axios.put(`${MOCKURL}/allReindeers/${reindeer.id}`, reindeer)
         )
       ),
     onSuccess: () => {
@@ -63,10 +63,10 @@ export const useUpdateCheckedReindeers = () => {
 export const useDeleteReindeer = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (deletedreindeer) =>
+    mutationFn: (deletedReindeer) =>
       axios.delete(
-        `${MOCKURL}/allReindeers/${deletedreindeer.id}`,
-        deletedreindeer
+        `${MOCKURL}/allReindeers/${deletedReindeer.id}`,
+        deletedReindeer
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reindeers"] });

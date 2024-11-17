@@ -52,11 +52,17 @@ export default function ReindeerList({
   const updateCheckedReindeersMutation = useUpdateCheckedReindeers();
   const deleteReindeerMutation = useDeleteReindeer();
 
+  const deleteReindeer = async (reindeerDeleted) => {
+    await deleteReindeerMutation.mutateAsync(reindeerDeleted);
+  };
+
   const handleCheckedReindeers = (action) => {
-    const reindeersToUpdate = checkedReindeer.map((reindeerId) => {
-      const reindeer = reindeers.find(({ id }) => id === reindeerId);
+    const reindeersChecked = checkedReindeer.map((reindeerId) =>
+      reindeers.find(({ id }) => id === reindeerId)
+    );
+
+    const reindeersToUpdate = reindeersChecked.map((reindeer) => {
       if (action === "activate") {
-        console.log("activado");
         return {
           ...reindeer,
           available: true,
@@ -68,14 +74,13 @@ export default function ReindeerList({
           position: 0,
           available: false,
         };
+      } else {
+        return reindeer;
       }
-      return reindeer;
     });
-    updateCheckedReindeersMutation.mutate(reindeersToUpdate);
-  };
 
-  const deleteReindeer = async (reindeerDeleted) => {
-    await deleteReindeerMutation.mutateAsync(reindeerDeleted);
+    setChecketReindeer([]);
+    updateCheckedReindeersMutation.mutateAsync(reindeersToUpdate);
   };
 
   return (
