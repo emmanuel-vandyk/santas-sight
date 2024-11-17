@@ -8,7 +8,7 @@ import SantaChristmasSpinner from "@/components/global/spinner";
 import ReindeersTable from "@/components/reindeer/ReindeerTable";
 import SleightCard from "@/components/reindeer/SleightCard";
 import OrderCard from "@/components/reindeer/OrderCard";
-import { WeatherCard } from "@/components/reindeer/WeatherCard";
+// import { WeatherCard } from "@/components/reindeer/WeatherCard";
 import ReindeerList from "@/components/reindeer/ReindeerList";
 
 export const ReindeerPage = () => {
@@ -40,7 +40,7 @@ export const ReindeerPage = () => {
         <h1 className="text-4xl font-bold text-red-600 text-center mb-8">
           Santas Reindeer Dashboard
         </h1>
-        <WeatherCard />
+        {/* <WeatherCard /> */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <SleightCard data={data} />
           <ReindeerList

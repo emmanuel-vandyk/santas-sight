@@ -7,6 +7,7 @@ export const WeatherCard = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["weather"],
     queryFn: fetchWeather,
+    staleTime: Infinity, 
   });
 
   if (isLoading) {
@@ -34,10 +35,10 @@ export const WeatherCard = () => {
           <section className="flex items-center gap-2 text-white">
             <h3 className="text-white flex items-center gap-1">
               <span><Snowflake /></span>
-              {data?.data[0].temp || "No description available"}
+              {data?.current.temperature || "No description available"}
               <span>°C</span>
             </h3>
-            <h2 className="text-white">{data?.data[0].weather.description || "No description available"}</h2>
+            <h2 className="text-white">{data?.current.weather_descriptions || "No description available"}</h2>
           </section>
         </section>
       </section>

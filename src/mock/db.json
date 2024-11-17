@@ -107,7 +107,7 @@
       "isDeleted": false
     },
     {
-      "id": 65,
+      "id": "65",
       "name": "Alex Coca",
       "height": "10",
       "age": "10",
@@ -164,7 +164,7 @@
         }
       ],
       "type": "master",
-      "available": false,
+      "available": true,
       "assignedToSanta": false,
       "position": 0
     },
@@ -416,7 +416,7 @@
         }
       ],
       "type": "junior",
-      "available": true,
+      "available": false,
       "assignedToSanta": false,
       "position": 0
     },
