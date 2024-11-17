@@ -119,7 +119,7 @@
         }
       ],
       "type": "master",
-      "available": false,
+      "available": true,
       "assignedToSanta": false,
       "position": 0
     },
@@ -329,7 +329,7 @@
         }
       ],
       "type": "junior",
-      "available": false,
+      "available": true,
       "assignedToSanta": false,
       "position": 0
     },
@@ -413,7 +413,7 @@
         }
       ],
       "type": "trainee",
-      "available": false,
+      "available": true,
       "assignedToSanta": false,
       "position": 0
     },
@@ -749,7 +749,7 @@
         }
       ],
       "type": "trainee",
-      "available": false,
+      "available": true,
       "assignedToSanta": false,
       "position": 0
     },
