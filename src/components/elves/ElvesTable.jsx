@@ -81,14 +81,17 @@ export default function ElvesTable() {
         />
       ),
       enableSorting: false,
-      enableHiding: false,
+      enableHiding: true,
     },
     {
-      header: "Avatar",
+      id: "avatar",
+      header: ({ column }) => (
+        <p className="hidden md:block">Avatar</p>
+    ),
       cell: ({ row }) => {
         const initials = (row.getValue("name") || "").slice(0, 2).toUpperCase();
         return (
-          <div className="grid place-items-center">
+          <div className="hidden md:grid place-items-center">
             <ElvesAvatar initials={initials} />
           </div>
         );
@@ -96,7 +99,9 @@ export default function ElvesTable() {
     },
     {
       accessorKey: "id",
-      header: "Id",
+      header: ({ column }) => (
+        <p>ID</p>
+      ),
       cell: ({ row }) => (
         <div className="text-center font-medium">{row.getValue("id")}</div>
       ),
@@ -107,9 +112,10 @@ export default function ElvesTable() {
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="w-full"
         >
           Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className="size-4" />
         </Button>
       ),
       cell: ({ row }) => (
@@ -118,38 +124,45 @@ export default function ElvesTable() {
     },
     {
       accessorKey: "height",
-      header: "Height",
+      header: ({ column }) => (
+        <p className="hidden md:block">Height</p>
+      ),
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("height")}</div>
+        <div className="hidden md:block capitalize">{row.getValue("height")}</div>
       ),
     },
     {
       accessorKey: "age",
-      header: "Age",
+      header: ({ column }) => (
+        <p className="hidden md:block">Age</p>
+      ),
       cell: ({ row }) => (
-        <div className="text-center font-medium">{row.getValue("age")}</div>
+        <div className="hidden md:block text-center font-medium">{row.getValue("age")}</div>
       ),
     },
     {
       accessorKey: "address",
-      header: "Address",
+      header: ({ column }) => (
+        <p className="hidden md:block">Address</p>
+      ),
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("address")}</div>
+        <div className="hidden md:block capitalize">{row.getValue("address")}</div>
       ),
     },
     {
-      accessorKey: "mail",
+      accessorKey: "email",
       header: ({ column }) => (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="hidden md:flex w-full"
         >
-          EMail
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          Email
+          <ArrowUpDown className="hidden md:flex items-center size-4" />
         </Button>
       ),
       cell: ({ row }) => (
-        <div className="lowercase">{row.getValue("mail")}</div>
+        <div className="lowercase hidden md:block">{row.getValue("email")}</div>
       ),
     },
     {
@@ -229,16 +242,15 @@ export default function ElvesTable() {
     <div className="flex flex-col items-center gap-8 p-8">
       <h1 className="text-3xl font-bold">Elves Management</h1>
       <div className="w-full max-w-7xl">
-        <div className="mb-4 flex justify-between">
-          <Input
-            placeholder="Filter names..."
-            value={table.getColumn("name")?.getFilterValue() ?? ""}
-            onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm"
-          />
-          <div className="flex gap-2">
+        <section className="mb-2 md:mb-4 flex flex-col-reverse gap-2 md:flex-row justify-between">
+            <Input
+              placeholder="Filter names..."
+              value={table.getColumn("name")?.getFilterValue() ?? ""}
+              onChange={(event) =>
+                table.getColumn("name")?.setFilterValue(event.target.value)
+              }
+            />
+          <div className="flex gap-3 md:gap-2">
             <Button variant="outline" onClick={() => setIsModalOpen(true)}>
               + New Elve
             </Button>
@@ -276,10 +288,10 @@ export default function ElvesTable() {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        </div>
+        </section>
         <div className="rounded-md border">
           <Table>
-            <TableHeader className="bg-gradient-to-b from-red-500 to-white">
+            <TableHeader className="backdrop:flex justify-center bg-gradient-to-b from-green-600 to-green-300">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
@@ -290,9 +302,9 @@ export default function ElvesTable() {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   ))}
                 </TableRow>

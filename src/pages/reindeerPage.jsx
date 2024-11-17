@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useState } from "react";
 import {
   useReindeers,
   useAddReindeer,
@@ -10,8 +9,7 @@ import SantaChristmasSpinner from "@/components/global/spinner";
 import ReindeersTable from "@/components/reindeer/ReindeerTable";
 import SleightCard from "@/components/reindeer/SleightCard";
 import OrderCard from "@/components/reindeer/OrderCard";
-import { SunIcon, Snowflake } from "lucide-react";
-import { Card } from "@/components/ui/card";
+import { WeatherCard } from "@/components/reindeer/WeatherCard";
 import ReindeerList from "@/components/reindeer/ReindeerList";
 
 export const ReindeerPage = () => {
@@ -41,14 +39,15 @@ export const ReindeerPage = () => {
     );
   }
 
-  if (isError) return <div>Error fetching elves</div>;
+  if (isError) return <div>Error fetching Reindeer</div>;
 
   return (
-    <div className="min-h-screen  text-green-900 p-4 sm:p-8 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto space-y-8 relative z-10">
+    <div className="min-h-screen w-auto text-green-900 sm:p-8 relative overflow-hidden">
+      <div className="min-w-7xl mx-auto space-y-8 relative z-10">
         <h1 className="text-4xl font-bold text-red-600 text-center mb-8">
           Santas Reindeer Dashboard
         </h1>
+        <WeatherCard />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <SleightCard data={data} />
           <ReindeerList
@@ -62,7 +61,7 @@ export const ReindeerPage = () => {
           <div className="w-3/5">
             <SleightCard data={data} />
           </div>
-          <div className="w-2/5">
+          <div className="md:w-2/5">
             <OrderCard data={data} />
           </div>
         </div>

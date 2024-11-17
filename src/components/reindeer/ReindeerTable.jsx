@@ -90,10 +90,13 @@ export default function ReindeersTable({
     },
     {
       id: "avatar",
+      header: ({ column }) => (
+        <p className="hidden md:block">Avatar</p>
+      ),
       cell: ({ row }) => {
         const initials = (row.getValue("name") || "").slice(0, 2).toUpperCase();
         return (
-          <div className="grid place-items-center">
+          <div className="hidden md:grid place-items-center">
             <Avatar>
               <AvatarImage
                 src={
@@ -113,9 +116,11 @@ export default function ReindeersTable({
     },
     {
       accessorKey: "id",
-      header: "Id",
+      header: ({ column }) => (
+        <p className="hidden md:block">Id</p>
+      ),
       cell: ({ row }) => (
-        <div className="text-center font-medium">{row.getValue("id")}</div>
+        <div className="text-center hidden md:block font-medium">{row.getValue("id")}</div>
       ),
     },
     {
@@ -135,9 +140,11 @@ export default function ReindeersTable({
     },
     {
       accessorKey: "type",
-      header: "Type",
+      header: ({ column }) => (
+        <p className="hidden md:block">Type</p>
+      ),
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("type")}</div>
+        <div className="capitalize hidden md:block">{row.getValue("type")}</div>
       ),
     },
     {
@@ -176,7 +183,7 @@ export default function ReindeersTable({
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
+              <Button variant="ghost" className="size-8 p-0">
                 <span className="sr-only">Open menu</span>
                 <MoreHorizontal />
               </Button>
@@ -333,19 +340,19 @@ export default function ReindeersTable({
   });
 
   return (
-    <div className="flex flex-col items-center gap-8 p-8">
+    <div className="flex flex-col items-center gap-4 py-8">
       <h1 className="text-3xl font-bold">Reindeer Management</h1>
-      <div className="w-full max-w-7xl">
-        <div className="mb-4 flex justify-between">
+      <div className="w-auto md:w-full">
+        <div className="mb-4 flex flex-col gap-2 md:flex-row md:justify-between">
           <Input
             placeholder="Filter names..."
             value={table.getColumn("name")?.getFilterValue() ?? ""}
             onChange={(event) =>
               table.getColumn("name")?.setFilterValue(event.target.value)
             }
-            className="max-w-sm"
+            className=""
           />
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 md:flex-row">
             <Button
               variant="outline"
               onClick={() =>
@@ -386,9 +393,9 @@ export default function ReindeersTable({
             </DropdownMenu>
           </div>
         </div>
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader className="bg-gradient-to-b from-green-400 to-white">
+        <div className="rounded-md border w-auto">
+          <Table className="w-full mx-auto">
+            <TableHeader className="bg-gradient-to-b from-green-600 to-green-400 whitespace-nowrap">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (

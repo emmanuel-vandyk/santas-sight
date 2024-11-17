@@ -2,6 +2,7 @@
   "name": "front-end",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://team3-ed8.github.io/front-end/",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -37,6 +38,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "dotenv": "^16.4.5",
+    "gh-pages": "^6.2.0",
     "json-server": "^1.0.0-beta.3",
     "lucide-react": "^0.454.0",
     "react": "^18.3.1",
