@@ -159,7 +159,7 @@ export default function ReindeerList({
                       ReindeerModal: true,
                     }))
                   }
-                  className="w-full md:w-1/2"
+                  className="w-full lg:w-1/2"
                 >
                   + New Reindeer
                 </Button>
