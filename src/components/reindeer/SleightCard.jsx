@@ -38,10 +38,7 @@ export default function SleightCard({ data }) {
         </CardHeader>
         <form onSubmit={saveOrderReinnders}>
           <CardContent className="flex flex-col items-center justify-center p-5 w-full gap-3 lg:flex-row">
-            <img
-              src={ChristmasSantaSleight}
-              className="object-cover w-56 md:w-56"
-            />
+            <img src={ChristmasSantaSleight} className="object-cover w-1/2" />
             <div className="flex flex-col w-1/2 gap-5">
               <h3 className="ml-5 text-center font-semibold">
                 Select Reindeers 🦌
