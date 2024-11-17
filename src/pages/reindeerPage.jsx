@@ -3,7 +3,6 @@ import {
   useReindeers,
   useAddReindeer,
   useUpdateReindeer,
-  useUpdateReindeers,
 } from "@/services/reindeer/reindeerapi";
 import SantaChristmasSpinner from "@/components/global/spinner";
 import ReindeersTable from "@/components/reindeer/ReindeerTable";
@@ -16,19 +15,13 @@ export const ReindeerPage = () => {
   const { data, isLoading, isError } = useReindeers();
   const addReindeerMutation = useAddReindeer();
   const updateReindeerMutation = useUpdateReindeer();
-  const updateReindeersMutation = useUpdateReindeers();
 
   const addNewReindeer = async (newReindeer) => {
     await addReindeerMutation.mutateAsync(newReindeer);
   };
 
   const updateReindeer = async (reindeerUpdated) => {
-    console.log(reindeerUpdated);
     await updateReindeerMutation.mutateAsync(reindeerUpdated);
-  };
-
-  const updateReindeers = async (reindeersUpdated) => {
-    await updateReindeersMutation.mutateAsync(reindeersUpdated);
   };
 
   if (isLoading) {
@@ -54,7 +47,6 @@ export const ReindeerPage = () => {
             reindeers={data}
             addNewReindeer={addNewReindeer}
             updateReindeer={updateReindeer}
-            updateReindeers={updateReindeers}
           />
         </div>
         {/* <div className="flex items-start gap-3">

@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import {
+  useUpdateCheckedReindeers,
+  useDeleteReindeer,
+} from "@/services/reindeer/reindeerapi";
 import { ReindeerModalInfo } from "@/components/reindeer/reindeerModalInfo";
 import ReindeerModal from "@/components/reindeer/ReindeerModal";
 import ReindeerSettings from "@/components/reindeer/ReindeerSettings";
@@ -7,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { Pencil } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -20,12 +24,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function ReindeerList({
   reindeers,
   addNewReindeer,
   updateReindeer,
-  updateReindeers,
 }) {
   const [editingReindeer, setEditingReindeer] = React.useState(null);
   const [selectedReindeer, setSelectedReindeer] = React.useState(null);
@@ -35,6 +49,34 @@ export default function ReindeerList({
     ReindeerModalInfo: false,
   });
   const [filter, setFilter] = useState("");
+  const updateCheckedReindeersMutation = useUpdateCheckedReindeers();
+  const deleteReindeerMutation = useDeleteReindeer();
+
+  const handleCheckedReindeers = (action) => {
+    const reindeersToUpdate = checkedReindeer.map((reindeerId) => {
+      const reindeer = reindeers.find(({ id }) => id === reindeerId);
+      if (action === "activate") {
+        console.log("activado");
+        return {
+          ...reindeer,
+          available: true,
+        };
+      } else if (action === "deactivate") {
+        return {
+          ...reindeer,
+          assignedToSanta: false,
+          position: 0,
+          available: false,
+        };
+      }
+      return reindeer;
+    });
+    updateCheckedReindeersMutation.mutate(reindeersToUpdate);
+  };
+
+  const deleteReindeer = async (reindeerDeleted) => {
+    await deleteReindeerMutation.mutateAsync(reindeerDeleted);
+  };
 
   return (
     <>
@@ -77,32 +119,9 @@ export default function ReindeerList({
                 <Select
                   disabled={!checkedReindeer.length > 0}
                   value={""}
-                  onValueChange={(selectedValue) => {
-                    const reindeersChecked = checkedReindeer.map((reindeerId) =>
-                      reindeers.find(({ id }) => id === reindeerId)
-                    );
-                    selectedValue = "deactivate"
-                      ? updateReindeers(
-                          reindeersChecked.map((reindeer) => {
-                            return {
-                              ...reindeer,
-                              assignedToSanta: false,
-                              position: 0,
-                              available: false,
-                            };
-                          })
-                        )
-                      : (selectedValue =
-                          "activate" &&
-                          updateReindeers(
-                            reindeersChecked.map((reindeer) => {
-                              return {
-                                ...reindeer,
-                                available: true,
-                              };
-                            })
-                          ));
-                  }}
+                  onValueChange={(selectedValue) =>
+                    handleCheckedReindeers(selectedValue)
+                  }
                 >
                   <SelectTrigger className="font-semibold">
                     <SelectValue placeholder="Settings" />
@@ -117,7 +136,7 @@ export default function ReindeerList({
                         Deactivate
                       </SelectItem>
                       <SelectItem
-                        value="acitvate"
+                        value="activate"
                         className="text-green-600 cursor-pointer"
                       >
                         Activate
@@ -199,6 +218,12 @@ export default function ReindeerList({
                       )}
                     </div>
                     <div className="flex justify-center">
+                      <ReindeerSettings
+                        reindeer={reindeer}
+                        setSelectedReindeer={setSelectedReindeer}
+                        setIsModalOpen={setIsModalOpen}
+                        updateReindeer={updateReindeer}
+                      />
                       <Button
                         onClick={() => {
                           setEditingReindeer(reindeer);
@@ -212,12 +237,37 @@ export default function ReindeerList({
                       >
                         <Pencil />
                       </Button>
-                      <ReindeerSettings
-                        reindeer={reindeer}
-                        setSelectedReindeer={setSelectedReindeer}
-                        setIsModalOpen={setIsModalOpen}
-                        updateReindeer={updateReindeer}
-                      />
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="ghost" size="icon">
+                            <Trash2 />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Are you absolutely sure you want to delete{" "}
+                              {reindeer.name}?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will
+                              permanently delete {reindeer.name} and remove it
+                              from Santa's Workshop.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              className="bg-red-600 hover:bg-red-700"
+                              onClick={() => {
+                                deleteReindeer(reindeer);
+                              }}
+                            >
+                              Continue
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </div>
                   </Card>
                   <Separator className="my-3" />

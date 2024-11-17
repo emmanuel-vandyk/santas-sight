@@ -85,9 +85,7 @@ export default function ElvesTable() {
     },
     {
       id: "avatar",
-      header: ({ column }) => (
-        <p className="hidden md:block">Avatar</p>
-    ),
+      header: ({ column }) => <p className="hidden md:block">Avatar</p>,
       cell: ({ row }) => {
         const initials = (row.getValue("name") || "").slice(0, 2).toUpperCase();
         return (
@@ -99,9 +97,7 @@ export default function ElvesTable() {
     },
     {
       accessorKey: "id",
-      header: ({ column }) => (
-        <p>ID</p>
-      ),
+      header: ({ column }) => <p>ID</p>,
       cell: ({ row }) => (
         <div className="text-center font-medium">{row.getValue("id")}</div>
       ),
@@ -124,33 +120,33 @@ export default function ElvesTable() {
     },
     {
       accessorKey: "height",
-      header: ({ column }) => (
-        <p className="hidden md:block">Height</p>
-      ),
+      header: ({ column }) => <p className="hidden md:block">Height</p>,
       cell: ({ row }) => (
-        <div className="hidden md:block capitalize">{row.getValue("height")}</div>
+        <div className="hidden md:block capitalize">
+          {row.getValue("height")}
+        </div>
       ),
     },
     {
       accessorKey: "age",
-      header: ({ column }) => (
-        <p className="hidden md:block">Age</p>
-      ),
+      header: ({ column }) => <p className="hidden md:block">Age</p>,
       cell: ({ row }) => (
-        <div className="hidden md:block text-center font-medium">{row.getValue("age")}</div>
+        <div className="hidden md:block text-center font-medium">
+          {row.getValue("age")}
+        </div>
       ),
     },
     {
       accessorKey: "address",
-      header: ({ column }) => (
-        <p className="hidden md:block">Address</p>
-      ),
+      header: ({ column }) => <p className="hidden md:block">Address</p>,
       cell: ({ row }) => (
-        <div className="hidden md:block capitalize">{row.getValue("address")}</div>
+        <div className="hidden md:block capitalize">
+          {row.getValue("address")}
+        </div>
       ),
     },
     {
-      accessorKey: "email",
+      accessorKey: "mail",
       header: ({ column }) => (
         <Button
           variant="ghost"
@@ -162,7 +158,7 @@ export default function ElvesTable() {
         </Button>
       ),
       cell: ({ row }) => (
-        <div className="lowercase hidden md:block">{row.getValue("email")}</div>
+        <div className="lowercase hidden md:block">{row.getValue("mail")}</div>
       ),
     },
     {
@@ -243,13 +239,13 @@ export default function ElvesTable() {
       <h1 className="text-3xl font-bold">Elves Management</h1>
       <div className="w-full max-w-7xl">
         <section className="mb-2 md:mb-4 flex flex-col-reverse gap-2 md:flex-row justify-between">
-            <Input
-              placeholder="Filter names..."
-              value={table.getColumn("name")?.getFilterValue() ?? ""}
-              onChange={(event) =>
-                table.getColumn("name")?.setFilterValue(event.target.value)
-              }
-            />
+          <Input
+            placeholder="Filter names..."
+            value={table.getColumn("name")?.getFilterValue() ?? ""}
+            onChange={(event) =>
+              table.getColumn("name")?.setFilterValue(event.target.value)
+            }
+          />
           <div className="flex gap-3 md:gap-2">
             <Button variant="outline" onClick={() => setIsModalOpen(true)}>
               + New Elve
@@ -302,9 +298,9 @@ export default function ElvesTable() {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   ))}
                 </TableRow>

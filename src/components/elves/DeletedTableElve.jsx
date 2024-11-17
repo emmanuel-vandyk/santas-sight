@@ -35,34 +35,36 @@ function DeletedTableElve({ deletedElves, onRestore }) {
     },
     {
       accessorKey: "height",
-      header: ({ column }) => (
-        <p className="hidden md:block">Height</p>
-      ),
+      header: ({ column }) => <p className="hidden md:block">Height</p>,
       cell: ({ row }) => (
-        <div className="capitalize hidden md:block">{row.getValue("height")}</div>
+        <div className="capitalize hidden md:block">
+          {row.getValue("height")}
+        </div>
       ),
     },
     {
       accessorKey: "age",
-      header: ({ column }) => (
-        <p className="hidden md:block">Age</p>
-      ),
+      header: ({ column }) => <p className="hidden md:block">Age</p>,
       cell: ({ row }) => {
         const formatted = Number(row.getValue("age"));
-        return <div className="hidden md:block text-center font-medium">{formatted}</div>;
+        return (
+          <div className="hidden md:block text-center font-medium">
+            {formatted}
+          </div>
+        );
       },
     },
     {
       accessorKey: "address",
-      header: ({ column }) => (
-        <p className="hidden md:block">Address</p>
-      ),
+      header: ({ column }) => <p className="hidden md:block">Address</p>,
       cell: ({ row }) => (
-        <div className="hidden md:block capitalize">{row.getValue("address")}</div>
+        <div className="hidden md:block capitalize">
+          {row.getValue("address")}
+        </div>
       ),
     },
     {
-      accessorKey: "email",
+      accessorKey: "mail",
       header: ({ column }) => {
         return (
           <Button
@@ -76,7 +78,7 @@ function DeletedTableElve({ deletedElves, onRestore }) {
         );
       },
       cell: ({ row }) => (
-        <div className="hidden md:block lowercase">{row.getValue("email")}</div>
+        <div className="hidden md:block lowercase">{row.getValue("mail")}</div>
       ),
     },
     {

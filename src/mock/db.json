@@ -6,7 +6,7 @@
       "height": "21",
       "age": 21,
       "address": "123 Rivendell St, Middle Earth",
-      "email": "arwen@example.com",
+      "mail": "arwen@example.com",
       "isDeleted": false
     },
     {
@@ -15,7 +15,7 @@
       "height": "18",
       "age": 35,
       "address": "456 Iron Hills Rd, Middle Earth",
-      "email": "gimli@example.com",
+      "mail": "gimli@example.com",
       "isDeleted": false
     },
     {
@@ -24,7 +24,7 @@
       "height": "27",
       "age": 45,
       "address": "789 Rivendell St, Middle Earth",
-      "email": "elrond@example.com",
+      "mail": "elrond@example.com",
       "isDeleted": false
     },
     {
@@ -33,7 +33,7 @@
       "height": "24",
       "age": 32,
       "address": "321 Gondor Way, Middle Earth",
-      "email": "boromir@example.com"
+      "mail": "boromir@example.com"
     },
     {
       "id": "5",
@@ -41,7 +41,7 @@
       "height": "23",
       "age": 29,
       "address": "654 Gondor Way, Middle Earth",
-      "email": "faramir@example.com"
+      "mail": "faramir@example.com"
     },
     {
       "id": "6",
@@ -49,7 +49,7 @@
       "height": "15",
       "age": 33,
       "address": "987 Shire Ln, Middle Earth",
-      "email": "frodo@example.com",
+      "mail": "frodo@example.com",
       "isDeleted": false
     },
     {
@@ -58,7 +58,7 @@
       "height": "34",
       "age": 23,
       "address": "Panama",
-      "email": "r@r.com",
+      "mail": "r@r.com",
       "isDeleted": false
     },
     {
@@ -67,7 +67,7 @@
       "height": "34",
       "age": 32,
       "address": "Mexico, Chapas",
-      "email": "luis@luis.com",
+      "mail": "luis@luis.com",
       "isDeleted": false
     },
     {
@@ -76,8 +76,53 @@
       "height": "ddd",
       "age": 32,
       "address": "dasdas",
-      "email": "dd@dd.com",
+      "mail": "dd@dd.com",
       "isDeleted": false
+    },
+    {
+      "id": "b3a1",
+      "name": "Maxi Alex",
+      "height": "10",
+      "age": "10",
+      "address": "10",
+      "mail": "email@email.com",
+      "isDeleted": false
+    },
+    {
+      "id": "70",
+      "name": "Roberto A",
+      "height": "10",
+      "age": "10",
+      "address": "10",
+      "mail": "email@e.com",
+      "isDeleted": false
+    },
+    {
+      "id": "17",
+      "name": "Shakira Pique",
+      "height": "10",
+      "age": "10",
+      "address": "10",
+      "mail": "shakira@email.com",
+      "isDeleted": false
+    },
+    {
+      "id": 65,
+      "name": "Alex Coca",
+      "height": "10",
+      "age": "10",
+      "address": "10",
+      "mail": "email@e.com",
+      "isDeleted": false
+    },
+    {
+      "id": "54",
+      "name": "Carlos Roberto",
+      "height": "10",
+      "age": "10",
+      "address": "maxi",
+      "mail": "maxi@gmail.com",
+      "isDeleted": true
     }
   ],
   "allReindeers": [
@@ -119,7 +164,7 @@
         }
       ],
       "type": "master",
-      "available": true,
+      "available": false,
       "assignedToSanta": false,
       "position": 0
     },
@@ -371,7 +416,7 @@
         }
       ],
       "type": "junior",
-      "available": false,
+      "available": true,
       "assignedToSanta": false,
       "position": 0
     },
@@ -670,48 +715,6 @@
       "position": 0
     },
     {
-      "id": "15",
-      "name": "Fanta",
-      "skills": [
-        {
-          "skill": "Speed",
-          "value": 5
-        },
-        {
-          "skill": "Stamina",
-          "value": 6
-        },
-        {
-          "skill": "Maneuverability",
-          "value": 6
-        },
-        {
-          "skill": "Night Vision",
-          "value": 5
-        },
-        {
-          "skill": "Strength",
-          "value": 6
-        },
-        {
-          "skill": "Climate Adaptability",
-          "value": 7
-        },
-        {
-          "skill": "Teamwork",
-          "value": 9
-        },
-        {
-          "skill": "Navigation Intelligence",
-          "value": 7
-        }
-      ],
-      "type": "trainee",
-      "available": true,
-      "assignedToSanta": false,
-      "position": 0
-    },
-    {
       "id": "16",
       "name": "RedCola",
       "skills": [
@@ -876,48 +879,6 @@
       ],
       "type": "trainee",
       "available": true,
-      "assignedToSanta": false,
-      "position": 0
-    },
-    {
-      "id": "20",
-      "name": "Max",
-      "skills": [
-        {
-          "skill": "Speed",
-          "value": 5
-        },
-        {
-          "skill": "Stamina",
-          "value": 6
-        },
-        {
-          "skill": "Maneuverability",
-          "value": 6
-        },
-        {
-          "skill": "Night Vision",
-          "value": 5
-        },
-        {
-          "skill": "Strength",
-          "value": 6
-        },
-        {
-          "skill": "Climate Adaptability",
-          "value": 7
-        },
-        {
-          "skill": "Teamwork",
-          "value": 9
-        },
-        {
-          "skill": "Navigation Intelligence",
-          "value": 7
-        }
-      ],
-      "type": "trainee",
-      "available": false,
       "assignedToSanta": false,
       "position": 0
     },
