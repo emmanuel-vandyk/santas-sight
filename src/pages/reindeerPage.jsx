@@ -1,7 +1,9 @@
+import * as React from "react";
 import { useState } from "react";
 import {
   useReindeers,
   useAddReindeer,
+  useUpdateReindeer,
   useUpdateReindeers,
 } from "@/services/reindeer/reindeerapi";
 import SantaChristmasSpinner from "@/components/global/spinner";
@@ -10,18 +12,25 @@ import SleightCard from "@/components/reindeer/SleightCard";
 import OrderCard from "@/components/reindeer/OrderCard";
 import { SunIcon, Snowflake } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import ReindeerList from "@/components/reindeer/ReindeerList";
 
 export const ReindeerPage = () => {
   const { data, isLoading, isError } = useReindeers();
   const addReindeerMutation = useAddReindeer();
-  const updateReindeerMutation = useUpdateReindeers();
+  const updateReindeerMutation = useUpdateReindeer();
+  const updateReindeersMutation = useUpdateReindeers();
 
   const addNewReindeer = async (newReindeer) => {
     await addReindeerMutation.mutateAsync(newReindeer);
   };
 
   const updateReindeer = async (reindeerUpdated) => {
+    console.log(reindeerUpdated);
     await updateReindeerMutation.mutateAsync(reindeerUpdated);
+  };
+
+  const updateReindeers = async (reindeersUpdated) => {
+    await updateReindeersMutation.mutateAsync(reindeersUpdated);
   };
 
   if (isLoading) {
@@ -40,17 +49,16 @@ export const ReindeerPage = () => {
         <h1 className="text-4xl font-bold text-red-600 text-center mb-8">
           Santas Reindeer Dashboard
         </h1>
-        <Card className="flex flex-col gap-5 w-7/8 bg-gray-500 p-4 text-white h-32">
-          <section className="gap-3 font-semibold flex">
-            <Snowflake />
-            <h2 className="whitespace-nowrap">North Pole Weather</h2>
-          </section>
-          <section className="flex gap-2">
-            <SunIcon />
-            <h2>0°C</h2>
-          </section>
-        </Card>
-        <div className="flex items-start gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <SleightCard data={data} />
+          <ReindeerList
+            reindeers={data}
+            addNewReindeer={addNewReindeer}
+            updateReindeer={updateReindeer}
+            updateReindeers={updateReindeers}
+          />
+        </div>
+        {/* <div className="flex items-start gap-3">
           <div className="w-3/5">
             <SleightCard data={data} />
           </div>
@@ -62,7 +70,7 @@ export const ReindeerPage = () => {
           data={data}
           addNewReindeer={addNewReindeer}
           updateReindeer={updateReindeer}
-        />
+        /> */}
       </div>
     </div>
   );

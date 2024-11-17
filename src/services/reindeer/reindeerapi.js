@@ -28,6 +28,21 @@ export const useAddReindeer = () => {
 };
 
 // update reindeer
+export const useUpdateReindeer = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (updatedreindeer) =>
+      axios.put(
+        `${MOCKURL}/allReindeers/${updatedreindeer.id}`,
+        updatedreindeer
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["reindeers"] });
+    },
+  });
+};
+
+// update  reindeers
 export const useUpdateReindeers = () => {
   const queryClient = useQueryClient();
   return useMutation({
