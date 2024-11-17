@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Check } from "lucide-react";
-import ChristmasSantaSleight from "@/assets/santasleigh.webp";
+import { ChristmasSantaSleight } from "@/components/global/iconsChristmas";
 import ReindeerComboBox from "@/components/reindeer/ReindeerComboBox";
 
 export default function SleightCard({ data }) {
@@ -38,7 +38,7 @@ export default function SleightCard({ data }) {
         </CardHeader>
         <form onSubmit={saveOrderReinnders}>
           <CardContent className="flex flex-col items-center justify-center p-5 w-full gap-3 lg:flex-row">
-            <img src={ChristmasSantaSleight} className="object-cover w-1/2" />
+            <ChristmasSantaSleight />
             <div className="flex flex-col w-1/2 gap-5">
               <h3 className="ml-5 text-center font-semibold">
                 Select Reindeers 🦌
