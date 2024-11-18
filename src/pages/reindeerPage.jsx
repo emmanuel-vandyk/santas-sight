@@ -1,18 +1,28 @@
 import * as React from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   useReindeers,
   useAddReindeer,
   useUpdateReindeer,
 } from "@/services/reindeer/reindeerapi";
 import SantaChristmasSpinner from "@/components/global/spinner";
-import ReindeersTable from "@/components/reindeer/ReindeerTable";
 import SleightCard from "@/components/reindeer/SleightCard";
-import OrderCard from "@/components/reindeer/OrderCard";
-// import { WeatherCard } from "@/components/reindeer/WeatherCard";
+import { WeatherCard } from "@/components/reindeer/WeatherCard";
 import ReindeerList from "@/components/reindeer/ReindeerList";
+import OrganizationList from "@/components/reindeer/OrganizationList ";
+import { useReindeersOrganizations } from "../services/reindeer/reindeerapi";
 
 export const ReindeerPage = () => {
-  const { data, isLoading, isError } = useReindeers();
+  const {
+    data: reindeers,
+    isLoading: isLoadingReindeers,
+    isError: isErrorReindeers,
+  } = useReindeers();
+  const {
+    data: reindeersOrganizations,
+    isLoading: isLoadingOrganizations,
+    isError: isErrorOrganizations,
+  } = useReindeersOrganizations();
   const addReindeerMutation = useAddReindeer();
   const updateReindeerMutation = useUpdateReindeer();
 
@@ -24,7 +34,7 @@ export const ReindeerPage = () => {
     await updateReindeerMutation.mutateAsync(reindeerUpdated);
   };
 
-  if (isLoading) {
+  if (isLoadingReindeers || isLoadingOrganizations) {
     return (
       <div className="grid place-items-center h-full">
         <SantaChristmasSpinner />
@@ -32,7 +42,8 @@ export const ReindeerPage = () => {
     );
   }
 
-  if (isError) return <div>Error fetching Reindeer</div>;
+  if (isErrorReindeers || isErrorOrganizations)
+    return <div>Error fetching</div>;
 
   return (
     <div className="min-h-screen w-auto text-green-900 sm:p-8 relative overflow-hidden">
@@ -42,26 +53,24 @@ export const ReindeerPage = () => {
         </h1>
         {/* <WeatherCard /> */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <SleightCard data={data} />
-          <ReindeerList
-            reindeers={data}
-            addNewReindeer={addNewReindeer}
-            updateReindeer={updateReindeer}
-          />
+          <SleightCard data={reindeers} />
+          <Tabs defaultValue="organization">
+            <TabsList className="grid grid-cols-2 w-full">
+              <TabsTrigger value="organization">Organization List</TabsTrigger>
+              <TabsTrigger value="reindeers">Reindeers List</TabsTrigger>
+            </TabsList>
+            <TabsContent value="organization">
+              <OrganizationList data={reindeersOrganizations} />
+            </TabsContent>
+            <TabsContent value="reindeers">
+              <ReindeerList
+                data={reindeers}
+                addNewReindeer={addNewReindeer}
+                updateReindeer={updateReindeer}
+              />
+            </TabsContent>
+          </Tabs>
         </div>
-        {/* <div className="flex items-start gap-3">
-          <div className="w-3/5">
-            <SleightCard data={data} />
-          </div>
-          <div className="md:w-2/5">
-            <OrderCard data={data} />
-          </div>
-        </div>
-        <ReindeersTable
-          data={data}
-          addNewReindeer={addNewReindeer}
-          updateReindeer={updateReindeer}
-        /> */}
       </div>
     </div>
   );
