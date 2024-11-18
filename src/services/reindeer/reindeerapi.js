@@ -10,7 +10,7 @@ export const useReindeers = () => {
   return useQuery({
     queryKey: ["reindeers"],
     queryFn: async () => {
-      const { data } = await axios.get(`${MOCKURL}/allReindeers`);
+      const { data } = await axios.get(`${MOCKURL}/reindeers`);
       return data;
     },
   });
@@ -21,7 +21,7 @@ export const useAddReindeer = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (newReindeer) =>
-      axios.post(`${MOCKURL}/allReindeers`, newReindeer),
+      axios.post(`${MOCKURL}/reindeers`, newReindeer),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reindeers"] });
     },
@@ -33,10 +33,7 @@ export const useUpdateReindeer = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (updatedreindeer) =>
-      axios.put(
-        `${MOCKURL}/allReindeers/${updatedreindeer.id}`,
-        updatedreindeer
-      ),
+      axios.put(`${MOCKURL}/reindeers/${updatedreindeer.id}`, updatedreindeer),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reindeers"] });
     },
@@ -50,7 +47,7 @@ export const useUpdateCheckedReindeers = () => {
     mutationFn: (updatedCheckedReindeers) =>
       axios.all(
         updatedCheckedReindeers.map((reindeer) =>
-          axios.put(`${MOCKURL}/allReindeers/${reindeer.id}`, reindeer)
+          axios.put(`${MOCKURL}/reindeers/${reindeer.id}`, reindeer)
         )
       ),
     onSuccess: () => {
@@ -65,11 +62,22 @@ export const useDeleteReindeer = () => {
   return useMutation({
     mutationFn: (deletedReindeer) =>
       axios.delete(
-        `${MOCKURL}/allReindeers/${deletedReindeer.id}`,
+        `${MOCKURL}/reindeers/${deletedReindeer.id}`,
         deletedReindeer
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reindeers"] });
+    },
+  });
+};
+
+// fetch all reindeers organizations
+export const useReindeersOrganizations = () => {
+  return useQuery({
+    queryKey: ["organizations"],
+    queryFn: async () => {
+      const { data } = await axios.get(`${MOCKURL}/reindeerOrganizations`);
+      return data;
     },
   });
 };

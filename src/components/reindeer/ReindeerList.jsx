@@ -3,7 +3,7 @@ import {
   useUpdateCheckedReindeers,
   useDeleteReindeer,
 } from "@/services/reindeer/reindeerapi";
-import { ReindeerModalInfo } from "@/components/reindeer/reindeerModalInfo";
+import { ReindeerModalInfo } from "@/components/reindeer/ReindeerModalInfo";
 import ReindeerModal from "@/components/reindeer/ReindeerModal";
 import ReindeerSettings from "@/components/reindeer/ReindeerSettings";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, CirclePlus } from "lucide-react";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -37,7 +37,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 export default function ReindeerList({
-  reindeers,
+  data: reindeers,
   addNewReindeer,
   updateReindeer,
 }) {
@@ -93,7 +93,7 @@ export default function ReindeerList({
           <div className="flex flex-col gap-2">
             <Input
               type="text"
-              placeholder="Filter names..."
+              placeholder="Filter Reindeer names..."
               value={filter}
               onChange={(e) => {
                 setFilter(e.target.value);
@@ -161,7 +161,7 @@ export default function ReindeerList({
                   }
                   className="w-full lg:w-1/2"
                 >
-                  + New Reindeer
+                  <CirclePlus /> New
                 </Button>
               </div>
             </div>
