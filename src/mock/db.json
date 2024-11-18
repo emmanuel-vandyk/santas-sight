@@ -292,7 +292,7 @@
       "position": 0
     },
     {
-      "id": "7",
+      "id": "6",
       "name": "Cupid",
       "skills": [
         {
@@ -345,19 +345,21 @@
         { "position": 4, "reindeer": "4" },
         { "position": 5, "reindeer": "5" },
         { "position": 6, "reindeer": "6" }
-      ]
+      ],
+      "available": false
     },
     {
       "id": "2",
       "name": "Speedy Team",
       "positions": [
-        { "position": 1, "reindeer": "1" },
-        { "position": 2, "reindeer": "2" },
-        { "position": 3, "reindeer": "3" },
-        { "position": 4, "reindeer": "4" },
+        { "position": 1, "reindeer": "2" },
+        { "position": 2, "reindeer": "1" },
+        { "position": 3, "reindeer": "4" },
+        { "position": 4, "reindeer": "6" },
         { "position": 5, "reindeer": "5" },
-        { "position": 6, "reindeer": "6" }
-      ]
+        { "position": 6, "reindeer": "3" }
+      ],
+      "available": true
     }
   ]
 }

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
+import SleightModal from "@/components/reindeer/SleightModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { CirclePlus } from "lucide-react";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -17,10 +17,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Pencil, CirclePlus, Trash2, Eye, EyeOff } from "lucide-react";
 
-export default function OrganizationList({ data: reindeersOrganizations }) {
+export default function OrganizationList({
+  data: { organizationsData, reindeersData },
+}) {
   const [checkedReindeer, setChecketReindeer] = React.useState([]);
+  const [selectedOrganization, setSelectedOrganization] = React.useState(null);
   const [filter, setFilter] = useState("");
+  const [modalState, setModalState] = React.useState({
+    isOpen: false,
+    organizationData: null,
+  });
 
   return (
     <>
@@ -47,14 +66,13 @@ export default function OrganizationList({ data: reindeersOrganizations }) {
                 >
                   <Checkbox
                     checked={
-                      checkedReindeer.length ===
-                        reindeersOrganizations.length &&
-                      reindeersOrganizations.length > 0
+                      checkedReindeer.length === organizationsData.length &&
+                      organizationsData.length > 0
                     }
                     onCheckedChange={(checked) => {
                       checked
                         ? setChecketReindeer(
-                            reindeersOrganizations.map(
+                            organizationsData.map(
                               (organization) => organization.id
                             )
                           )
@@ -85,7 +103,13 @@ export default function OrganizationList({ data: reindeersOrganizations }) {
                 </Select>
               </div>
               <div className="flex justify-end w-full">
-                <Button variant="outline" className="w-full lg:w-1/2">
+                <Button
+                  variant="outline"
+                  className="w-full lg:w-1/2"
+                  onClick={() =>
+                    setModalState({ isOpen: true, organizationData: null })
+                  }
+                >
                   <CirclePlus />
                   New
                 </Button>
@@ -93,7 +117,7 @@ export default function OrganizationList({ data: reindeersOrganizations }) {
             </div>
           </div>
           <ScrollArea className="h-72 rounded-md border p-1 box-border">
-            {reindeersOrganizations
+            {organizationsData
               .filter((organization) =>
                 organization.name.toLowerCase().includes(filter.toLowerCase())
               )
@@ -113,6 +137,67 @@ export default function OrganizationList({ data: reindeersOrganizations }) {
                       />
                       <CardTitle>{organization.name}</CardTitle>
                     </div>
+                    <div className=" flex justify-center capitalize">
+                      {organization.available ? (
+                        <Badge variant="outline" className="bg-green-300">
+                          Available
+                        </Badge>
+                      ) : (
+                        <Badge variant="outline" className="bg-orange-300">
+                          Selected
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="flex justify-center">
+                      {organization.available ? (
+                        <Button variant="ghost" size="icon">
+                          <Eye />
+                        </Button>
+                      ) : (
+                        <Button variant="ghost" size="icon">
+                          <EyeOff />
+                        </Button>
+                      )}
+
+                      <Button
+                        onClick={() => {
+                          setModalState({
+                            isOpen: true,
+                            organizationData: organization,
+                          });
+                        }}
+                        variant="ghost"
+                        size="icon"
+                      >
+                        <Pencil />
+                      </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="ghost" size="icon">
+                            <Trash2 />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Are you absolutely sure you want to delete{" "}
+                              {organization.name}?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will
+                              permanently delete {organization.name} and remove
+                              it from Santa's Workshop.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction className="bg-red-600 hover:bg-red-700">
+                              Continue
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
                   </Card>
                   <Separator className="my-3" />
                 </div>
@@ -120,6 +205,14 @@ export default function OrganizationList({ data: reindeersOrganizations }) {
           </ScrollArea>
         </CardContent>
       </Card>
+      <SleightModal
+        isOpen={modalState.isOpen}
+        isClose={() => {
+          setModalState({ isOpen: false, organizationData: null });
+        }}
+        onSubmit={console.log("Enviado")}
+        data={{ organizationData: modalState.organizationData, reindeersData }}
+      />
     </>
   );
 }

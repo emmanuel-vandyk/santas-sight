@@ -14,12 +14,12 @@ import { useReindeersOrganizations } from "../services/reindeer/reindeerapi";
 
 export const ReindeerPage = () => {
   const {
-    data: reindeers,
+    data: reindeersData,
     isLoading: isLoadingReindeers,
     isError: isErrorReindeers,
   } = useReindeers();
   const {
-    data: reindeersOrganizations,
+    data: organizationsData,
     isLoading: isLoadingOrganizations,
     isError: isErrorOrganizations,
   } = useReindeersOrganizations();
@@ -53,18 +53,18 @@ export const ReindeerPage = () => {
         </h1>
         <WeatherCard />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <SleightCard data={reindeers} />
+          <SleightCard data={{ organizationsData, reindeersData }} />
           <Tabs defaultValue="organization">
             <TabsList className="grid grid-cols-2 w-full">
               <TabsTrigger value="organization">Organization List</TabsTrigger>
               <TabsTrigger value="reindeers">Reindeers List</TabsTrigger>
             </TabsList>
             <TabsContent value="organization">
-              <OrganizationList data={reindeersOrganizations} />
+              <OrganizationList data={{ organizationsData, reindeersData }} />
             </TabsContent>
             <TabsContent value="reindeers">
               <ReindeerList
-                data={reindeers}
+                data={reindeersData}
                 addNewReindeer={addNewReindeer}
                 updateReindeer={updateReindeer}
               />

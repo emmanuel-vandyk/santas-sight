@@ -21,7 +21,7 @@ export default function ReindeerComboBox(props) {
   const { reindeers, value: defaultValue } = props;
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(
-    defaultValue > 0 && defaultValue < 7 ? defaultValue : ""
+    defaultValue > 0 ? defaultValue : ""
   );
 
   return (
@@ -31,7 +31,7 @@ export default function ReindeerComboBox(props) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className=" justify-between"
+          className=" justify-between bg-transparent"
         >
           {value ? (
             reindeers.find((reindeer) => reindeer.id === value)?.name || (

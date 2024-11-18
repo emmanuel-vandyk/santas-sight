@@ -11,19 +11,9 @@ import { Check } from "lucide-react";
 import { ChristmasSantaSleight } from "@/components/global/iconsChristmas";
 import ReindeerComboBox from "@/components/reindeer/ReindeerComboBox";
 
-export default function SleightCard({ data }) {
-  const listReindeers = data
-    .filter((reindeer) => reindeer.available)
-    .map((reindeer) => ({
-      id: reindeer.id,
-      name: reindeer.name,
-      position: reindeer.position,
-    }));
-
-  const saveOrderReinnders = (event) => {
-    event.preventDefault();
-  };
-
+export default function SleightCard({
+  data: { organizationsData, reindeersData },
+}) {
   return (
     <Card>
       <div className="h-full flex flex-col justify-evenly box-border">
@@ -36,15 +26,12 @@ export default function SleightCard({ data }) {
             easy selection
           </CardDescription>
         </CardHeader>
-        <form onSubmit={saveOrderReinnders}>
-          <CardContent className="flex flex-col items-center justify-center p-5 w-full gap-3 lg:flex-row">
-            <ChristmasSantaSleight />
-            <div className="flex flex-col w-1/2 gap-5">
-              <h3 className="ml-5 text-center font-semibold">
-                Select Reindeers 🦌
-              </h3>
-              <div className="grid grid-cols-3 gap-3 place-items-center">
-                {Array.from({ length: 6 }).map((_, index) => (
+        <CardContent className="flex flex-col items-center justify-center p-5 w-full gap-3 lg:flex-row">
+          <ChristmasSantaSleight />
+          <div className="flex flex-col w-1/2 gap-5">
+            <h3 className="ml-5 text-center font-semibold">Reindeers 🦌</h3>
+            <div className="grid grid-cols-3 gap-3 place-items-center">
+              {/* {Array.from({ length: 6 }).map((_, index) => (
                   <ReindeerComboBox
                     key={index + 1}
                     reindeers={listReindeers}
@@ -54,19 +41,18 @@ export default function SleightCard({ data }) {
                       )?.id ?? 0
                     }
                   />
-                ))}
-              </div>
+                ))} */}
             </div>
-          </CardContent>
-          <CardFooter>
-            <Button
-              type="submit"
-              className="w-full bg-green-600 hover:bg-green-700"
-            >
-              <Check /> Mark all as read
-            </Button>
-          </CardFooter>
-        </form>
+          </div>
+        </CardContent>
+        <CardFooter>
+          <Button
+            type="submit"
+            className="w-full bg-green-600 hover:bg-green-700"
+          >
+            <Check /> Mark all as read
+          </Button>
+        </CardFooter>
       </div>
     </Card>
   );
