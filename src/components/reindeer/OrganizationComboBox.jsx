@@ -17,7 +17,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export default function OrganizationComboBox({ data, setPreviewOrganization }) {
+export default function OrganizationComboBox({
+  data,
+  setVisualizerOrganization,
+}) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 
@@ -52,7 +55,10 @@ export default function OrganizationComboBox({ data, setPreviewOrganization }) {
                   value={organization.name}
                   onSelect={() => {
                     setValue(organization.id === value ? "" : organization.id);
-                    setPreviewOrganization(organization);
+                    setVisualizerOrganization((prevState) => ({
+                      ...prevState,
+                      previewOrganization: organization,
+                    }));
                     setOpen(false);
                   }}
                 >

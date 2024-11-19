@@ -11,7 +11,10 @@ import SleightModal from "@/components/reindeer/SleightModal";
 import { WeatherCard } from "@/components/reindeer/WeatherCard";
 import ReindeerList from "@/components/reindeer/ReindeerList";
 import OrganizationList from "@/components/reindeer/OrganizationList ";
-import { useReindeersOrganizations } from "../services/reindeer/reindeerapi";
+import {
+  useReindeersOrganizations,
+  useUpdateReindeersOrganization,
+} from "../services/reindeer/reindeerapi";
 
 export const ReindeerPage = () => {
   const {
@@ -26,12 +29,16 @@ export const ReindeerPage = () => {
   } = useReindeersOrganizations();
   const addReindeerMutation = useAddReindeer();
   const updateReindeerMutation = useUpdateReindeer();
+  const updateReindeersOrganizationMutation = useUpdateReindeersOrganization();
   const [modalState, setModalState] = React.useState({
     isOpen: false,
     organizationData: null,
   });
 
-  const [previewOrganization, setPreviewOrganization] = React.useState(null);
+  const [visualizerOrganization, setVisualizerOrganization] = React.useState({
+    previewOrganization: null,
+    selectedOrganization: null,
+  });
 
   const addNewReindeer = async (newReindeer) => {
     await addReindeerMutation.mutateAsync(newReindeer);
@@ -39,6 +46,10 @@ export const ReindeerPage = () => {
 
   const updateReindeer = async (reindeerUpdated) => {
     await updateReindeerMutation.mutateAsync(reindeerUpdated);
+  };
+
+  const updateReindeersOrganization = async (organizationUpdated) => {
+    await updateReindeersOrganizationMutation.mutateAsync(organizationUpdated);
   };
 
   if (isLoadingReindeers || isLoadingOrganizations) {
@@ -63,11 +74,12 @@ export const ReindeerPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <SleightCard
               data={{ organizationsData, reindeersData }}
-              previewOrganizationState={{
-                previewOrganization,
-                setPreviewOrganization,
+              visualizerOrganizationState={{
+                visualizerOrganization,
+                setVisualizerOrganization,
               }}
               setModalState={setModalState}
+              updateReindeersOrganization={updateReindeersOrganization}
             />
             <Tabs defaultValue="organization">
               <TabsList className="grid grid-cols-2 w-full">
@@ -77,9 +89,9 @@ export const ReindeerPage = () => {
               <TabsContent value="organization">
                 <OrganizationList
                   data={{ organizationsData, reindeersData }}
-                  previewOrganizationState={{
-                    previewOrganization,
-                    setPreviewOrganization,
+                  visualizerOrganizationState={{
+                    visualizerOrganization,
+                    setVisualizerOrganization,
                   }}
                   setModalState={setModalState}
                 />

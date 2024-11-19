@@ -14,16 +14,23 @@ import OrganizationComboBox from "@/components/reindeer/OrganizationComboBox";
 
 export default function SleightCard({
   data: { organizationsData, reindeersData },
-  previewOrganizationState: { previewOrganization, setPreviewOrganization },
+  visualizerOrganizationState: {
+    visualizerOrganization: { previewOrganization, selectedOrganization },
+    setVisualizerOrganization,
+  },
   setModalState,
+  updateReindeersOrganization,
 }) {
   // Select the reindeer organization with the isSelected property set to true.
   // Important: If none is found, return undefined.
   previewOrganization != null &&
     previewOrganization?.isSelected == undefined &&
-    setPreviewOrganization(
-      organizationsData.find((organization) => organization.isSelected == true)
-    );
+    setVisualizerOrganization((prevState) => ({
+      ...prevState,
+      previewOrganization: organizationsData.find(
+        (organization) => organization.isSelected == true
+      ),
+    }));
 
   return (
     <Card>
@@ -59,11 +66,24 @@ export default function SleightCard({
               </div>
             </CardContent>
             <CardFooter>
-              {!previewOrganization.isSelected && (
-                <Button className="w-full bg-green-600 hover:bg-green-700">
-                  <Check /> Select Organization
-                </Button>
-              )}
+              <Button
+                className={`${
+                  previewOrganization.isSelected
+                    ? "bg-orange-400 hover:bg-orange-500"
+                    : "bg-green-600 hover:bg-green-700"
+                } w-full`}
+                onClick={() => {
+                  updateReindeersOrganization({
+                    ...previewOrganization,
+                    isSelected: !previewOrganization.isSelected,
+                  });
+                }}
+              >
+                <Check />{" "}
+                {previewOrganization.isSelected
+                  ? "Unselect Organization"
+                  : "Select Organization"}
+              </Button>
             </CardFooter>
           </>
         ) : (
@@ -91,7 +111,7 @@ export default function SleightCard({
               {organizationsData.length > 0 && (
                 <OrganizationComboBox
                   data={organizationsData}
-                  setPreviewOrganization={setPreviewOrganization}
+                  setVisualizerOrganization={setVisualizerOrganization}
                 />
               )}
             </CardFooter>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,11 +31,14 @@ import { Pencil, CirclePlus, Trash2, Eye, EyeOff } from "lucide-react";
 
 export default function OrganizationList({
   data: { organizationsData, reindeersData },
-  previewOrganizationState: { previewOrganization, setPreviewOrganization },
+  visualizerOrganizationState: {
+    visualizerOrganization: { previewOrganization, selectedOrganization },
+    setVisualizerOrganization,
+  },
   setModalState,
 }) {
   const [checkedReindeer, setChecketReindeer] = React.useState([]);
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = React.useState("");
 
   return (
     <Card className="h-full flex flex-col justify-evenly">
@@ -147,7 +150,12 @@ export default function OrganizationList({
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => setPreviewOrganization(organization)}
+                      onClick={() =>
+                        setVisualizerOrganization((prevState) => ({
+                          ...prevState,
+                          previewOrganization: organization,
+                        }))
+                      }
                       className={
                         previewOrganization &&
                         previewOrganization.id == organization.id &&
