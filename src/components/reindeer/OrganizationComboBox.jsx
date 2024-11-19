@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Check, SquarePlus } from "lucide-react";
+import { Check, ScrollText } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -17,11 +17,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export default function ReindeerComboBox({ data, value: defaultValue }) {
+export default function OrganizationComboBox({
+  data,
+  setVisualizerOrganization,
+}) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState(
-    defaultValue > 0 ? defaultValue : ""
-  );
+  const [value, setValue] = React.useState("");
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -32,35 +33,40 @@ export default function ReindeerComboBox({ data, value: defaultValue }) {
           aria-expanded={open}
           className=" justify-between bg-transparent"
         >
+          <ScrollText />
           {value ? (
             data.find((reindeer) => reindeer.id === value)?.name || (
-              <SquarePlus className="text-amber-900" />
+              <>Select an Organization</>
             )
           ) : (
-            <SquarePlus className="text-amber-900" />
+            <>Select an Organization</>
           )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0">
         <Command>
-          <CommandInput placeholder="Search reindeer..." className="h-9" />
+          <CommandInput placeholder="Search organization..." className="h-9" />
           <CommandList>
-            <CommandEmpty>No reindeer found.</CommandEmpty>
+            <CommandEmpty>No organization found.</CommandEmpty>
             <CommandGroup>
-              {data.map((reindeer) => (
+              {data.map((organization) => (
                 <CommandItem
-                  key={reindeer.id}
-                  value={reindeer.name}
+                  key={organization.id}
+                  value={organization.name}
                   onSelect={() => {
-                    setValue(reindeer.id === value ? "" : reindeer.id);
+                    setValue(organization.id === value ? "" : organization.id);
+                    setVisualizerOrganization((prevState) => ({
+                      ...prevState,
+                      previewOrganization: organization,
+                    }));
                     setOpen(false);
                   }}
                 >
-                  {reindeer.name}
+                  {organization.name}
                   <Check
                     className={cn(
                       "ml-auto",
-                      value === reindeer.id ? "opacity-100" : "opacity-0"
+                      value === organization.id ? "opacity-100" : "opacity-0"
                     )}
                   />
                 </CommandItem>

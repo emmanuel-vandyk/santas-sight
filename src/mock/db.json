@@ -302,7 +302,7 @@
     },
     {
       "id": "6",
-      "name": "Comet",
+      "name": "Cupid",
       "skills": [
         {
           "skill": "Speed",
@@ -414,7 +414,8 @@
           "position": 6,
           "reindeer": "6"
         }
-      ]
+      ],
+      "isSelected": false
     },
     {
       "id": "2",
@@ -422,19 +423,19 @@
       "positions": [
         {
           "position": 1,
-          "reindeer": "1"
-        },
-        {
-          "position": 2,
           "reindeer": "2"
         },
         {
+          "position": 2,
+          "reindeer": "1"
+        },
+        {
           "position": 3,
-          "reindeer": "3"
+          "reindeer": "4"
         },
         {
           "position": 4,
-          "reindeer": "4"
+          "reindeer": "6"
         },
         {
           "position": 5,
@@ -442,9 +443,10 @@
         },
         {
           "position": 6,
-          "reindeer": "6"
+          "reindeer": "3"
         }
-      ]
+      ],
+      "isSelected": false
     }
   ]
 }

@@ -40,7 +40,7 @@ export const useUpdateReindeer = () => {
   });
 };
 
-// update  checked reindeers
+// update checked reindeers
 export const useUpdateCheckedReindeers = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -78,6 +78,74 @@ export const useReindeersOrganizations = () => {
     queryFn: async () => {
       const { data } = await axios.get(`${MOCKURL}/reindeerOrganizations`);
       return data;
+    },
+  });
+};
+
+// update reindeers organization
+export const useUpdateReindeersOrganization = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (updatedReindeersOrganization) =>
+      axios.put(
+        `${MOCKURL}/reindeerOrganizations/${updatedReindeersOrganization.id}`,
+        updatedReindeersOrganization
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["organizations"] });
+    },
+  });
+};
+
+// update checked reindeer organizations
+export const useUpdateCheckedReindeerOrganizations = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (updatedCheckedReindeerOrganization) =>
+      axios.all(
+        updatedCheckedReindeerOrganization.map((organization) =>
+          axios.put(
+            `${MOCKURL}/reindeerOrganizations/${organization.id}`,
+            organization
+          )
+        )
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["organizations"] });
+    },
+  });
+};
+
+// delete reindeers organization
+export const useDeleteReindeersOrganization = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (deletedReindeersOrganization) =>
+      axios.delete(
+        `${MOCKURL}/reindeerOrganizations/${deletedReindeersOrganization.id}`,
+        deletedReindeersOrganization
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["organizations"] });
+    },
+  });
+};
+
+// delete checked reindeer organizations
+export const useDeleteCheckedReindeerOrganizations = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (deletedCheckedReindeerOrganization) =>
+      axios.all(
+        deletedCheckedReindeerOrganization.map((organization) =>
+          axios.delete(
+            `${MOCKURL}/reindeerOrganizations/${organization.id}`,
+            organization
+          )
+        )
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["organizations"] });
     },
   });
 };
