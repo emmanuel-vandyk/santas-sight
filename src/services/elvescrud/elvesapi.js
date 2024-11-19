@@ -9,7 +9,7 @@ export const useElves = () => {
   return useQuery({
     queryKey: ["elves"],
     queryFn: async () => {
-      const { data } = await axios.get(`${MOCKURL}/api/elve`);
+      const { data } = await axios.get(`${MOCKURL}/elves`); // /api/elve
       return data;
     },
   });
@@ -19,7 +19,7 @@ export const useElves = () => {
 export const useAddElves = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (newElve) => axios.post(`${MOCKURL}/api/elve`, newElve),
+    mutationFn: (newElve) => axios.post(`${MOCKURL}/elves`, newElve), // /api/elve
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["elves"] });
     },
@@ -31,7 +31,7 @@ export const useUpdateElves = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (updatedElve) =>
-      axios.put(`${MOCKURL}/api/elve/${updatedElve.id}`, updatedElve),
+      axios.put(`${MOCKURL}/elves/${updatedElve.id}`, updatedElve), // /api/elve
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["elves"] });
     },
@@ -43,11 +43,13 @@ export function useLogicalDeleteElves() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (elveId) => {
-      const response = await axios.patch(`${MOCKURL}/api/delete/${elveId}`, { isDeleted: true });
+      const response = await axios.patch(`${MOCKURL}/elves/${elveId}`, {
+        isDeleted: true,
+      }); // /api/elve/delete/
       return response.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['elves'] });
+      queryClient.invalidateQueries({ queryKey: ["elves"] });
     },
   });
 }
@@ -57,11 +59,13 @@ export function useRestoreElves() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (elveId) => {
-      const response = await axios.patch(`${MOCKURL}/api/elve/delete/${elveId}`, { isDeleted: false });
+      const response = await axios.patch(`${MOCKURL}/elves/${elveId}`, {
+        isDeleted: false,
+      }); // /api/elve/delete/
       return response.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['elves'] });
+      queryClient.invalidateQueries({ queryKey: ["elves"] });
     },
   });
 }

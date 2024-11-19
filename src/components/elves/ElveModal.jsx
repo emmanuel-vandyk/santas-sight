@@ -47,8 +47,10 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
   }, [initialData, reset]);
 
   const onSubmitForm = (data) => {
-    
     onSubmit({
+      id: initialData
+        ? initialData.id
+        : Math.round(Math.random() * 100).toString(), // Coment this line to integrate backend
       ...data,
       isDeleted: false,
     });
@@ -71,7 +73,9 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
             </span>
           </DialogTitle>
           <DialogDescription className="text-center text-green-700">
-            {initialData ? "Edit the details of the Elve" : "Add a new Elve to Santa's workshop"}
+            {initialData
+              ? "Edit the details of the Elve"
+              : "Add a new Elve to Santa's workshop"}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-6">
@@ -137,13 +141,12 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
                 {...register("age", {
                   required: "Age is required",
                   validate: (value) => {
-                    if (isNaN(Number(value))) {
-                      return "Age must be a valid number";
+                    if (!/^\d{1,3}$/.test(value)) {
+                      return "Age must be a number with a maximum of 3 digits";
                     }
                     return true;
                   },
                 })}
-                type="number"
                 className="border border-red-400 rounded-md px-3 py-2"
               />
               {errors.age && (
@@ -172,7 +175,10 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
             </div>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="email" className="text-right text-slate-200 text-bold">
+            <Label
+              htmlFor="email"
+              className="text-right text-slate-200 text-bold"
+            >
               Email
             </Label>
             <div className="col-span-3">
@@ -196,7 +202,10 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit" className="bg-green-600 hover:bg-green-700 text-white">
+            <Button
+              type="submit"
+              className="bg-green-600 hover:bg-green-700 text-white"
+            >
               {initialData ? "Save Elve" : "Add Elve"}
             </Button>
           </DialogFooter>
@@ -211,11 +220,11 @@ ElveModal.propTypes = {
   isClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   initialData: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string, // This is a number, I use string because i can't query with ID number on json server
     name: PropTypes.string,
     height: PropTypes.string,
-    age: PropTypes.string,
+    age: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     address: PropTypes.string,
-    email: PropTypes.string,
+    mail: PropTypes.string,
   }),
 };
