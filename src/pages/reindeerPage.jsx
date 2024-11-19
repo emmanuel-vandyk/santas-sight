@@ -1,4 +1,4 @@
-
+import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   useReindeers,
@@ -68,7 +68,7 @@ export const ReindeerPage = () => {
       <div className="min-h-screen w-auto text-green-900 sm:p-8 relative overflow-hidden">
         <div className="min-w-7xl mx-auto space-y-8 relative z-10">
           <h1 className="text-4xl font-bold text-red-600 text-center mb-8">
-            Santa's Sleigh
+            Santa&apos;s Sleigh
           </h1>
           <WeatherCard />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

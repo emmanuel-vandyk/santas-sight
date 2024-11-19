@@ -17,11 +17,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export default function ReindeerComboBox({ data, value: defaultValue }) {
+export default function ReindeerComboBox({ data, value, onChange }) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState(
-    defaultValue > 0 ? defaultValue : ""
-  );
+
+  const handleSelect = (selectedValue) => {
+    onChange(selectedValue === value ? "" : selectedValue);
+    setOpen(false);
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -30,7 +32,7 @@ export default function ReindeerComboBox({ data, value: defaultValue }) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className=" justify-between bg-transparent"
+          className="justify-between bg-transparent"
         >
           {value ? (
             data.find((reindeer) => reindeer.id === value)?.name || (
@@ -51,10 +53,7 @@ export default function ReindeerComboBox({ data, value: defaultValue }) {
                 <CommandItem
                   key={reindeer.id}
                   value={reindeer.name}
-                  onSelect={() => {
-                    setValue(reindeer.id === value ? "" : reindeer.id);
-                    setOpen(false);
-                  }}
+                  onSelect={() => handleSelect(reindeer.id)}
                 >
                   {reindeer.name}
                   <Check

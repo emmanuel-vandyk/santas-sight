@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_KEY = '896414e083366fd76ae50101c80cd925';
-const BASE_URL = 'http://api.weatherstack.com/current';
+const API_KEY = import.meta.env.VITE_API_KEY;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const fetchWeather = async () => {
   const options = {
@@ -24,3 +24,6 @@ export const fetchWeather = async () => {
     throw error;
   }
 };
+
+//Weather Descriptions
+//"partly cloudy", "clear", "sunny", "moderate rain", "patchy rain nearby", "haze", "light rain shower", "light rain", "overcast", "mist"

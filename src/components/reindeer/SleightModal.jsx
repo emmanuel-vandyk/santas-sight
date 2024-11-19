@@ -1,7 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import ReindeerComboBox from "@/components/reindeer/ReindeerComboBox";
-import { ChristmasSantaSleight } from "@/components/global/iconsChristmas";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
@@ -32,6 +31,10 @@ export default function SleightModal({
   onSubmit,
   data: { organizationData, reindeersData },
 }) {
+  const [addBestReindeer, setAddBestReindeer] = useState(false);
+  const [bestReindeers, setBestReindeers] = useState(null);
+  const [initialPositions, setInitialPositions] = useState([]);
+
   const defaultValues = organizationData || {
     name: "",
     type: "",
@@ -51,18 +54,49 @@ export default function SleightModal({
     handleSubmit,
     reset,
     control,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues,
   });
 
+  const positions = watch("positions");
+
   useEffect(() => {
     if (organizationData) {
       reset(organizationData);
+      setInitialPositions(organizationData.positions);
     } else {
       reset(defaultValues);
+      setInitialPositions(defaultValues.positions);
     }
   }, [organizationData, reset]);
+
+  useEffect(() => {
+    const sortedReindeers = [...reindeersData].sort((a, b) => {
+      const aScore = a.skills.find(s => s.skill === "Night Vision").value + 
+                     a.skills.find(s => s.skill === "Climate Adaptability").value;
+      const bScore = b.skills.find(s => s.skill === "Night Vision").value + 
+                     b.skills.find(s => s.skill === "Climate Adaptability").value;
+      return bScore - aScore;
+    });
+    setBestReindeers(sortedReindeers.slice(0, 6));
+  }, [reindeersData]);
+
+  useEffect(() => {
+    if (addBestReindeer) {
+      bestReindeers.forEach((reindeer, index) => {
+        if (index < 6) {
+          setValue(`positions.${index}.reindeer`, reindeer.id);
+        }
+      });
+    } else {
+      initialPositions.forEach((position, index) => {
+        setValue(`positions.${index}.reindeer`, position.reindeer);
+      });
+    }
+  }, [addBestReindeer, bestReindeers, initialPositions, setValue]);
 
   const onSubmitForm = handleSubmit((data) => {
     onSubmit({
@@ -130,18 +164,32 @@ export default function SleightModal({
                 />
                 {errors.name && (
                   <Alert variant="destructive" className="mt-2">
-                    <AlertCircle className="h-4 w-4" />
+                    <Alert className="h-4 w-4" />
                     <AlertDescription>{errors.name.message}</AlertDescription>
                   </Alert>
                 )}
               </div>
             </div>
+            <div className="flex items-center space-x-2 mt-4">
+            <Checkbox
+              id="addBestReindeer"
+              checked={addBestReindeer}
+              onCheckedChange={setAddBestReindeer}
+              className="border-red-400"
+            />
+            <Label
+              htmlFor="addBestReindeer"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-green-700"
+            >
+              Suggested best reindeer for December 25th.
+            </Label>
+          </div>
             <Card className="bg-transparent">
               <div className="flex flex-col">
                 <CardHeader>
                   <CardTitle>Organize your reindeer</CardTitle>
                   <CardDescription>
-                    Organize the reindeer for Santa's sleigh. Click each button
+                    Organize the reindeer for Santas sleigh. Click each button
                     to assign a different reindeer to its position. When you
                     click a button, a menu will appear with a list of available
                     reindeer for easy selection
@@ -153,22 +201,14 @@ export default function SleightModal({
                       Select Reindeers 🦌
                     </h3>
                     <div className="grid grid-cols-2 gap-5 place-items-center md:grid-cols-3">
-                      {organizationData
-                        ? organizationData.positions.map(
-                            ({ position, reindeer }) => (
-                              <ReindeerComboBox
-                                key={position}
-                                data={listReindeers}
-                                value={reindeer != "" ? reindeer : 0}
-                              />
-                            )
-                          )
-                        : Array.from({ length: 6 }).map((_, index) => (
-                            <ReindeerComboBox
-                              key={index}
-                              data={listReindeers}
-                            />
-                          ))}
+                    {positions.map((position, index) => (
+                      <ReindeerComboBox
+                        key={position.position}
+                        data={listReindeers}
+                        value={position.reindeer}
+                        onChange={(value) => setValue(`positions.${index}.reindeer`, value)}
+                      />
+                    ))}
                     </div>
                   </div>
                 </CardContent>
