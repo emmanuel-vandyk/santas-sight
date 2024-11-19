@@ -10,8 +10,8 @@ import { FaHardHat, FaTools } from "react-icons/fa";
 
 export const DashboardPage = () => {
   return (
-    <div className="flex justify-center items-center">
-      <Card className="w-full ">
+    <div className="flex justify-center items-center min-h-screen">
+      <Card className="w-full max-w-md border-none shadow-none">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold flex items-center justify-center gap-2">
             <FaHardHat className="text-yellow-500" />

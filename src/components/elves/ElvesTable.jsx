@@ -36,7 +36,8 @@ import {
   useRestoreElves,
 } from "@/services/elvescrud/elvesapi";
 import SantaChristmasSpinner from "@/components/global/spinner";
-import { ElvesAvatar } from "@/components/elves/ElvesAvatar";
+import ElvesAvatar from "@/components/elves/ElvesAvatar";
+import { useToast } from "@/hooks/useToast";
 
 export default function ElvesTable() {
   const { data: elves, isLoading, isError } = useElves();
@@ -51,6 +52,8 @@ export default function ElvesTable() {
   const [rowSelection, setRowSelection] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingElve, setEditingElve] = useState(null);
+
+  const toast = useToast();
 
   const data = useMemo(() => {
     return elves ? elves.filter((elve) => !elve.isDeleted) : [];
@@ -85,14 +88,15 @@ export default function ElvesTable() {
     },
     {
       id: "avatar",
-      header: ({ column }) => <p className="hidden md:block">Avatar</p>,
+      header: () => <p className="hidden md:block">Avatar</p>,
       cell: ({ row }) => {
-        const initials = (row.getValue("name") || "").slice(0, 2).toUpperCase();
+        const id = row.original.id
+        const initials = row.original.name.slice(0, 2).toUpperCase()
         return (
           <div className="hidden md:grid place-items-center">
-            <ElvesAvatar initials={initials} />
+            <ElvesAvatar id={id} initials={initials} />
           </div>
-        );
+        )
       },
     },
     {
@@ -200,23 +204,43 @@ export default function ElvesTable() {
   });
 
   const addNewElve = async (newElve) => {
-    await addElveMutation.mutateAsync(newElve);
+    try {
+      await addElveMutation.mutateAsync(newElve);
+      toast.success("Elve added successfully");
+    } catch {
+      toast.error("Error adding elve");
+    }
   };
 
   const updateElve = async (elveUpdated) => {
-    await updateElveMutation.mutateAsync(elveUpdated);
+    try {
+      await updateElveMutation.mutateAsync(elveUpdated);
+      toast.success("Elve updated successfully");
+    } catch {
+      toast.error("Error updating elve");
+    }
   };
 
   const deleteRows = async () => {
-    const rowsToDelete = table.getFilteredSelectedRowModel().rows;
-    for (const row of rowsToDelete) {
-      await logicalDeleteMutation.mutateAsync(row.original.id);
+    try {
+      const rowsToDelete = table.getFilteredSelectedRowModel().rows;
+      for (const row of rowsToDelete) {
+        await logicalDeleteMutation.mutateAsync(row.original.id);
+      }
+      toast.success("Elves deleted successfully");
+      setRowSelection({});
+    } catch {
+      toast.error("Error deleting elves");
     }
-    setRowSelection({});
   };
 
   const restoreElve = async (elve) => {
-    await restoreMutation.mutateAsync(elve.id);
+    try {
+      await restoreMutation.mutateAsync(elve.id);
+      toast.success("Elve restored successfully");
+    } catch {
+      toast.error("Error restoring elve");
+    }
   };
 
   const editElve = (elve) => {
