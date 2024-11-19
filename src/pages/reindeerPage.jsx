@@ -70,7 +70,7 @@ export const ReindeerPage = () => {
           <h1 className="text-4xl font-bold text-red-600 text-center mb-8">
             Santa&apos;s Sleigh
           </h1>
-          <WeatherCard />
+          {/* <WeatherCard /> */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <SleightCard
               data={{ organizationsData, reindeersData }}

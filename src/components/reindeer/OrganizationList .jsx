@@ -119,7 +119,7 @@ export default function OrganizationList({
                     </AlertDialogTitle>
                     <AlertDialogDescription>
                       This action cannot be undone. This will permanently delete
-                      these organizations and remove them from Santa's Workshop
+                      these organizations and remove them from Santa&apos;s Workshop
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
@@ -227,7 +227,7 @@ export default function OrganizationList({
                           <AlertDialogDescription>
                             This action cannot be undone. This will permanently
                             delete {organization.name} and remove it from
-                            Santa's Workshop.
+                            Santa&apos;s Workshop.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>

@@ -189,7 +189,7 @@ export default function SleightModal({
                 <CardHeader>
                   <CardTitle>Organize your reindeer</CardTitle>
                   <CardDescription>
-                    Organize the reindeer for Santas sleigh. Click each button
+                    Organize the reindeer for Santa&apos;s sleigh. Click each button
                     to assign a different reindeer to its position. When you
                     click a button, a menu will appear with a list of available
                     reindeer for easy selection

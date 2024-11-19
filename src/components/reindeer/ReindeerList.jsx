@@ -260,7 +260,7 @@ export default function ReindeerList({
                             <AlertDialogDescription>
                               This action cannot be undone. This will
                               permanently delete {reindeer.name} and remove it
-                              from Santa's Workshop.
+                              from Santa&apos;s Workshop.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>

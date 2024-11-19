@@ -38,9 +38,9 @@ export default function SleightCard({
         {previewOrganization ? (
           <>
             <CardHeader>
-              <CardTitle>Santa's Sleigh Dashboard</CardTitle>
+              <CardTitle>Santa&apos;s Sleigh Dashboard</CardTitle>
               <CardDescription>
-                View the real-time organization of Santa's sleigh team. This
+                View the real-time organization of Santa&apos;s sleigh team. This
                 dashboard displays the current positions of each reindeer,
                 making it easy to plan and oversee the holiday crew. Ensure
                 everyone is in the right spot for a flawless takeoff.
