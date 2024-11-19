@@ -293,12 +293,12 @@
   ],
   "reindeerOrganizations": [
     {
-      "id": "87",
-      "name": "Team 3",
+      "id": "4",
+      "name": "Team 1",
       "positions": [
         {
           "position": 1,
-          "reindeer": "3"
+          "reindeer": "64"
         },
         {
           "position": 2,
@@ -306,86 +306,22 @@
         },
         {
           "position": 3,
+          "reindeer": "31"
+        },
+        {
+          "position": 4,
+          "reindeer": "3"
+        },
+        {
+          "position": 5,
           "reindeer": "6"
         },
         {
-          "position": 4,
-          "reindeer": "31"
-        },
-        {
-          "position": 5,
-          "reindeer": "64"
-        },
-        {
           "position": 6,
-          "reindeer": "31"
+          "reindeer": "64"
         }
       ],
-      "isAvailable": true,
-      "isSelected": false
-    },
-    {
-      "id": "15",
-      "name": "Team 5",
-      "positions": [
-        {
-          "position": 1,
-          "reindeer": "64"
-        },
-        {
-          "position": 2,
-          "reindeer": "64"
-        },
-        {
-          "position": 3,
-          "reindeer": "6"
-        },
-        {
-          "position": 4,
-          "reindeer": "31"
-        },
-        {
-          "position": 5,
-          "reindeer": "3"
-        },
-        {
-          "position": 6,
-          "reindeer": "3"
-        }
-      ],
-      "isAvailable": true,
-      "isSelected": false
-    },
-    {
-      "id": "36",
-      "name": "Team 4",
-      "positions": [
-        {
-          "position": 1,
-          "reindeer": "64"
-        },
-        {
-          "position": 2,
-          "reindeer": "3"
-        },
-        {
-          "position": 3,
-          "reindeer": "31"
-        },
-        {
-          "position": 4,
-          "reindeer": "3"
-        },
-        {
-          "position": 5,
-          "reindeer": "64"
-        },
-        {
-          "position": 6,
-          "reindeer": "31"
-        }
-      ],
-      "isSelected": true,
+      "isSelected": false,
       "isAvailable": true
     }
   ]

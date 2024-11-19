@@ -118,6 +118,10 @@ export default function OrganizationList({
                       className="bg-red-600 hover:bg-red-700"
                       onClick={() => {
                         handleCheckedOrganization("delete");
+                        setVisualizerOrganization((prevState) => ({
+                          ...prevState,
+                          previewOrganization: null,
+                        }));
                       }}
                     >
                       Continue
@@ -228,6 +232,10 @@ export default function OrganizationList({
                             className="bg-red-600 hover:bg-red-700"
                             onClick={() => {
                               deleteReindeersOrganization(organization);
+                              setVisualizerOrganization((prevState) => ({
+                                ...prevState,
+                                previewOrganization: null,
+                              }));
                             }}
                           >
                             Continue
