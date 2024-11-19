@@ -66,24 +66,33 @@ export default function SleightCard({
               </div>
             </CardContent>
             <CardFooter>
-              <Button
-                className={`${
-                  previewOrganization.isSelected
-                    ? "bg-orange-400 hover:bg-orange-500"
-                    : "bg-green-600 hover:bg-green-700"
-                } w-full`}
-                onClick={() => {
-                  updateReindeersOrganization({
-                    ...previewOrganization,
-                    isSelected: !previewOrganization.isSelected,
-                  });
-                }}
-              >
-                <Check />{" "}
-                {previewOrganization.isSelected
-                  ? "Unselect Organization"
-                  : "Select Organization"}
-              </Button>
+              {!organizationsData.find(
+                (organization) => organization.id == previewOrganization.id
+              ).isSelected ? (
+                <Button
+                  className="w-full bg-green-600 hover:bg-green-700"
+                  onClick={() => {
+                    updateReindeersOrganization({
+                      ...previewOrganization,
+                      isSelected: true,
+                    });
+                  }}
+                >
+                  <Check /> Select Organization
+                </Button>
+              ) : (
+                <Button
+                  className="w-full bg-orange-400 hover:bg-orange-500"
+                  onClick={() => {
+                    updateReindeersOrganization({
+                      ...previewOrganization,
+                      isSelected: false,
+                    });
+                  }}
+                >
+                  <Check /> Unselect Organization
+                </Button>
+              )}
             </CardFooter>
           </>
         ) : (
