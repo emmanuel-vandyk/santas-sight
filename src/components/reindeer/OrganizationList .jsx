@@ -23,6 +23,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Pencil, CirclePlus, Trash2, Eye, EyeOff } from "lucide-react";
+import { useToast } from "@/hooks/useToast";
 
 export default function OrganizationList({
   data: { organizationsData, reindeersData },
@@ -32,6 +33,7 @@ export default function OrganizationList({
   },
   setModalState,
 }) {
+  const toast = useToast();
   const [checkedOrganization, setChecketOrganization] = React.useState([]);
   const [filter, setFilter] = React.useState("");
   const deleteReindeersOrganizationMutation = useDeleteReindeersOrganization();
@@ -39,7 +41,12 @@ export default function OrganizationList({
     useDeleteCheckedReindeerOrganizations();
 
   const deleteReindeersOrganization = async (organizationDeleted) => {
-    await deleteReindeersOrganizationMutation.mutateAsync(organizationDeleted);
+    try {
+      await deleteReindeersOrganizationMutation.mutateAsync(organizationDeleted);
+      toast.success("Organization deleted successfully");
+    } catch {
+      toast.error("Failed to delete organization");
+    }
   };
 
   const handleCheckedOrganization = (action) => {
@@ -50,7 +57,7 @@ export default function OrganizationList({
     if (action === "delete") {
       deleteCheckedReindeerOrganization.mutateAsync(organizationChecked);
     }
-
+    toast.success("Organizations deleted successfully"); 
     setChecketOrganization([]);
   };
 

@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import santahat from "@/assets/santahat.svg";
+import { useToast } from "@/hooks/useToast";
 
 export default function SleightModal({
   isOpen,
@@ -33,6 +34,7 @@ export default function SleightModal({
   data: { organizationData, reindeersData },
   setVisualizerOrganization,
 }) {
+  const toast = useToast();
   const [addBestReindeer, setAddBestReindeer] = useState(false);
   const [bestReindeers, setBestReindeers] = useState(null);
   const [initialPositions, setInitialPositions] = useState([]);
@@ -118,6 +120,7 @@ export default function SleightModal({
       ...prevState,
       previewOrganization: data,
     }));
+    toast.success("Organization saved");
     isClose();
     reset();
   });

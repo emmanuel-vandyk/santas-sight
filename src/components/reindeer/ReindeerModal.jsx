@@ -24,13 +24,14 @@ import {
   SelectLabel,
   SelectItem,
 } from "@/components/ui/select";
-
+import { useToast } from "@/hooks/useToast";
 export default function ReindeerModal({
   isOpen,
   isClose,
   onSubmit,
   initialData,
 }) {
+  const toast = useToast();
   const defaultValues = initialData || {
     name: "",
     type: "",
@@ -73,6 +74,7 @@ export default function ReindeerModal({
       ...data,
       available: initialData ? initialData.available : true,
     });
+    toast.success("Reindeer saved successfully");
     isClose();
     reset();
   });
