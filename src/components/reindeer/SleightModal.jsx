@@ -36,12 +36,12 @@ export default function SleightModal({
     name: "",
     type: "",
     positions: [
-      { position: 1, reindeer: "" },
-      { position: 2, reindeer: "" },
-      { position: 3, reindeer: "" },
-      { position: 4, reindeer: "" },
-      { position: 5, reindeer: "" },
       { position: 6, reindeer: "" },
+      { position: 5, reindeer: "" },
+      { position: 4, reindeer: "" },
+      { position: 3, reindeer: "" },
+      { position: 2, reindeer: "" },
+      { position: 1, reindeer: "" },
     ],
     available: true,
   };

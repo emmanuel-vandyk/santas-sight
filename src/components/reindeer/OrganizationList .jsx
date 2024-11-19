@@ -1,4 +1,8 @@
 import * as React from "react";
+import {
+  useDeleteReindeersOrganization,
+  useDeleteCheckedReindeerOrganizations,
+} from "@/services/reindeer/reindeerapi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -37,8 +41,27 @@ export default function OrganizationList({
   },
   setModalState,
 }) {
-  const [checkedReindeer, setChecketReindeer] = React.useState([]);
+  const [checkedOrganization, setChecketOrganization] = React.useState([]);
   const [filter, setFilter] = React.useState("");
+  const deleteReindeersOrganizationMutation = useDeleteReindeersOrganization();
+  const deleteCheckedReindeerOrganization =
+    useDeleteCheckedReindeerOrganizations();
+
+  const deleteReindeersOrganization = async (organizationDeleted) => {
+    await deleteReindeersOrganizationMutation.mutateAsync(organizationDeleted);
+  };
+
+  const handleCheckedOrganization = (action) => {
+    const organizationChecked = checkedOrganization.map((organizationId) =>
+      organizationsData.find(({ id }) => id === organizationId)
+    );
+
+    if (action === "delete") {
+      deleteCheckedReindeerOrganization.mutateAsync(organizationChecked);
+    }
+
+    setChecketOrganization([]);
+  };
 
   return (
     <Card className="h-full flex flex-col justify-evenly">
@@ -64,41 +87,54 @@ export default function OrganizationList({
               >
                 <Checkbox
                   checked={
-                    checkedReindeer.length === organizationsData.length &&
+                    checkedOrganization.length === organizationsData.length &&
                     organizationsData.length > 0
                   }
                   onCheckedChange={(checked) => {
                     checked
-                      ? setChecketReindeer(
+                      ? setChecketOrganization(
                           organizationsData.map(
                             (organization) => organization.id
                           )
                         )
-                      : setChecketReindeer([]);
+                      : setChecketOrganization([]);
                   }}
                 />
                 <Label>Select All</Label>
               </Card>
-              <Select
-                disabled={!checkedReindeer.length > 0}
-                value={""}
-                onValueChange={(selectedValue) => console.log(selectedValue)}
-              >
-                <SelectTrigger className="font-semibold">
-                  <SelectValue placeholder="Settings" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Options</SelectLabel>
-                    <SelectItem
-                      value="deactivate"
-                      className="text-red-600 cursor-pointer"
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    disabled={checkedOrganization.length < 2}
+                  >
+                    <Trash2 /> Delete
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure you want to delete these
+                      organizations?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      these organizations and remove them from Santa's Workshop
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      className="bg-red-600 hover:bg-red-700"
+                      onClick={() => {
+                        handleCheckedOrganization("delete");
+                      }}
                     >
-                      Delete
-                    </SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
             <div className="flex justify-end w-full">
               <Button
@@ -124,9 +160,9 @@ export default function OrganizationList({
                 <Card className="grid grid-cols-1 gap-3 items-center p-3 lg:grid-cols-3">
                   <div className="flex gap-3 items-center justify-center lg:justify-normal">
                     <Checkbox
-                      checked={checkedReindeer.includes(organization.id)}
+                      checked={checkedOrganization.includes(organization.id)}
                       onCheckedChange={(checked) =>
-                        setChecketReindeer((prev) =>
+                        setChecketOrganization((prev) =>
                           checked
                             ? [...prev, organization.id]
                             : prev.filter((id) => id !== organization.id)
@@ -196,7 +232,12 @@ export default function OrganizationList({
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                           <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction className="bg-red-600 hover:bg-red-700">
+                          <AlertDialogAction
+                            className="bg-red-600 hover:bg-red-700"
+                            onClick={() => {
+                              deleteReindeersOrganization(organization);
+                            }}
+                          >
                             Continue
                           </AlertDialogAction>
                         </AlertDialogFooter>

@@ -122,7 +122,7 @@ export default function ReindeerList({
                   <Label>Select All</Label>
                 </Card>
                 <Select
-                  disabled={!checkedReindeer.length > 0}
+                  disabled={checkedReindeer.length < 2}
                   value={""}
                   onValueChange={(selectedValue) =>
                     handleCheckedReindeers(selectedValue)
