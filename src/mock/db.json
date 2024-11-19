@@ -128,9 +128,7 @@
         }
       ],
       "type": "trainee",
-      "available": true,
-      "assignedToSanta": false,
-      "position": 0
+      "available": true
     },
     {
       "id": "3",
@@ -170,93 +168,7 @@
         }
       ],
       "type": "trainee",
-      "available": true,
-      "assignedToSanta": false,
-      "position": 0
-    },
-    {
-      "id": "4",
-      "name": "Prancer",
-      "skills": [
-        {
-          "skill": "Speed",
-          "value": 6
-        },
-        {
-          "skill": "Stamina",
-          "value": 7
-        },
-        {
-          "skill": "Maneuverability",
-          "value": 8
-        },
-        {
-          "skill": "Night Vision",
-          "value": 5
-        },
-        {
-          "skill": "Strength",
-          "value": 7
-        },
-        {
-          "skill": "Climate Adaptability",
-          "value": 6
-        },
-        {
-          "skill": "Teamwork",
-          "value": 8
-        },
-        {
-          "skill": "Navigation Intelligence",
-          "value": 6
-        }
-      ],
-      "type": "trainee",
-      "available": true,
-      "assignedToSanta": false,
-      "position": 0
-    },
-    {
-      "id": "5",
-      "name": "Vixen",
-      "skills": [
-        {
-          "skill": "Speed",
-          "value": 6
-        },
-        {
-          "skill": "Stamina",
-          "value": 6
-        },
-        {
-          "skill": "Maneuverability",
-          "value": 6
-        },
-        {
-          "skill": "Night Vision",
-          "value": 7
-        },
-        {
-          "skill": "Strength",
-          "value": 5
-        },
-        {
-          "skill": "Climate Adaptability",
-          "value": 8
-        },
-        {
-          "skill": "Teamwork",
-          "value": 7
-        },
-        {
-          "skill": "Navigation Intelligence",
-          "value": 6
-        }
-      ],
-      "type": "junior",
-      "available": true,
-      "assignedToSanta": false,
-      "position": 0
+      "available": true
     },
     {
       "id": "6",
@@ -296,9 +208,7 @@
         }
       ],
       "type": "junior",
-      "available": true,
-      "assignedToSanta": false,
-      "position": 0
+      "available": true
     },
     {
       "id": "64",
@@ -338,9 +248,7 @@
           "value": 10
         }
       ],
-      "available": true,
-      "assignedToSanta": false,
-      "position": 0
+      "available": true
     },
     {
       "id": "31",
@@ -380,30 +288,16 @@
           "value": 6
         }
       ],
-      "available": true,
-      "assignedToSanta": false,
-      "position": 1
+      "available": true
     }
   ],
   "reindeerOrganizations": [
     {
-      "id": "1",
-      "name": "Classic Team",
+      "id": "87",
+      "name": "Team 3",
       "positions": [
         {
-          "position": 6,
-          "reindeer": "6"
-        },
-        {
-          "position": 5,
-          "reindeer": "5"
-        },
-        {
-          "position": 4,
-          "reindeer": "4"
-        },
-        {
-          "position": 3,
+          "position": 1,
           "reindeer": "3"
         },
         {
@@ -411,42 +305,88 @@
           "reindeer": "2"
         },
         {
-          "position": 1,
-          "reindeer": "1"
+          "position": 3,
+          "reindeer": "6"
+        },
+        {
+          "position": 4,
+          "reindeer": "31"
+        },
+        {
+          "position": 5,
+          "reindeer": "64"
+        },
+        {
+          "position": 6,
+          "reindeer": "31"
         }
       ],
+      "isAvailable": true,
       "isSelected": false
     },
     {
-      "id": "2",
-      "name": "Speedy Team",
+      "id": "15",
+      "name": "Team 5",
       "positions": [
         {
-          "position": 6,
-          "reindeer": "2"
+          "position": 1,
+          "reindeer": "64"
         },
         {
-          "position": 5,
-          "reindeer": "1"
-        },
-        {
-          "position": 4,
-          "reindeer": "4"
+          "position": 2,
+          "reindeer": "64"
         },
         {
           "position": 3,
           "reindeer": "6"
         },
         {
-          "position": 2,
-          "reindeer": "5"
+          "position": 4,
+          "reindeer": "31"
         },
         {
-          "position": 1,
+          "position": 5,
+          "reindeer": "3"
+        },
+        {
+          "position": 6,
           "reindeer": "3"
         }
       ],
+      "isAvailable": true,
       "isSelected": false
+    },
+    {
+      "id": "36",
+      "name": "Team 4",
+      "positions": [
+        {
+          "position": 1,
+          "reindeer": "64"
+        },
+        {
+          "position": 2,
+          "reindeer": "3"
+        },
+        {
+          "position": 3,
+          "reindeer": "31"
+        },
+        {
+          "position": 4,
+          "reindeer": "3"
+        },
+        {
+          "position": 5,
+          "reindeer": "64"
+        },
+        {
+          "position": 6,
+          "reindeer": "31"
+        }
+      ],
+      "isSelected": true,
+      "isAvailable": true
     }
   ]
 }

@@ -24,6 +24,15 @@ export default function OrganizationComboBox({
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 
+  const handleSelect = (selectedValue) => {
+    setValue(selectedValue.id === value ? "" : selectedValue.id);
+    setVisualizerOrganization((prevState) => ({
+      ...prevState,
+      previewOrganization: selectedValue,
+    }));
+    setOpen(false);
+  };
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -36,10 +45,10 @@ export default function OrganizationComboBox({
           <ScrollText />
           {value ? (
             data.find((reindeer) => reindeer.id === value)?.name || (
-              <>Select an Organization</>
+              <>Organization</>
             )
           ) : (
-            <>Select an Organization</>
+            <>Organization</>
           )}
         </Button>
       </PopoverTrigger>
@@ -53,14 +62,7 @@ export default function OrganizationComboBox({
                 <CommandItem
                   key={organization.id}
                   value={organization.name}
-                  onSelect={() => {
-                    setValue(organization.id === value ? "" : organization.id);
-                    setVisualizerOrganization((prevState) => ({
-                      ...prevState,
-                      previewOrganization: organization,
-                    }));
-                    setOpen(false);
-                  }}
+                  onSelect={() => handleSelect(organization)}
                 >
                   {organization.name}
                   <Check

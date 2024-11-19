@@ -19,7 +19,7 @@ export default function SleightCard({
     setVisualizerOrganization,
   },
   setModalState,
-  updateReindeersOrganization,
+  updateCheckedReindeersOrganization,
 }) {
   // Select the reindeer organization with the isSelected property set to true.
   // Important: If none is found, return undefined.
@@ -31,6 +31,10 @@ export default function SleightCard({
         (organization) => organization.isSelected == true
       ),
     }));
+
+  const availableOrganizations = organizationsData.filter(
+    (organization) => organization.isAvailable
+  );
 
   return (
     <Card>
@@ -66,31 +70,27 @@ export default function SleightCard({
               </div>
             </CardContent>
             <CardFooter>
-              {!organizationsData.find(
-                (organization) => organization.id == previewOrganization.id
-              ).isSelected ? (
+              {!previewOrganization.isSelected && (
                 <Button
                   className="w-full bg-green-600 hover:bg-green-700"
                   onClick={() => {
-                    updateReindeersOrganization({
-                      ...previewOrganization,
-                      isSelected: true,
-                    });
+                    const updatedOrganizations = organizationsData.map(
+                      (organization) => ({
+                        ...organization,
+                        isSelected:
+                          organization.id === previewOrganization.id
+                            ? true
+                            : false,
+                      })
+                    );
+                    updateCheckedReindeersOrganization(updatedOrganizations);
+                    setVisualizerOrganization((prevState) => ({
+                      ...prevState,
+                      previewOrganization: null,
+                    }));
                   }}
                 >
-                  <Check /> Select Organization
-                </Button>
-              ) : (
-                <Button
-                  className="w-full bg-orange-400 hover:bg-orange-500"
-                  onClick={() => {
-                    updateReindeersOrganization({
-                      ...previewOrganization,
-                      isSelected: false,
-                    });
-                  }}
-                >
-                  <Check /> Unselect Organization
+                  <Check /> Select {previewOrganization.name}
                 </Button>
               )}
             </CardFooter>
@@ -117,12 +117,13 @@ export default function SleightCard({
               >
                 <CirclePlus /> New Organization
               </Button>
-              {organizationsData.length > 0 && (
-                <OrganizationComboBox
-                  data={organizationsData}
-                  setVisualizerOrganization={setVisualizerOrganization}
-                />
-              )}
+              {organizationsData.length > 0 &&
+                availableOrganizations.length > 0 && (
+                  <OrganizationComboBox
+                    data={availableOrganizations}
+                    setVisualizerOrganization={setVisualizerOrganization}
+                  />
+                )}
             </CardFooter>
           </>
         )}

@@ -10,22 +10,11 @@ import {
   DropdownMenuPortal,
   DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Settings } from "lucide-react";
+import { Settings, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function ReindeerSettings({
-  reindeer,
+  data: reindeer,
   setSelectedReindeer,
   setIsModalOpen,
   updateReindeer,
@@ -49,34 +38,9 @@ export default function ReindeerSettings({
           }}
           className="cursor-pointer"
         >
+          <Eye />
           View Stats
         </DropdownMenuItem>
-        {reindeer.available && (
-          <>
-            {reindeer.assignedToSanta ? (
-              <>
-                <DropdownMenuItem
-                  onClick={() =>
-                    updateReindeer({
-                      ...reindeer,
-                      assignedToSanta: false,
-                      position: 0,
-                    })
-                  }
-                  className="cursor-pointer text-red-600"
-                >
-                  Unequip
-                </DropdownMenuItem>
-              </>
-            ) : (
-              <>
-                <DropdownMenuItem className="cursor-pointer">
-                  Assign to Santa
-                </DropdownMenuItem>
-              </>
-            )}
-          </>
-        )}
         <DropdownMenuSeparator />
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Change Status</DropdownMenuSubTrigger>
@@ -104,8 +68,6 @@ export default function ReindeerSettings({
                     onClick={() =>
                       updateReindeer({
                         ...reindeer,
-                        assignedToSanta: false,
-                        position: 0,
                         available: false,
                       })
                     }

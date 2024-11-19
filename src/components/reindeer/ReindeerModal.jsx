@@ -45,8 +45,6 @@ export default function ReindeerModal({
       { skill: "Navigation Intelligence", value: "" },
     ],
     available: true,
-    assignedToSanta: false,
-    position: 0,
   };
 
   const {
@@ -74,8 +72,6 @@ export default function ReindeerModal({
         : Math.round(Math.random() * 100).toString(),
       ...data,
       available: initialData ? initialData.available : true,
-      assignedToSanta: initialData ? initialData.assignedToSanta : false,
-      position: initialData ? initialData.position : 0,
     });
     isClose();
     reset();
@@ -217,7 +213,5 @@ ReindeerModal.propTypes = {
       })
     ),
     available: PropTypes.bool,
-    assignedToSanta: PropTypes.bool,
-    position: PropTypes.number,
   }),
 };

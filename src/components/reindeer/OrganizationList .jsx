@@ -2,7 +2,7 @@ import * as React from "react";
 import {
   useDeleteReindeersOrganization,
   useDeleteCheckedReindeerOrganizations,
-} from "@/services/reindeer/reindeerapi";
+} from "@/services/reindeer/organizationapi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,15 +11,6 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -80,28 +71,27 @@ export default function OrganizationList({
             }}
           />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-              <Card
-                className="flex items-center p-2 gap-3 rounded-sm"
-                variant="outline"
-              >
-                <Checkbox
-                  checked={
-                    checkedOrganization.length === organizationsData.length &&
-                    organizationsData.length > 0
-                  }
-                  onCheckedChange={(checked) => {
-                    checked
-                      ? setChecketOrganization(
-                          organizationsData.map(
-                            (organization) => organization.id
-                          )
-                        )
-                      : setChecketOrganization([]);
-                  }}
-                />
-                <Label>Select All</Label>
-              </Card>
+            <Card
+              className="flex items-center p-2 gap-3 rounded-sml lg:w-4/5"
+              variant="outline"
+            >
+              <Checkbox
+                checked={
+                  checkedOrganization.length === organizationsData.length &&
+                  organizationsData.length > 0
+                }
+                onCheckedChange={(checked) => {
+                  checked
+                    ? setChecketOrganization(
+                        organizationsData.map((organization) => organization.id)
+                      )
+                    : setChecketOrganization([]);
+                }}
+                disabled={organizationsData.length <= 1}
+              />
+              <Label>Select All</Label>
+            </Card>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap 2">
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button
@@ -135,11 +125,8 @@ export default function OrganizationList({
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
-            </div>
-            <div className="flex justify-end w-full">
               <Button
                 variant="outline"
-                className="w-full lg:w-1/2"
                 onClick={() =>
                   setModalState({ isOpen: true, organizationData: null })
                 }
@@ -176,9 +163,13 @@ export default function OrganizationList({
                       <Badge variant="outline" className="bg-orange-300">
                         Selected
                       </Badge>
-                    ) : (
+                    ) : organization.isAvailable ? (
                       <Badge variant="outline" className="bg-green-300">
                         Available
+                      </Badge>
+                    ) : (
+                      <Badge variant="outline" className="bg-red-300">
+                        Incomplete
                       </Badge>
                     )}
                   </div>
@@ -197,6 +188,7 @@ export default function OrganizationList({
                         previewOrganization.id == organization.id &&
                         "text-orange-400"
                       }
+                      disabled={!organization.isAvailable}
                     >
                       <Eye />
                     </Button>
