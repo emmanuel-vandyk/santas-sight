@@ -10,7 +10,7 @@ import {
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import reno from "@/assets/reno.png";
-import test3 from "@/assets/test3.jpeg";
+import reindeerbackg from "@/assets/reindeerbackg.jpeg";
 import { SnowDecoration } from "@/components/global/snowDecoration";
 
 export function ReindeerModalInfo({ reindeer, isOpen, onClose }) {
@@ -40,7 +40,7 @@ return (
             <div className="flex justify-center">
                 <Card
                     className="rounded-full w-56 flex justify-center items-center bg-transparent shadow-zinc-500 shadow-md"
-                    style={{ backgroundImage: `url(${test3})`, backgroundSize: 'cover' }}
+                    style={{ backgroundImage: `url(${reindeerbackg})`, backgroundSize: 'cover' }}
                 >
                     <div className="relative h-56 flex justify-center">
                         <img

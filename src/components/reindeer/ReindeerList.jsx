@@ -35,6 +35,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/useToast";
 
 export default function ReindeerList({
   data: { organizationsData, reindeersData: reindeers },
@@ -43,6 +44,8 @@ export default function ReindeerList({
   updateCheckedReindeersOrganization,
   setVisualizerOrganization,
 }) {
+  const toast = useToast();
+
   const [editingReindeer, setEditingReindeer] = React.useState(null);
   const [selectedReindeer, setSelectedReindeer] = React.useState(null);
   const [checkedReindeer, setChecketReindeer] = React.useState([]);
@@ -55,10 +58,15 @@ export default function ReindeerList({
   const deleteReindeerMutation = useDeleteReindeer();
 
   const deleteReindeer = async (reindeerDeleted) => {
-    await deleteReindeerMutation.mutateAsync(reindeerDeleted);
+    try {
+      await deleteReindeerMutation.mutateAsync(reindeerDeleted);
+      toast.success(`${reindeerDeleted.name} has been deleted.`);
+    } catch {
+      toast.error(`Failed to delete ${reindeerDeleted.name}.`);
+    }
   };
 
-  const handleCheckedReindeers = (action) => {
+  const handleCheckedReindeers = async (action) => {
     const reindeersChecked = checkedReindeer.map((reindeerId) =>
       reindeers.find(({ id }) => id === reindeerId)
     );
@@ -80,7 +88,12 @@ export default function ReindeerList({
     });
 
     setChecketReindeer([]);
-    updateCheckedReindeersMutation.mutateAsync(reindeersToUpdate);
+    try {
+      await updateCheckedReindeersMutation.mutateAsync(reindeersToUpdate);
+      toast.success(`${action === "activate" ? "Activated" : "Deactivated"} ${reindeersChecked.length} reindeers.`);
+    } catch {
+      toast.error(`Failed to ${action === "activate" ? "activate" : "deactivate"} reindeers.`);
+    }
   };
 
   const findOrganizationsWithReindeer = (reindeerId) => {
@@ -274,7 +287,7 @@ export default function ReindeerList({
                             <AlertDialogDescription>
                               This action cannot be undone. This will
                               permanently delete {reindeer.name} and remove it
-                              from Santa's Workshop.
+                              from Santa&apos;s Workshop.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>

@@ -82,10 +82,19 @@
     {
       "id": "66",
       "name": "Roberto Vargas",
-      "height": "1.65",
+      "height": "2.00",
       "age": "22",
       "address": "Panama, Ciudad de Panama",
       "mail": "roberto@gmail.com",
+      "isDeleted": false
+    },
+    {
+      "id": "64",
+      "name": "Emmanuel Vasquez",
+      "height": "1.56",
+      "age": "34",
+      "address": "Panama",
+      "mail": "r@r.com",
       "isDeleted": false
     }
   ],
@@ -125,46 +134,6 @@
         {
           "skill": "Navigation Intelligence",
           "value": 5
-        }
-      ],
-      "type": "trainee",
-      "available": true
-    },
-    {
-      "id": "3",
-      "name": "Dancer",
-      "skills": [
-        {
-          "skill": "Speed",
-          "value": 7
-        },
-        {
-          "skill": "Stamina",
-          "value": 7
-        },
-        {
-          "skill": "Maneuverability",
-          "value": 9
-        },
-        {
-          "skill": "Night Vision",
-          "value": 6
-        },
-        {
-          "skill": "Strength",
-          "value": 6
-        },
-        {
-          "skill": "Climate Adaptability",
-          "value": 6
-        },
-        {
-          "skill": "Teamwork",
-          "value": 8
-        },
-        {
-          "skill": "Navigation Intelligence",
-          "value": 7
         }
       ],
       "type": "trainee",
@@ -289,38 +258,151 @@
         }
       ],
       "available": true
+    },
+    {
+      "id": "84",
+      "name": "Emmanuel",
+      "type": "junior",
+      "skills": [
+        {
+          "skill": "Speed",
+          "value": 9
+        },
+        {
+          "skill": "Stamina",
+          "value": 10
+        },
+        {
+          "skill": "Maneuverability",
+          "value": 10
+        },
+        {
+          "skill": "Night Vision",
+          "value": 10
+        },
+        {
+          "skill": "Strength",
+          "value": 10
+        },
+        {
+          "skill": "Climate Adaptability",
+          "value": 10
+        },
+        {
+          "skill": "Teamwork",
+          "value": 10
+        },
+        {
+          "skill": "Navigation Intelligence",
+          "value": 10
+        }
+      ],
+      "available": true
+    },
+    {
+      "id": "76",
+      "name": "Dancer",
+      "type": "junior",
+      "skills": [
+        {
+          "skill": "Speed",
+          "value": 5
+        },
+        {
+          "skill": "Stamina",
+          "value": 10
+        },
+        {
+          "skill": "Maneuverability",
+          "value": 7
+        },
+        {
+          "skill": "Night Vision",
+          "value": 8
+        },
+        {
+          "skill": "Strength",
+          "value": 8
+        },
+        {
+          "skill": "Climate Adaptability",
+          "value": 10
+        },
+        {
+          "skill": "Teamwork",
+          "value": 10
+        },
+        {
+          "skill": "Navigation Intelligence",
+          "value": 10
+        }
+      ],
+      "available": true
     }
   ],
   "reindeerOrganizations": [
     {
-      "id": "4",
-      "name": "Team 1",
+      "id": "56",
+      "name": "Classic Team",
       "positions": [
         {
           "position": 1,
-          "reindeer": "64"
-        },
-        {
-          "position": 2,
           "reindeer": "2"
         },
         {
+          "position": 2,
+          "reindeer": "6"
+        },
+        {
           "position": 3,
-          "reindeer": "31"
+          "reindeer": "64"
         },
         {
           "position": 4,
-          "reindeer": "3"
+          "reindeer": "31"
         },
         {
           "position": 5,
+          "reindeer": "84"
+        },
+        {
+          "position": 6,
+          "reindeer": "76"
+        }
+      ],
+      "isSelected": true,
+      "isAvailable": true
+    },
+    {
+      "id": "2",
+      "name": "Speedy Team",
+      "positions": [
+        {
+          "position": 1,
+          "reindeer": "84"
+        },
+        {
+          "position": 2,
+          "reindeer": "64"
+        },
+        {
+          "position": 3,
           "reindeer": "6"
+        },
+        {
+          "position": 4,
+          "reindeer": "76"
+        },
+        {
+          "position": 5,
+          "reindeer": "2"
         },
         {
           "position": 6,
           "reindeer": "64"
         }
       ],
+      "isSelected": false,
       "isSelected": false,
       "isAvailable": true
     }
