@@ -91,7 +91,7 @@ export default function SleightModal({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={isClose}>
-        <DialogContent className="sm:max-w-[650px] bg-gradient-to-b from-red-100 to-green-100">
+        <DialogContent className="sm:max-w-[450px] bg-gradient-to-b from-red-100 to-green-100">
           <DialogHeader>
             <DialogTitle className="flex items-center justify-center text-2xl font-bold text-red-600">
               <span className="relative">
@@ -147,13 +147,12 @@ export default function SleightModal({
                     reindeer for easy selection
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="flex flex-col items-center justify-center gap-3 lg:flex-row">
-                  <ChristmasSantaSleight />
-                  <div className="flex flex-col w-1/2 gap-5">
+                <CardContent>
+                  <div className="flex flex-col gap-5">
                     <h3 className="ml-5 text-center font-semibold">
                       Select Reindeers 🦌
                     </h3>
-                    <div className="grid grid-cols-3 gap-3 place-items-center">
+                    <div className="grid grid-cols-2 gap-5 place-items-center md:grid-cols-3">
                       {organizationData
                         ? organizationData.positions.map(
                             ({ position, reindeer }) => (

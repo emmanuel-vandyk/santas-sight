@@ -31,8 +31,7 @@ export const ReindeerPage = () => {
     organizationData: null,
   });
 
-  const [selectedOrganization, setSelectedOrganization] = React.useState(null);
-  console.log(selectedOrganization);
+  const [previewOrganization, setPreviewOrganization] = React.useState(null);
 
   const addNewReindeer = async (newReindeer) => {
     await addReindeerMutation.mutateAsync(newReindeer);
@@ -64,9 +63,9 @@ export const ReindeerPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <SleightCard
               data={{ organizationsData, reindeersData }}
-              selectedOrganizationState={{
-                selectedOrganization,
-                setSelectedOrganization,
+              previewOrganizationState={{
+                previewOrganization,
+                setPreviewOrganization,
               }}
               setModalState={setModalState}
             />
@@ -78,9 +77,9 @@ export const ReindeerPage = () => {
               <TabsContent value="organization">
                 <OrganizationList
                   data={{ organizationsData, reindeersData }}
-                  selectedOrganizationState={{
-                    selectedOrganization,
-                    setSelectedOrganization,
+                  previewOrganizationState={{
+                    previewOrganization,
+                    setPreviewOrganization,
                   }}
                   setModalState={setModalState}
                 />

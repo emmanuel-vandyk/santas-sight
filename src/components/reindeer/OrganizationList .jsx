@@ -31,7 +31,7 @@ import { Pencil, CirclePlus, Trash2, Eye, EyeOff } from "lucide-react";
 
 export default function OrganizationList({
   data: { organizationsData, reindeersData },
-  selectedOrganizationState: { selectedOrganization, setSelectedOrganization },
+  previewOrganizationState: { previewOrganization, setPreviewOrganization },
   setModalState,
 }) {
   const [checkedReindeer, setChecketReindeer] = React.useState([]);
@@ -147,9 +147,10 @@ export default function OrganizationList({
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => setSelectedOrganization(organization)}
+                      onClick={() => setPreviewOrganization(organization)}
                       className={
-                        selectedOrganization.id == organization.id &&
+                        previewOrganization &&
+                        previewOrganization.id == organization.id &&
                         "text-orange-400"
                       }
                     >
