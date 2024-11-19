@@ -141,13 +141,12 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
                 {...register("age", {
                   required: "Age is required",
                   validate: (value) => {
-                    if (isNaN(Number(value))) {
-                      return "Age must be a valid number";
+                    if (!/^\d{1,3}$/.test(value)) {
+                      return "Age must be a number with a maximum of 3 digits";
                     }
                     return true;
                   },
                 })}
-                type="number"
                 className="border border-red-400 rounded-md px-3 py-2"
               />
               {errors.age && (
@@ -224,7 +223,7 @@ ElveModal.propTypes = {
     id: PropTypes.string, // This is a number, I use string because i can't query with ID number on json server
     name: PropTypes.string,
     height: PropTypes.string,
-    age: PropTypes.string,
+    age: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     address: PropTypes.string,
     mail: PropTypes.string,
   }),

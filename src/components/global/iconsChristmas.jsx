@@ -101,3 +101,48 @@ export const ChristmasSantaSleight = (props) => (
     {...props}
   />
 );
+
+export const ChristmasSanta = (props) => (
+  <svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 100 120"
+  fill="none"
+  {...props}
+>
+  {/* Tree trunk */}
+  <rect x="45" y="100" width="10" height="20" fill="#8B4513" />
+
+  {/* Tree layers */}
+  <path d="M50 10 L80 50 H20 Z" fill="#228B22" />
+  <path d="M50 30 L85 80 H15 Z" fill="#228B22" />
+  <path d="M50 50 L90 110 H10 Z" fill="#228B22" />
+
+  {/* Star */}
+  <path d="M50 0 L53 9 L62 9 L55 14 L58 23 L50 18 L42 23 L45 14 L38 9 L47 9 Z" fill="#FFD700" />
+
+  {/* Ornaments */}
+  <circle cx="35" cy="45" r="3" fill="#FF0000" />
+  <circle cx="65" cy="45" r="3" fill="#0000FF" />
+  <circle cx="50" cy="60" r="3" fill="#FF69B4" />
+  <circle cx="30" cy="75" r="3" fill="#FFD700" />
+  <circle cx="70" cy="75" r="3" fill="#FF4500" />
+  <circle cx="45" cy="90" r="3" fill="#00CED1" />
+  <circle cx="55" cy="90" r="3" fill="#FF1493" />
+
+  {/* Garland */}
+  <path d="M30 40 Q50 30 70 40" stroke="#FFD700" strokeWidth="2" fill="none" />
+  <path d="M25 65 Q50 55 75 65" stroke="#FFD700" strokeWidth="2" fill="none" />
+  <path d="M20 90 Q50 80 80 90" stroke="#FFD700" strokeWidth="2" fill="none" />
+
+  {/* Snow */}
+  {[...Array(20)].map((_, i) => (
+    <circle
+      key={i}
+      cx={Math.random() * 100}
+      cy={Math.random() * 120}
+      r={Math.random() * 1.5 + 0.5}
+      fill="#FFFFFF"
+    />
+  ))}
+</svg>
+);

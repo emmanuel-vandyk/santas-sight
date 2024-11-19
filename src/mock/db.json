@@ -2,9 +2,9 @@
   "elves": [
     {
       "id": "1",
-      "name": "Arwen",
-      "height": "21",
-      "age": 21,
+      "name": "Arwen Maxi",
+      "height": "30",
+      "age": "22",
       "address": "123 Rivendell St, Middle Earth",
       "mail": "arwen@example.com",
       "isDeleted": false
@@ -77,6 +77,15 @@
       "age": 32,
       "address": "dasdas",
       "mail": "dd@dd.com",
+      "isDeleted": false
+    },
+    {
+      "id": "66",
+      "name": "Roberto Vargas",
+      "height": "1.65",
+      "age": "22",
+      "address": "Panama, Ciudad de Panama",
+      "mail": "roberto@gmail.com",
       "isDeleted": false
     }
   ],
@@ -332,6 +341,48 @@
       "available": true,
       "assignedToSanta": false,
       "position": 0
+    },
+    {
+      "id": "64",
+      "name": "Roberto",
+      "type": "master",
+      "skills": [
+        {
+          "skill": "Speed",
+          "value": 10
+        },
+        {
+          "skill": "Stamina",
+          "value": 10
+        },
+        {
+          "skill": "Maneuverability",
+          "value": 10
+        },
+        {
+          "skill": "Night Vision",
+          "value": 10
+        },
+        {
+          "skill": "Strength",
+          "value": 10
+        },
+        {
+          "skill": "Climate Adaptability",
+          "value": 10
+        },
+        {
+          "skill": "Teamwork",
+          "value": 10
+        },
+        {
+          "skill": "Navigation Intelligence",
+          "value": 10
+        }
+      ],
+      "available": true,
+      "assignedToSanta": false,
+      "position": 0
     }
   ],
   "reindeerOrganizations": [
@@ -339,24 +390,60 @@
       "id": "1",
       "name": "Classic Team",
       "positions": [
-        { "position": 1, "reindeer": "1" },
-        { "position": 2, "reindeer": "2" },
-        { "position": 3, "reindeer": "3" },
-        { "position": 4, "reindeer": "4" },
-        { "position": 5, "reindeer": "5" },
-        { "position": 6, "reindeer": "6" }
+        {
+          "position": 1,
+          "reindeer": "1"
+        },
+        {
+          "position": 2,
+          "reindeer": "2"
+        },
+        {
+          "position": 3,
+          "reindeer": "3"
+        },
+        {
+          "position": 4,
+          "reindeer": "4"
+        },
+        {
+          "position": 5,
+          "reindeer": "5"
+        },
+        {
+          "position": 6,
+          "reindeer": "6"
+        }
       ]
     },
     {
       "id": "2",
       "name": "Speedy Team",
       "positions": [
-        { "position": 1, "reindeer": "1" },
-        { "position": 2, "reindeer": "2" },
-        { "position": 3, "reindeer": "3" },
-        { "position": 4, "reindeer": "4" },
-        { "position": 5, "reindeer": "5" },
-        { "position": 6, "reindeer": "6" }
+        {
+          "position": 1,
+          "reindeer": "1"
+        },
+        {
+          "position": 2,
+          "reindeer": "2"
+        },
+        {
+          "position": 3,
+          "reindeer": "3"
+        },
+        {
+          "position": 4,
+          "reindeer": "4"
+        },
+        {
+          "position": 5,
+          "reindeer": "5"
+        },
+        {
+          "position": 6,
+          "reindeer": "6"
+        }
       ]
     }
   ]

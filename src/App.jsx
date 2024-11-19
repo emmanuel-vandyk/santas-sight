@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import  SideBar  from "@/components/global/sideBar";
 import { Separator } from "@/components/ui/separator";
 import SnowFlakeTop from "@/components/global/snowFlakeTop";
+import { ChristmasToastContainer } from "@/components/global/toastContainer";
 
 export default function Component() {
   return (
@@ -18,6 +19,7 @@ export default function Component() {
           <Outlet />
         </main>
       </div>
+      <ChristmasToastContainer />
     </div>
   );
 }
