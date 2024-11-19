@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import PropTypes from "prop-types";
 import ReindeerComboBox from "@/components/reindeer/ReindeerComboBox";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -30,6 +31,7 @@ export default function SleightModal({
   isClose,
   onSubmit,
   data: { organizationData, reindeersData },
+  setVisualizerOrganization,
 }) {
   const [addBestReindeer, setAddBestReindeer] = useState(false);
   const [bestReindeers, setBestReindeers] = useState(null);
@@ -37,23 +39,22 @@ export default function SleightModal({
 
   const defaultValues = organizationData || {
     name: "",
-    type: "",
     positions: [
-      { position: 6, reindeer: "" },
-      { position: 5, reindeer: "" },
-      { position: 4, reindeer: "" },
-      { position: 3, reindeer: "" },
-      { position: 2, reindeer: "" },
       { position: 1, reindeer: "" },
+      { position: 2, reindeer: "" },
+      { position: 3, reindeer: "" },
+      { position: 4, reindeer: "" },
+      { position: 5, reindeer: "" },
+      { position: 6, reindeer: "" },
     ],
-    available: true,
+    isSelected: false,
+    isAvailable: true,
   };
 
   const {
     register,
     handleSubmit,
     reset,
-    control,
     setValue,
     watch,
     formState: { errors },
@@ -75,10 +76,12 @@ export default function SleightModal({
 
   useEffect(() => {
     const sortedReindeers = [...reindeersData].sort((a, b) => {
-      const aScore = a.skills.find(s => s.skill === "Night Vision").value + 
-                     a.skills.find(s => s.skill === "Climate Adaptability").value;
-      const bScore = b.skills.find(s => s.skill === "Night Vision").value + 
-                     b.skills.find(s => s.skill === "Climate Adaptability").value;
+      const aScore =
+        a.skills.find((s) => s.skill === "Night Vision").value +
+        a.skills.find((s) => s.skill === "Climate Adaptability").value;
+      const bScore =
+        b.skills.find((s) => s.skill === "Night Vision").value +
+        b.skills.find((s) => s.skill === "Climate Adaptability").value;
       return bScore - aScore;
     });
     setBestReindeers(sortedReindeers.slice(0, 6));
@@ -99,13 +102,22 @@ export default function SleightModal({
   }, [addBestReindeer, bestReindeers, initialPositions, setValue]);
 
   const onSubmitForm = handleSubmit((data) => {
+    const allPositionsHaveReindeer = data.positions.every(
+      (position) => position.reindeer !== ""
+    );
+
     onSubmit({
       id: organizationData
         ? organizationData.id
         : Math.round(Math.random() * 100).toString(),
       ...data,
-      available: organizationData ? organizationData.available : true,
+      isSelected: organizationData ? organizationData.isSelected : false,
+      isAvailable: organizationData ? allPositionsHaveReindeer : true,
     });
+    setVisualizerOrganization((prevState) => ({
+      ...prevState,
+      previewOrganization: data,
+    }));
     isClose();
     reset();
   });
@@ -117,10 +129,6 @@ export default function SleightModal({
       name: reindeer.name,
       position: reindeer.position,
     }));
-
-  const saveOrderReinnders = (event) => {
-    event.preventDefault();
-  };
 
   return (
     <>
@@ -164,26 +172,25 @@ export default function SleightModal({
                 />
                 {errors.name && (
                   <Alert variant="destructive" className="mt-2">
-                    <Alert className="h-4 w-4" />
                     <AlertDescription>{errors.name.message}</AlertDescription>
                   </Alert>
                 )}
               </div>
             </div>
             <div className="flex items-center space-x-2 mt-4">
-            <Checkbox
-              id="addBestReindeer"
-              checked={addBestReindeer}
-              onCheckedChange={setAddBestReindeer}
-              className="border-red-400"
-            />
-            <Label
-              htmlFor="addBestReindeer"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-green-700"
-            >
-              Suggested best reindeer for December 25th.
-            </Label>
-          </div>
+              <Checkbox
+                id="addBestReindeer"
+                checked={addBestReindeer}
+                onCheckedChange={setAddBestReindeer}
+                className="border-red-400"
+              />
+              <Label
+                htmlFor="addBestReindeer"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-green-700"
+              >
+                Suggested best reindeer for December 25th.
+              </Label>
+            </div>
             <Card className="bg-transparent">
               <div className="flex flex-col">
                 <CardHeader>
@@ -201,14 +208,16 @@ export default function SleightModal({
                       Select Reindeers 🦌
                     </h3>
                     <div className="grid grid-cols-2 gap-5 place-items-center md:grid-cols-3">
-                    {positions.map((position, index) => (
-                      <ReindeerComboBox
-                        key={position.position}
-                        data={listReindeers}
-                        value={position.reindeer}
-                        onChange={(value) => setValue(`positions.${index}.reindeer`, value)}
-                      />
-                    ))}
+                      {positions.map((position, index) => (
+                        <ReindeerComboBox
+                          key={position.position}
+                          data={listReindeers}
+                          value={position.reindeer}
+                          onChange={(value) =>
+                            setValue(`positions.${index}.reindeer`, value)
+                          }
+                        />
+                      ))}
                     </div>
                   </div>
                 </CardContent>
@@ -230,3 +239,21 @@ export default function SleightModal({
     </>
   );
 }
+
+SleightModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  isClose: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialData: PropTypes.shape({
+    id: PropTypes.string, // This is a number, I use string because i can't query with ID number on json server
+    name: PropTypes.string,
+    positions: PropTypes.arrayOf(
+      PropTypes.shape({
+        position: PropTypes.number,
+        reindeer: PropTypes.string,
+      })
+    ),
+    isAvailable: PropTypes.bool,
+    isSelected: PropTypes.bool,
+  }),
+};

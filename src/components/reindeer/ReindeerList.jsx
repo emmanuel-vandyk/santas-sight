@@ -37,9 +37,11 @@ import {
 } from "@/components/ui/alert-dialog";
 
 export default function ReindeerList({
-  data: reindeers,
+  data: { organizationsData, reindeersData: reindeers },
   addNewReindeer,
   updateReindeer,
+  updateCheckedReindeersOrganization,
+  setVisualizerOrganization,
 }) {
   const [editingReindeer, setEditingReindeer] = React.useState(null);
   const [selectedReindeer, setSelectedReindeer] = React.useState(null);
@@ -70,8 +72,6 @@ export default function ReindeerList({
       } else if (action === "deactivate") {
         return {
           ...reindeer,
-          assignedToSanta: false,
-          position: 0,
           available: false,
         };
       } else {
@@ -81,6 +81,23 @@ export default function ReindeerList({
 
     setChecketReindeer([]);
     updateCheckedReindeersMutation.mutateAsync(reindeersToUpdate);
+  };
+
+  const findOrganizationsWithReindeer = (reindeerId) => {
+    return organizationsData.filter((organization) => {
+      // Check if the organization contains the reindeer
+      const containsReindeer = organization.positions.some(
+        (position) => position.reindeer === reindeerId
+      );
+
+      // If it contains the reindeer, set isAvailable to false
+      if (containsReindeer) {
+        organization.isAvailable = false;
+      }
+
+      // Return only the organizations that contain the reindeer
+      return containsReindeer;
+    });
   };
 
   return (
@@ -101,26 +118,27 @@ export default function ReindeerList({
               }}
             />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+              <Card
+                className="flex items-center p-2 gap-3 rounded-sml lg:w-4/5"
+                variant="outline"
+              >
+                <Checkbox
+                  checked={
+                    checkedReindeer.length === reindeers.length &&
+                    reindeers.length > 0
+                  }
+                  onCheckedChange={(checked) => {
+                    checked
+                      ? setChecketReindeer(
+                          reindeers.map((reindeer) => reindeer.id)
+                        )
+                      : setChecketReindeer([]);
+                  }}
+                  disabled={reindeers.length <= 1}
+                />
+                <Label>Select All</Label>
+              </Card>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-                <Card
-                  className="flex items-center p-2 gap-3 rounded-sm"
-                  variant="outline"
-                >
-                  <Checkbox
-                    checked={
-                      checkedReindeer.length === reindeers.length &&
-                      reindeers.length > 0
-                    }
-                    onCheckedChange={(checked) => {
-                      checked
-                        ? setChecketReindeer(
-                            reindeers.map((reindeer) => reindeer.id)
-                          )
-                        : setChecketReindeer([]);
-                    }}
-                  />
-                  <Label>Select All</Label>
-                </Card>
                 <Select
                   disabled={checkedReindeer.length < 2}
                   value={""}
@@ -149,8 +167,6 @@ export default function ReindeerList({
                     </SelectGroup>
                   </SelectContent>
                 </Select>
-              </div>
-              <div className="flex justify-end w-full">
                 <Button
                   variant="outline"
                   onClick={() =>
@@ -159,7 +175,6 @@ export default function ReindeerList({
                       ReindeerModal: true,
                     }))
                   }
-                  className="w-full lg:w-1/2"
                 >
                   <CirclePlus /> New
                 </Button>
@@ -190,15 +205,9 @@ export default function ReindeerList({
                     <div className=" flex justify-center capitalize">
                       {reindeer.available ? (
                         <>
-                          {reindeer.assignedToSanta ? (
-                            <Badge variant="outline" className="bg-orange-300">
-                              Assigned
-                            </Badge>
-                          ) : (
-                            <Badge variant="outline" className="bg-green-300">
-                              Available
-                            </Badge>
-                          )}
+                          <Badge variant="outline" className="bg-green-300">
+                            Available
+                          </Badge>
                           {(reindeer.type === "master" && (
                             <Badge variant="outline" className="bg-purple-300">
                               Master
@@ -227,7 +236,7 @@ export default function ReindeerList({
                     </div>
                     <div className="flex justify-center">
                       <ReindeerSettings
-                        reindeer={reindeer}
+                        data={reindeer}
                         setSelectedReindeer={setSelectedReindeer}
                         setIsModalOpen={setIsModalOpen}
                         updateReindeer={updateReindeer}
@@ -247,7 +256,11 @@ export default function ReindeerList({
                       </Button>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="icon">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            disabled={reindeer.available}
+                          >
                             <Trash2 />
                           </Button>
                         </AlertDialogTrigger>
@@ -268,6 +281,13 @@ export default function ReindeerList({
                             <AlertDialogAction
                               className="bg-red-600 hover:bg-red-700"
                               onClick={() => {
+                                updateCheckedReindeersOrganization(
+                                  findOrganizationsWithReindeer(reindeer.id)
+                                );
+                                setVisualizerOrganization((prevState) => ({
+                                  ...prevState,
+                                  previewOrganization: null,
+                                }));
                                 deleteReindeer(reindeer);
                               }}
                             >
