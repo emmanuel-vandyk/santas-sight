@@ -93,6 +93,7 @@ export default function ReindeerList({
       // If it contains the reindeer, set isAvailable to false
       if (containsReindeer) {
         organization.isAvailable = false;
+        organization.isSelected = false;
       }
 
       // Return only the organizations that contain the reindeer
