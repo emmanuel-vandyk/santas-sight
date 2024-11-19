@@ -113,12 +113,18 @@ export default function SleightModal({
         ? organizationData.id
         : Math.round(Math.random() * 100).toString(),
       ...data,
-      isSelected: organizationData ? organizationData.isSelected : false,
-      isAvailable: organizationData ? allPositionsHaveReindeer : true,
+      isSelected: organizationData
+        ? allPositionsHaveReindeer
+          ? organizationData.isSelected
+          : false
+        : false,
+      isAvailable: organizationData
+        ? allPositionsHaveReindeer
+        : allPositionsHaveReindeer,
     });
     setVisualizerOrganization((prevState) => ({
       ...prevState,
-      previewOrganization: data,
+      previewOrganization: allPositionsHaveReindeer ? data : null,
     }));
     toast.success("Organization saved");
     isClose();
@@ -199,10 +205,10 @@ export default function SleightModal({
                 <CardHeader>
                   <CardTitle>Organize your reindeer</CardTitle>
                   <CardDescription>
-                    Organize the reindeer for Santa&apos;s sleigh. Click each button
-                    to assign a different reindeer to its position. When you
-                    click a button, a menu will appear with a list of available
-                    reindeer for easy selection
+                    Organize the reindeer for Santa&apos;s sleigh. Click each
+                    button to assign a different reindeer to its position. When
+                    you click a button, a menu will appear with a list of
+                    available reindeer for easy selection
                   </CardDescription>
                 </CardHeader>
                 <CardContent>

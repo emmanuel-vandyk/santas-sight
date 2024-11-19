@@ -347,30 +347,30 @@
       "positions": [
         {
           "position": 1,
-          "reindeer": "2"
+          "reindeer": "76"
         },
         {
           "position": 2,
-          "reindeer": "6"
-        },
-        {
-          "position": 3,
-          "reindeer": "64"
-        },
-        {
-          "position": 4,
           "reindeer": "31"
         },
         {
-          "position": 5,
+          "position": 3,
           "reindeer": "84"
         },
         {
+          "position": 4,
+          "reindeer": "64"
+        },
+        {
+          "position": 5,
+          "reindeer": "2"
+        },
+        {
           "position": 6,
-          "reindeer": "76"
+          "reindeer": "6"
         }
       ],
-      "isSelected": true,
+      "isSelected": false,
       "isAvailable": true
     },
     {
@@ -402,7 +402,6 @@
           "reindeer": "64"
         }
       ],
-      "isSelected": false,
       "isSelected": false,
       "isAvailable": true
     }

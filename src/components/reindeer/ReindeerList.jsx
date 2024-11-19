@@ -90,9 +90,17 @@ export default function ReindeerList({
     setChecketReindeer([]);
     try {
       await updateCheckedReindeersMutation.mutateAsync(reindeersToUpdate);
-      toast.success(`${action === "activate" ? "Activated" : "Deactivated"} ${reindeersChecked.length} reindeers.`);
+      toast.success(
+        `${action === "activate" ? "Activated" : "Deactivated"} ${
+          reindeersChecked.length
+        } reindeers.`
+      );
     } catch {
-      toast.error(`Failed to ${action === "activate" ? "activate" : "deactivate"} reindeers.`);
+      toast.error(
+        `Failed to ${
+          action === "activate" ? "activate" : "deactivate"
+        } reindeers.`
+      );
     }
   };
 
@@ -103,7 +111,7 @@ export default function ReindeerList({
         (position) => position.reindeer === reindeerId
       );
 
-      // If it contains the reindeer, set isAvailable to false
+      // If it contains the reindeer, set isAvailable to false and isSelected to false
       if (containsReindeer) {
         organization.isAvailable = false;
         organization.isSelected = false;
@@ -128,7 +136,6 @@ export default function ReindeerList({
               value={filter}
               onChange={(e) => {
                 setFilter(e.target.value);
-                setCurrentPage(1);
               }}
             />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
