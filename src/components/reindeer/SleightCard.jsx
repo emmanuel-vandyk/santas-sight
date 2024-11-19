@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -7,52 +8,100 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Check } from "lucide-react";
+import { Check, CirclePlus } from "lucide-react";
 import { ChristmasSantaSleight } from "@/components/global/iconsChristmas";
-import ReindeerComboBox from "@/components/reindeer/ReindeerComboBox";
+import OrganizationComboBox from "@/components/reindeer/OrganizationComboBox";
 
 export default function SleightCard({
   data: { organizationsData, reindeersData },
+  selectedOrganizationState: { selectedOrganization, setSelectedOrganization },
+  setModalState,
 }) {
+  // Select the reindeer organization with the isSelected property set to true.
+  // Important: If none is found, return undefined.
+  !selectedOrganization &&
+    setSelectedOrganization(
+      organizationsData.find((organization) => organization.isSelected == true)
+    );
+
   return (
     <Card>
       <div className="h-full flex flex-col justify-evenly box-border">
-        <CardHeader>
-          <CardTitle>Organize your reindeer</CardTitle>
-          <CardDescription>
-            Organize the reindeer for Santa's sleigh. Click each button to
-            assign a different reindeer to its position. When you click a
-            button, a menu will appear with a list of available reindeer for
-            easy selection
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col items-center justify-center p-5 w-full gap-3 lg:flex-row">
-          <ChristmasSantaSleight />
-          <div className="flex flex-col w-1/2 gap-5">
-            <h3 className="ml-5 text-center font-semibold">Reindeers 🦌</h3>
-            <div className="grid grid-cols-3 gap-3 place-items-center">
-              {/* {Array.from({ length: 6 }).map((_, index) => (
-                  <ReindeerComboBox
-                    key={index + 1}
-                    reindeers={listReindeers}
-                    value={
-                      listReindeers.find(
-                        (reindeer) => reindeer.position === index + 1
-                      )?.id ?? 0
-                    }
-                  />
-                ))} */}
-            </div>
-          </div>
-        </CardContent>
-        <CardFooter>
-          <Button
-            type="submit"
-            className="w-full bg-green-600 hover:bg-green-700"
-          >
-            <Check /> Mark all as read
-          </Button>
-        </CardFooter>
+        {
+          // Check how many organizations are selected
+          selectedOrganization ? (
+            // Ensure exactly one organization is selected at a time.
+            // Important: Only one organization can be active simultaneously.
+            <>
+              <CardHeader>
+                <CardTitle>Santa's Sleigh Dashboard</CardTitle>
+                <CardDescription>
+                  View the real-time organization of Santa's sleigh team. This
+                  dashboard displays the current positions of each reindeer,
+                  making it easy to plan and oversee the holiday crew. Ensure
+                  everyone is in the right spot for a flawless takeoff.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-col items-center justify-center p-5 w-full gap-3 lg:flex-row">
+                <ChristmasSantaSleight />
+                <div className="flex flex-col w-1/2 gap-5">
+                  <h3 className="ml-5 text-center font-semibold">
+                    {`${selectedOrganization.name} Reindeers 🦌`}
+                  </h3>
+                  <div className="grid grid-cols-3 gap-3 place-items-center">
+                    {console.log(selectedOrganization)}
+                    {selectedOrganization.positions.map(
+                      ({ position, reindeer }) => (
+                        <Card key={position} className="p-2 rounded-sm">
+                          <CardTitle>
+                            {
+                              reindeersData.find(({ id }) => id == reindeer)
+                                .name
+                            }
+                          </CardTitle>
+                        </Card>
+                      )
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter>
+                {!selectedOrganization.isSelected && (
+                  <Button className="w-full bg-green-600 hover:bg-green-700">
+                    <Check /> Select Organization
+                  </Button>
+                )}
+              </CardFooter>
+            </>
+          ) : (
+            <>
+              <CardHeader>
+                <CardTitle>Choose an Organization</CardTitle>
+                <CardDescription>
+                  Select or create an organization to view its details and
+                  reindeer team arrangements. Once chosen, the team positions
+                  and availability will be displayed for your review
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-col items-center justify-center p-5 w-full gap-3 lg:flex-row">
+                <ChristmasSantaSleight />
+              </CardContent>
+              <CardFooter className="flex flex-col items-center justify-center gap-3 lg:flex-row">
+                <Button
+                  variant="outline"
+                  onClick={() =>
+                    setModalState({ isOpen: true, organizationData: null })
+                  }
+                >
+                  <CirclePlus /> New Organization
+                </Button>
+                {organizationsData.length > 0 && (
+                  <OrganizationComboBox data={organizationsData} />
+                )}
+              </CardFooter>
+            </>
+          )
+        }
       </div>
     </Card>
   );

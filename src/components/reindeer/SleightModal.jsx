@@ -159,7 +159,7 @@ export default function SleightModal({
                             ({ position, reindeer }) => (
                               <ReindeerComboBox
                                 key={position}
-                                reindeers={listReindeers}
+                                data={listReindeers}
                                 value={reindeer != "" ? reindeer : 0}
                               />
                             )
@@ -167,7 +167,7 @@ export default function SleightModal({
                         : Array.from({ length: 6 }).map((_, index) => (
                             <ReindeerComboBox
                               key={index}
-                              reindeers={listReindeers}
+                              data={listReindeers}
                             />
                           ))}
                     </div>

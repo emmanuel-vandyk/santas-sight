@@ -346,7 +346,7 @@
         { "position": 5, "reindeer": "5" },
         { "position": 6, "reindeer": "6" }
       ],
-      "available": false
+      "isSelected": true
     },
     {
       "id": "2",
@@ -359,7 +359,7 @@
         { "position": 5, "reindeer": "5" },
         { "position": 6, "reindeer": "3" }
       ],
-      "available": true
+      "isSelected": false
     }
   ]
 }
