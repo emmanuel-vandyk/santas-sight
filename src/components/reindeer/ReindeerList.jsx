@@ -126,7 +126,7 @@ export default function ReindeerList({
     <>
       <Card className="h-full flex flex-col justify-evenly">
         <CardHeader>
-          <CardTitle>Reindeer List</CardTitle>
+          <CardTitle>Reindeer Management</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
           <div className="flex flex-col gap-2">
@@ -157,7 +157,7 @@ export default function ReindeerList({
                   }}
                   disabled={reindeers.length <= 1}
                 />
-                <Label>Select All</Label>
+                <Label>Select all</Label>
               </Card>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
                 <Select

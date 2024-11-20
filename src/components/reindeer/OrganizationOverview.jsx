@@ -41,7 +41,7 @@ export default function OrganizationOverview({
         {previewOrganization ? (
           <>
             <CardHeader>
-              <CardTitle>Santa&apos;s Sleigh Dashboard</CardTitle>
+              <CardTitle>Organization Overview</CardTitle>
               <CardDescription>
                 View the real-time organization of Santa&apos;s sleigh team.
                 This dashboard displays the current positions of each reindeer,

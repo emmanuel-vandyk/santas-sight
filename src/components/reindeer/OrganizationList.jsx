@@ -42,7 +42,9 @@ export default function OrganizationList({
 
   const deleteReindeersOrganization = async (organizationDeleted) => {
     try {
-      await deleteReindeersOrganizationMutation.mutateAsync(organizationDeleted);
+      await deleteReindeersOrganizationMutation.mutateAsync(
+        organizationDeleted
+      );
       toast.success("Organization deleted successfully");
     } catch {
       toast.error("Failed to delete organization");
@@ -57,14 +59,14 @@ export default function OrganizationList({
     if (action === "delete") {
       deleteCheckedReindeerOrganization.mutateAsync(organizationChecked);
     }
-    toast.success("Organizations deleted successfully"); 
+    toast.success("Organizations deleted successfully");
     setChecketOrganization([]);
   };
 
   return (
     <Card className="h-full flex flex-col justify-evenly">
       <CardHeader>
-        <CardTitle>Organizations List</CardTitle>
+        <CardTitle>Organizations Management</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
         <div className="flex flex-col gap-2">
@@ -96,7 +98,7 @@ export default function OrganizationList({
                 }}
                 disabled={organizationsData.length <= 1}
               />
-              <Label>Select All</Label>
+              <Label>Select all</Label>
             </Card>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap 2">
               <AlertDialog>
@@ -116,7 +118,8 @@ export default function OrganizationList({
                     </AlertDialogTitle>
                     <AlertDialogDescription>
                       This action cannot be undone. This will permanently delete
-                      these organizations and remove them from Santa&apos;s Workshop
+                      these organizations and remove them from Santa&apos;s
+                      Workshop
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
