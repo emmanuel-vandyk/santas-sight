@@ -7,7 +7,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, Pencil } from "lucide-react";
+import { ArrowUpDown, ChevronDown, Pencil, RotateCcw, Trash2 } from 'lucide-react';
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -26,8 +26,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 import ElveModal from "@/components/elves/ElveModal";
-import DeletedTableElve from "@/components/elves/DeletedTableElve";
 import {
   useElves,
   useAddElves,
@@ -39,7 +39,7 @@ import SantaChristmasSpinner from "@/components/global/spinner";
 import ElvesAvatar from "@/components/elves/ElvesAvatar";
 import { useToast } from "@/hooks/useToast";
 
-export default function ElvesTable() {
+export default function Component() {
   const { data: elves, isLoading, isError } = useElves();
   const addElveMutation = useAddElves();
   const updateElveMutation = useUpdateElves();
@@ -55,13 +55,7 @@ export default function ElvesTable() {
 
   const toast = useToast();
 
-  const data = useMemo(() => {
-    return elves ? elves.filter((elve) => !elve.isDeleted) : [];
-  }, [elves]);
-
-  const deletedElves = useMemo(() => {
-    return elves ? elves.filter((elve) => elve.isDeleted) : [];
-  }, [elves]);
+  const data = useMemo(() => elves || [], [elves]);
 
   const columns = [
     {
@@ -166,23 +160,58 @@ export default function ElvesTable() {
       ),
     },
     {
+      accessorKey: "status",
+      header: ({ column }) => <p className="hidden md:block">Status</p>,
+      cell: ({ row }) => (
+        <Badge
+          className={`hidden md:block ${row.original.isDeleted ? "bg-red-500 text-white" : "bg-green-500 text-white"}`}
+        >
+          {row.original.isDeleted ? "Not Available" : "Available"}
+        </Badge>
+      ),
+    },
+    {
       id: "actions",
       cell: ({ row }) => {
-        const elve = row.original;
+        const elve = row.original
         return (
-          <Button
-            className="size-8"
-            variant="ghost"
-            onClick={() => editElve(elve)}
-          >
-            <span className="sr-only">Edit</span>
-            <Pencil className="size-4" />
-          </Button>
-        );
+          <div className="flex justify-center space-x-2">
+            {elve.isDeleted ? (
+              <Button
+                className="size-8"
+                variant="ghost"
+                onClick={() => handleRestore(elve)}
+                aria-label={`Restore ${elve.name}`}
+              >
+                <RotateCcw className="size-4" />
+              </Button>
+            ) : (
+              <>
+                <Button
+                  className="size-8"
+                  variant="ghost"
+                  onClick={() => editElve(elve)}
+                  aria-label={`Edit ${elve.name}`}
+                >
+                  <Pencil className="size-4" />
+                </Button>
+                <Button
+                  className="size-8"
+                  variant="ghost"
+                  onClick={() => handleDelete(elve)}
+                  aria-label={`Delete ${elve.name}`}
+                >
+                  <Trash2 className="size-4" />
+                </Button>
+              </>
+            )}
+          </div>
+        )
       },
       enableHiding: false,
     },
   ];
+
 
   const table = useReactTable({
     data,
@@ -201,6 +230,8 @@ export default function ElvesTable() {
       columnVisibility,
       rowSelection,
     },
+    enableRowSelection: true,
+    enableMultiRowSelection: true,
   });
 
   const addNewElve = async (newElve) => {
@@ -223,23 +254,47 @@ export default function ElvesTable() {
 
   const deleteRows = async () => {
     try {
-      const rowsToDelete = table.getFilteredSelectedRowModel().rows;
+      const rowsToDelete = table.getFilteredSelectedRowModel().rows.filter(row => !row.original.isDeleted);
+      const deleteCount = rowsToDelete.length;
       for (const row of rowsToDelete) {
         await logicalDeleteMutation.mutateAsync(row.original.id);
       }
-      toast.success("Elves deleted successfully");
+      toast.success(`${deleteCount} elve${deleteCount !== 1 ? 's' : ''} deleted successfully`);
       setRowSelection({});
     } catch {
       toast.error("Error deleting elves");
     }
   };
 
-  const restoreElve = async (elve) => {
+  const handleDelete = async (elve) => {
+    try {
+      await logicalDeleteMutation.mutateAsync(elve.id);
+      toast.success(`Elve ${elve.name} deleted successfully`);
+    } catch {
+      toast.error(`Error deleting elve ${elve.name}`);
+    }
+  };
+
+  const handleRestore = async (elve) => {
     try {
       await restoreMutation.mutateAsync(elve.id);
       toast.success("Elve restored successfully");
     } catch {
       toast.error("Error restoring elve");
+    }
+  };
+
+  const restoreSelectedRows = async () => {
+    try {
+      const rowsToRestore = table.getFilteredSelectedRowModel().rows.filter(row => row.original.isDeleted);
+      const restoreCount = rowsToRestore.length;
+      for (const row of rowsToRestore) {
+        await restoreMutation.mutateAsync(row.original.id);
+      }
+      toast.success(`${restoreCount} elve${restoreCount !== 1 ? 's' : ''} restored successfully`);
+      setRowSelection({});
+    } catch {
+      toast.error("Error restoring elves");
     }
   };
 
@@ -258,32 +313,44 @@ export default function ElvesTable() {
 
   if (isError) return <div>Error fetching elves</div>;
 
+  const selectedRows = table.getFilteredSelectedRowModel().rows;
+  const hasSelectedDeletedElves = selectedRows.some(row => row.original.isDeleted);
+  const hasSelectedActiveElves = selectedRows.some(row => !row.original.isDeleted);
+
   return (
-    <div className="flex flex-col items-center gap-8 p-8">
-      <h1 className="text-3xl font-bold">Elves Management</h1>
+    <div className="flex flex-col items-center gap-8 p-4 md:p-8">
+      <h1 className="text-3xl font-bold text-red-600">Elves management</h1>
       <div className="w-full max-w-7xl">
         <section className="mb-2 md:mb-4 flex flex-col-reverse gap-2 md:flex-row justify-between">
           <Input
             placeholder="Filter names..."
             value={table.getColumn("name")?.getFilterValue() ?? ""}
-            onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
-            }
+            onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
+            className="max-w-sm"
           />
-          <div className="flex gap-3 md:gap-2">
-            <Button variant="outline" onClick={() => setIsModalOpen(true)}>
-              + New Elve
+          <div className="flex flex-col items-center md:flex-row md:items-stretch gap-3 md:gap-2">
+            <Button variant="outline" onClick={() => setIsModalOpen(true)} className="w-full md:w-auto">
+              + New elve
             </Button>
             <Button
               variant="destructive"
               onClick={deleteRows}
-              disabled={table.getFilteredSelectedRowModel().rows.length === 0}
+              disabled={!hasSelectedActiveElves}
+              className="w-full md:w-auto"
             >
               Delete
             </Button>
+            <Button
+              variant="outline"
+              onClick={restoreSelectedRows}
+              disabled={!hasSelectedDeletedElves}
+              className="w-full md:w-auto"
+            >
+              Restore
+            </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline">
+                <Button variant="outline" className="w-full md:w-auto">
                   Columns <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
@@ -297,9 +364,7 @@ export default function ElvesTable() {
                         key={column.id}
                         className="capitalize"
                         checked={column.getIsVisible()}
-                        onCheckedChange={(value) =>
-                          column.toggleVisibility(!!value)
-                        }
+                        onCheckedChange={(value) => column.toggleVisibility(!!value)}
                       >
                         {column.id}
                       </DropdownMenuCheckboxItem>
@@ -309,22 +374,14 @@ export default function ElvesTable() {
             </DropdownMenu>
           </div>
         </section>
-        <div className="rounded-md border">
+        <div className="rounded-md border overflow-x-auto">
           <Table>
-            <TableHeader className="backdrop:flex justify-center bg-gradient-to-b from-green-600 to-green-300">
+            <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
-                    <TableHead
-                      key={header.id}
-                      className="text-center font-bold text-zinc-800"
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                    <TableHead key={header.id} className="text-center font-bold">
+                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   ))}
                 </TableRow>
@@ -336,23 +393,18 @@ export default function ElvesTable() {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    className={row.original.isDeleted ? "bg-red-100" : ""}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} className="text-center">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
                     ))}
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
+                  <TableCell colSpan={columns.length} className="h-24 text-center">
                     No results.
                   </TableCell>
                 </TableRow>
@@ -360,12 +412,12 @@ export default function ElvesTable() {
             </TableBody>
           </Table>
         </div>
-        <div className="mt-4 flex items-center justify-between">
+        <div className="mt-4 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
+            {selectedRows.length} of{" "}
             {table.getFilteredRowModel().rows.length} row(s) selected.
           </div>
-          <div className="space-x-2">
+          <div className="flex gap-2">
             <Button
               variant="outline"
               size="sm"
@@ -387,14 +439,12 @@ export default function ElvesTable() {
         <ElveModal
           isOpen={isModalOpen}
           isClose={() => {
-            setIsModalOpen(false);
-            setEditingElve(null);
+            setIsModalOpen(false)
+            setEditingElve(null)
           }}
           onSubmit={editingElve ? updateElve : addNewElve}
           initialData={editingElve}
         />
-        <h2 className="text-3xl font-bold text-center pb-4">Deleted Elves</h2>
-        <DeletedTableElve deletedElves={deletedElves} onRestore={restoreElve} />
       </div>
     </div>
   );

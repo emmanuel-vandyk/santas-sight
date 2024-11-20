@@ -25,7 +25,7 @@ export const ErrorPage = () => {
           </CardDescription>
           <Link to={"/"}>
             <Button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200">
-              Go Back Home
+              Go back home
             </Button>
           </Link>
         </CardContent>
