@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Snowflake } from "lucide-react";
 import { fetchWeather } from "@/services/weather/weather";
-import { SantaChristmasSpinner } from "@/components/global/spinner";
+import SantaChristmasSpinner from "@/components/global/spinner";
 
 export const WeatherCard = () => {
   const { data, isLoading, isError } = useQuery({
