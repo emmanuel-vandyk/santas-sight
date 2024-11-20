@@ -1,20 +1,20 @@
-'use client'
+"use client";
 
-import { AlignCenter, X } from 'lucide-react'
-import { Link, useLocation } from "react-router-dom"
-import { useState } from "react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
+import { AlignCenter, X } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   ChristmasTree,
   Reindeer,
   ChristmasElf,
   ChristmasSnowflake,
   ChristmasLogout,
-} from "@/components/global/iconsChristmas"
-import { SnowDecoration } from "@/components/global/snowDecoration"
-import useMediaQuery from "@/hooks/useMediaQuery"
-import logo from "@/assets/sslogo2.webp"
+} from "@/components/global/iconsChristmas";
+import { SnowDecoration } from "@/components/global/snowDecoration";
+import useMediaQuery from "@/hooks/useMediaQuery";
+import logo from "@/assets/sslogo2.webp";
 
 // Menu items.
 const items = [
@@ -24,12 +24,12 @@ const items = [
     icon: ChristmasTree,
   },
   {
-    title: "Reindeer",
+    title: "Reindeer Setup",
     url: "/reindeer",
     icon: Reindeer,
   },
   {
-    title: "Elves",
+    title: "Elve Management",
     url: "/elves",
     icon: ChristmasElf,
   },
@@ -38,21 +38,21 @@ const items = [
     url: "#",
     icon: ChristmasSnowflake,
   },
-]
+];
 
 export default function SideBar() {
-  const [isCollapsed, setIsCollapsed] = useState(false)
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const isMobile = useMediaQuery("(max-width: 730px)")
-  const location = useLocation()
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 730px)");
+  const location = useLocation();
 
   const toggleSidebar = () => {
     if (isMobile) {
-      setMobileOpen(!mobileOpen)
+      setMobileOpen(!mobileOpen);
     } else {
-      setIsCollapsed(!isCollapsed)
+      setIsCollapsed(!isCollapsed);
     }
-  }
+  };
 
   const SidebarContent = () => (
     <>
@@ -84,10 +84,15 @@ export default function SideBar() {
                 <Link
                   to={item.url}
                   className={`flex items-center px-4 py-3 w-full hover:bg-green-500 hover:text-zinc-800 text-white font-bold transition-all duration-300 rounded-lg overflow-hidden ${
-                    location.pathname === item.url ? "bg-green-500 text-zinc-800" : ""
+                    location.pathname === item.url
+                      ? "bg-green-500 text-zinc-800"
+                      : ""
                   }`}
                 >
-                  <item.icon className="h-6 w-6 flex-shrink-0" aria-hidden="true" />
+                  <item.icon
+                    className="h-6 w-6 flex-shrink-0"
+                    aria-hidden="true"
+                  />
                   <span className={`ml-3 ${isCollapsed ? "hidden" : ""}`}>
                     {item.title}
                   </span>
@@ -130,13 +135,11 @@ export default function SideBar() {
           <ChristmasLogout
             className={`h-5 w-10 font-bold ${isCollapsed ? "h-6 w-6" : ""}`}
           />
-          <span className={`${isCollapsed ? "hidden" : "ml-2"}`}>
-            Log out
-          </span>
+          <span className={`${isCollapsed ? "hidden" : "ml-2"}`}>Log out</span>
         </Button>
       </div>
     </>
-  )
+  );
 
   return (
     <>
@@ -146,32 +149,44 @@ export default function SideBar() {
           className="fixed top-4 left-4 z-50 bg-red-600 text-white p-2 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
           aria-label={mobileOpen ? "Close sidebar" : "Open sidebar"}
         >
-          {mobileOpen ? <X className="h-6 w-6" /> : <AlignCenter className="h-6 w-6" />}
+          {mobileOpen ? (
+            <X className="h-6 w-6" />
+          ) : (
+            <AlignCenter className="h-6 w-6" />
+          )}
         </button>
       )}
       {isMobile && mobileOpen && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-40" 
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40"
           onClick={toggleSidebar}
           aria-hidden="true"
         />
       )}
       <div
         className={`
-          ${isMobile ? 'fixed' : 'relative'} 
+          ${isMobile ? "fixed" : "relative"} 
           top-0 left-0 bottom-0 
           bg-gradient-to-b from-red-900 via-red-600 to-black 
-          ${isCollapsed && !isMobile ? 'w-20' : 'w-64'} 
-          transition-all duration-500 ease-in-out
-          ${isMobile ? (mobileOpen ? 'translate-x-0' : '-translate-x-full') : ''}
+          ${isCollapsed && !isMobile ? "w-20" : "w-64"} 
+          transition-all duration-300 ease-in-out
+          ${
+            isMobile ? (mobileOpen ? "translate-x-0" : "-translate-x-full") : ""
+          }
           z-50
         `}
       >
-        <div className={`flex flex-col h-full ${isMobile ? 'items-center justify-center' : ''}`}>
+        <div
+          className={`flex flex-col h-full ${
+            isMobile ? "items-center justify-center" : ""
+          }`}
+        >
           <SidebarContent />
         </div>
       </div>
-      {!isMobile && <SnowDecoration className="absolute inset-0 pointer-events-none" />}
+      {!isMobile && (
+        <SnowDecoration className="absolute inset-0 pointer-events-none" />
+      )}
     </>
-  )
+  );
 }

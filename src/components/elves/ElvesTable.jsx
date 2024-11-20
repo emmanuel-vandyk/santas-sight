@@ -84,13 +84,13 @@ export default function Component() {
       id: "avatar",
       header: () => <p className="hidden md:block">Avatar</p>,
       cell: ({ row }) => {
-        const id = row.original.id
-        const initials = row.original.name.slice(0, 2).toUpperCase()
+        const id = row.original.id;
+        const initials = row.original.name.slice(0, 2).toUpperCase();
         return (
           <div className="hidden md:grid place-items-center">
             <ElvesAvatar id={id} initials={initials} />
           </div>
-        )
+        );
       },
     },
     {
