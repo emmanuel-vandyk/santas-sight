@@ -27,7 +27,7 @@ import { Check } from "lucide-react";
 import santahat from "@/assets/santahat.svg";
 import { useToast } from "@/hooks/useToast";
 
-export default function SleightModal({
+export default function OrganizationModal({
   isOpen,
   isClose,
   onSubmit,
@@ -180,7 +180,10 @@ export default function SleightModal({
                   className="w-full border border-red-400 rounded-md px-3 py-2"
                 />
                 {errors.name && (
-                  <p role="alert" className="text-xs font-bold text-red-500 mt-1">
+                  <p
+                    role="alert"
+                    className="text-xs font-bold text-red-500 mt-1"
+                  >
                     {errors.name.message}
                   </p>
                 )}
@@ -249,7 +252,7 @@ export default function SleightModal({
   );
 }
 
-SleightModal.propTypes = {
+OrganizationModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   isClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,

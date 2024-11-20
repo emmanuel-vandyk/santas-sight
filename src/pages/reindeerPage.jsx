@@ -6,8 +6,8 @@ import {
   useUpdateReindeer,
 } from "@/services/reindeer/reindeerapi";
 import SantaChristmasSpinner from "@/components/global/spinner";
-import SleightCard from "@/components/reindeer/SleightCard";
-import SleightModal from "@/components/reindeer/SleightModal";
+import OrganizationOverview from "@/components/reindeer/OrganizationOverview";
+import OrganizationModal from "@/components/reindeer/OrganizationModal";
 import { WeatherCard } from "@/components/reindeer/WeatherCard";
 import ReindeerList from "@/components/reindeer/ReindeerList";
 import OrganizationList from "@/components/reindeer/OrganizationList";
@@ -85,7 +85,7 @@ export const ReindeerPage = () => {
         <div className="flex flex-col gap-5 sm:p-8">
           {/* <WeatherCard /> */}
           <section className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <SleightCard
+            <OrganizationOverview
               data={{ organizationsData, reindeersData }}
               visualizerOrganizationState={{
                 visualizerOrganization,
@@ -126,7 +126,7 @@ export const ReindeerPage = () => {
           </section>
         </div>
       </section>
-      <SleightModal
+      <OrganizationModal
         isOpen={modalState.isOpen}
         isClose={() => {
           setModalState({ isOpen: false, organizationData: null });
