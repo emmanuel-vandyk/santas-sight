@@ -319,7 +319,6 @@ export default function Component() {
 
   return (
     <div className="flex flex-col items-center gap-8 p-4 md:p-8">
-      <h1 className="text-3xl font-bold text-red-600">Elves management</h1>
       <div className="w-full max-w-7xl">
         <section className="mb-2 md:mb-4 flex flex-col-reverse gap-2 md:flex-row justify-between">
           <Input
