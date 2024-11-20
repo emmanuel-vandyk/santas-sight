@@ -10,7 +10,7 @@ import SleightCard from "@/components/reindeer/SleightCard";
 import SleightModal from "@/components/reindeer/SleightModal";
 import { WeatherCard } from "@/components/reindeer/WeatherCard";
 import ReindeerList from "@/components/reindeer/ReindeerList";
-import OrganizationList from "@/components/reindeer/OrganizationList ";
+import OrganizationList from "@/components/reindeer/OrganizationList";
 import {
   useReindeersOrganizations,
   useUpdateReindeersOrganization,
@@ -78,13 +78,13 @@ export const ReindeerPage = () => {
 
   return (
     <>
-      <div className="min-h-screen w-auto text-green-900 sm:p-8 relative overflow-hidden">
-        <div className="min-w-7xl mx-auto space-y-8 relative z-10">
-          <h1 className="text-4xl font-bold text-red-600 text-center mb-8">
-            Santa&apos;s Sleigh
-          </h1>
-          <WeatherCard />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <section>
+        <h1 className="text-4xl font-bold text-red-600 text-center mb-8">
+          Reindeer Setup
+        </h1>
+        <div className="flex flex-col gap-5 sm:p-8">
+          {/* <WeatherCard /> */}
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <SleightCard
               data={{ organizationsData, reindeersData }}
               visualizerOrganizationState={{
@@ -123,9 +123,9 @@ export const ReindeerPage = () => {
                 />
               </TabsContent>
             </Tabs>
-          </div>
+          </section>
         </div>
-      </div>
+      </section>
       <SleightModal
         isOpen={modalState.isOpen}
         isClose={() => {

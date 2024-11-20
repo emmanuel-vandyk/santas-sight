@@ -90,13 +90,13 @@ export default function ElvesTable() {
       id: "avatar",
       header: () => <p className="hidden md:block">Avatar</p>,
       cell: ({ row }) => {
-        const id = row.original.id
-        const initials = row.original.name.slice(0, 2).toUpperCase()
+        const id = row.original.id;
+        const initials = row.original.name.slice(0, 2).toUpperCase();
         return (
           <div className="hidden md:grid place-items-center">
             <ElvesAvatar id={id} initials={initials} />
           </div>
-        )
+        );
       },
     },
     {
@@ -260,7 +260,6 @@ export default function ElvesTable() {
 
   return (
     <div className="flex flex-col items-center gap-8 p-8">
-      <h1 className="text-3xl font-bold">Elves Management</h1>
       <div className="w-full max-w-7xl">
         <section className="mb-2 md:mb-4 flex flex-col-reverse gap-2 md:flex-row justify-between">
           <Input
