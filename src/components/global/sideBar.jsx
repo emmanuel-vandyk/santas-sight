@@ -1,5 +1,7 @@
+"use client";
+
 import { AlignCenter, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -42,6 +44,7 @@ export default function SideBar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width: 730px)");
+  const location = useLocation();
 
   const toggleSidebar = () => {
     if (isMobile) {
@@ -65,22 +68,26 @@ export default function SideBar() {
           {!isMobile && (
             <button
               onClick={toggleSidebar}
-              className={`transition-all duration-300 ease-in-out text-white hover:text-green-600 ${
+              className={`transition-all duration-300 ease-in-out text-white hover:scale-110 hover:text-green-500 font-bold rounded-full ${
                 isCollapsed ? "absolute top-6 mr-2" : "absolute top-3 right-6"
               }`}
               aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
             >
-              <AlignCenter className="h-6 w-6" />
+              <AlignCenter className="h-8 w-8" />
             </button>
           )}
         </div>
         <nav className="w-full flex-grow">
-          <ul className={`space-y-2 px-2 ${isCollapsed ? "py-6" : ""}`}>
+          <ul className={`space-y-2 px-2 ${isCollapsed ? "py-6 mt-8" : ""}`}>
             {items.map((item) => (
               <li key={item.title} className="group">
                 <Link
                   to={item.url}
-                  className="flex items-center px-4 py-3 w-full hover:bg-green-500 hover:text-zinc-800 text-white font-bold transition-colors duration-200 rounded-lg overflow-hidden"
+                  className={`flex items-center px-4 py-3 w-full hover:bg-green-500 hover:text-zinc-800 text-white font-bold transition-all duration-300 rounded-lg overflow-hidden ${
+                    location.pathname === item.url
+                      ? "bg-green-500 text-zinc-800"
+                      : ""
+                  }`}
                 >
                   <item.icon
                     className="h-6 w-6 flex-shrink-0"
@@ -123,10 +130,10 @@ export default function SideBar() {
           variant="ghost"
           className={`w-full ${
             isCollapsed ? "p-2 aspect-square" : ""
-          } text-slate-950 hover:bg-red-700 hover:text-white transition-all duration-200 font-bold flex items-center justify-center`}
+          } text-white hover:bg-red-700 hover:text-white transition-all duration-300 font-bold flex items-center justify-center`}
         >
           <ChristmasLogout
-            className={`h-5 w-10 ${isCollapsed ? "h-6 w-6" : ""}`}
+            className={`h-5 w-10 font-bold ${isCollapsed ? "h-6 w-6" : ""}`}
           />
           <span className={`${isCollapsed ? "hidden" : "ml-2"}`}>Log out</span>
         </Button>
