@@ -95,9 +95,9 @@ export const ChristmasLogout = (props) => (
 
 export const ChristmasSantaSleight = (props) => (
   <img 
-    src="src/assets/santasleigh.webp"
+    src="src/assets/santasleigh.png"
     alt="Santa's Sleigh"
-    className="w-56"
+    className="w-64"
     {...props}
   />
 );

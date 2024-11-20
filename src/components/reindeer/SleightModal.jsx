@@ -168,7 +168,7 @@ export default function SleightModal({
               >
                 Name
               </Label>
-              <div className="col-span-1 w-full">
+              <div className="col-span-1 w-full h-max">
                 <Input
                   {...register("name", {
                     required: "Name is required",
@@ -180,9 +180,9 @@ export default function SleightModal({
                   className="w-full border border-red-400 rounded-md px-3 py-2"
                 />
                 {errors.name && (
-                  <Alert variant="destructive" className="mt-2">
-                    <AlertDescription>{errors.name.message}</AlertDescription>
-                  </Alert>
+                  <p role="alert" className="text-xs font-bold text-red-500 mt-1">
+                    {errors.name.message}
+                  </p>
                 )}
               </div>
             </div>
@@ -230,11 +230,11 @@ export default function SleightModal({
                     </div>
                   </div>
                 </CardContent>
-                <CardFooter className="justify-end">
-                  <DialogFooter>
+                <CardFooter>
+                  <DialogFooter className="w-full">
                     <Button
                       type="submit"
-                      className=" bg-green-600 hover:bg-green-700"
+                      className=" bg-green-600 hover:bg-green-700 w-full"
                     >
                       <Check /> Save
                     </Button>

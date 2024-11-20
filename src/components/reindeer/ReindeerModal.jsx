@@ -119,10 +119,9 @@ export default function ReindeerModal({
                 className="w-full border border-red-400 rounded-md px-3 py-2"
               />
               {errors.name && (
-                <Alert variant="destructive" className="mt-2">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertDescription>{errors.name.message}</AlertDescription>
-                </Alert>
+                <p role="alert" className="text-xs font-bold text-red-500 mt-1">
+                  {errors.name.message}
+                </p>
               )}
             </div>
           </div>
@@ -189,7 +188,7 @@ export default function ReindeerModal({
           <DialogFooter>
             <Button
               type="submit"
-              className="bg-green-600 hover:bg-green-700 text-white"
+              className="bg-green-600 hover:bg-green-700 text-white w-full"
             >
               {initialData ? "Save Reindeer" : "Add Reindeer"}
             </Button>
