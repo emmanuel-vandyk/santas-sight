@@ -1,4 +1,4 @@
-/* import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Snowflake } from "lucide-react";
 import { fetchWeather } from "@/services/weather/weather";
@@ -45,4 +45,3 @@ export const WeatherCard = () => {
     </Card>
   );
 };
- */
