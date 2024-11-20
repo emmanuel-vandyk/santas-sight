@@ -10,7 +10,7 @@ import SleightCard from "@/components/reindeer/SleightCard";
 import SleightModal from "@/components/reindeer/SleightModal";
 import { WeatherCard } from "@/components/reindeer/WeatherCard";
 import ReindeerList from "@/components/reindeer/ReindeerList";
-import OrganizationList from "@/components/reindeer/OrganizationList ";
+import OrganizationList from "@/components/reindeer/OrganizationList";
 import {
   useReindeersOrganizations,
   useUpdateReindeersOrganization,
