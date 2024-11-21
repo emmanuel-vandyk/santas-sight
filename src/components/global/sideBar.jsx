@@ -1,5 +1,3 @@
-"use client";
-
 import { AlignCenter, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
@@ -22,6 +20,11 @@ const items = [
     title: "Dashboard",
     url: "/dashboard",
     icon: ChristmasTree,
+  },
+  {
+    title: "Santa's Routes",
+    url: "/santaroutes",
+    icon: ChristmasSnowflake,
   },
   {
     title: "Reindeer Setup",

@@ -416,5 +416,10 @@
       "isSelected": false,
       "isAvailable": true
     }
+  ],
+  "santaroutes": [
+    {
+      "locations": []
+    }    
   ]
 }

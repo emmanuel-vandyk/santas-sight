@@ -12,6 +12,7 @@ import { ErrorPage } from "@/pages/errorPage.jsx";
 import { ElvesPage } from "@/pages/elvesPage.jsx";
 import { ReindeerPage } from "@/pages/reindeerPage.jsx";
 import { DashboardPage } from "@/pages/dashboardPage";
+import { RoutesPage } from "@/pages/routesPage";
 import App from "./App.jsx";
 
 const queryClient = new QueryClient();
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "/reindeer",
         element: <ReindeerPage />,
+      },
+      {
+        path: "/santaroutes",
+        element: <RoutesPage />,
       },
     ],
   },
