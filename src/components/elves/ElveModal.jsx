@@ -93,7 +93,7 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
                 },
               })}
               aria-invalid={errors.name ? "true" : "false"}
-              className="border border-red-400 rounded-md px-3"
+              className="border border-red-400 rounded-md px-3 py-2"
             />
             {errors.name && (
               <p role="alert" className="text-xs font-bold text-red-500">
@@ -191,7 +191,7 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
           <Button
             type="submit"
             onClick={handleSubmit(onSubmitForm)}
-            className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto"
+            className="bg-green-600 hover:bg-green-700 text-white w-full"
           >
             {initialData ? "Save Elve" : "Add Elve"}
           </Button>

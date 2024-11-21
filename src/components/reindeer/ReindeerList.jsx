@@ -42,7 +42,7 @@ export default function ReindeerList({
   addNewReindeer,
   updateReindeer,
   updateCheckedReindeersOrganization,
-  setVisualizerOrganization,
+  setOrganizationView,
 }) {
   const toast = useToast();
 
@@ -126,13 +126,13 @@ export default function ReindeerList({
     <>
       <Card className="h-full flex flex-col justify-evenly">
         <CardHeader>
-          <CardTitle>Reindeer List</CardTitle>
+          <CardTitle>Reindeer management</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
           <div className="flex flex-col gap-2">
             <Input
               type="text"
-              placeholder="Filter Reindeer names..."
+              placeholder="Filter reindeer names..."
               value={filter}
               onChange={(e) => {
                 setFilter(e.target.value);
@@ -157,7 +157,7 @@ export default function ReindeerList({
                   }}
                   disabled={reindeers.length <= 1}
                 />
-                <Label>Select All</Label>
+                <Label>Select all</Label>
               </Card>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
                 <Select
@@ -252,7 +252,7 @@ export default function ReindeerList({
                             ))}
                         </>
                       ) : (
-                        <Badge variant="destructive">Not Available</Badge>
+                        <Badge variant="destructive">Not available</Badge>
                       )}
                     </div>
                     <div className="flex justify-center">
@@ -294,7 +294,7 @@ export default function ReindeerList({
                             <AlertDialogDescription>
                               This action cannot be undone. This will
                               permanently delete {reindeer.name} and remove it
-                              from Santa&apos;s Workshop.
+                              from Santa&apos;s workshop.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
@@ -305,10 +305,7 @@ export default function ReindeerList({
                                 updateCheckedReindeersOrganization(
                                   findOrganizationsWithReindeer(reindeer.id)
                                 );
-                                setVisualizerOrganization((prevState) => ({
-                                  ...prevState,
-                                  previewOrganization: null,
-                                }));
+                                setOrganizationView(null);
                                 deleteReindeer(reindeer);
                               }}
                             >

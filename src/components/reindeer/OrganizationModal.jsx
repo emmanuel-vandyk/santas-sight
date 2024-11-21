@@ -27,12 +27,12 @@ import { Check } from "lucide-react";
 import santahat from "@/assets/santahat.svg";
 import { useToast } from "@/hooks/useToast";
 
-export default function SleightModal({
+export default function OrganizationModal({
   isOpen,
   isClose,
   onSubmit,
   data: { organizationData, reindeersData },
-  setVisualizerOrganization,
+  setOrganizationView,
 }) {
   const toast = useToast();
   const [addBestReindeer, setAddBestReindeer] = useState(false);
@@ -79,11 +79,11 @@ export default function SleightModal({
   useEffect(() => {
     const sortedReindeers = [...reindeersData].sort((a, b) => {
       const aScore =
-        a.skills.find((s) => s.skill === "Night Vision").value +
-        a.skills.find((s) => s.skill === "Climate Adaptability").value;
+        a.skills.find((s) => s.skill === "Night vision").value +
+        a.skills.find((s) => s.skill === "Climate adaptability").value;
       const bScore =
-        b.skills.find((s) => s.skill === "Night Vision").value +
-        b.skills.find((s) => s.skill === "Climate Adaptability").value;
+        b.skills.find((s) => s.skill === "Night vision").value +
+        b.skills.find((s) => s.skill === "Climate adaptability").value;
       return bScore - aScore;
     });
     setBestReindeers(sortedReindeers.slice(0, 6));
@@ -122,10 +122,7 @@ export default function SleightModal({
         ? allPositionsHaveReindeer
         : allPositionsHaveReindeer,
     });
-    setVisualizerOrganization((prevState) => ({
-      ...prevState,
-      previewOrganization: allPositionsHaveReindeer ? data : null,
-    }));
+    setOrganizationView(allPositionsHaveReindeer ? data : null);
     toast.success("Organization saved");
     isClose();
     reset();
@@ -146,18 +143,18 @@ export default function SleightModal({
           <DialogHeader>
             <DialogTitle className="flex items-center justify-center text-2xl font-bold text-red-600">
               <span className="relative">
-                {organizationData ? "Edit Organization" : "New Organization"}
+                {organizationData ? "Edit organization" : "New organization"}
                 <img
                   src={santahat}
-                  alt="Santa Hat"
+                  alt="Santa hat"
                   className="absolute -top-11 -left-2 w-12 h-12"
                 />
               </span>
             </DialogTitle>
             <DialogDescription className="text-center text-green-700">
               {organizationData
-                ? "Edit the details of the Organization"
-                : "Add a new Reindeer Organization to Santa's workshop"}
+                ? "Edit the details of the organization"
+                : "Add a new reindeer organization to Santa's workshop"}
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={onSubmitForm} className="space-y-6">
@@ -168,7 +165,7 @@ export default function SleightModal({
               >
                 Name
               </Label>
-              <div className="col-span-1 w-full">
+              <div className="col-span-1 w-full h-max">
                 <Input
                   {...register("name", {
                     required: "Name is required",
@@ -180,9 +177,12 @@ export default function SleightModal({
                   className="w-full border border-red-400 rounded-md px-3 py-2"
                 />
                 {errors.name && (
-                  <Alert variant="destructive" className="mt-2">
-                    <AlertDescription>{errors.name.message}</AlertDescription>
-                  </Alert>
+                  <p
+                    role="alert"
+                    className="text-xs font-bold text-red-500 mt-1"
+                  >
+                    {errors.name.message}
+                  </p>
                 )}
               </div>
             </div>
@@ -214,7 +214,7 @@ export default function SleightModal({
                 <CardContent>
                   <div className="flex flex-col gap-5">
                     <h3 className="ml-5 text-center font-semibold">
-                      Select Reindeers 🦌
+                      Select reindeers 🦌
                     </h3>
                     <div className="grid grid-cols-2 gap-5 place-items-center md:grid-cols-3">
                       {positions.map((position, index) => (
@@ -230,11 +230,11 @@ export default function SleightModal({
                     </div>
                   </div>
                 </CardContent>
-                <CardFooter className="justify-end">
-                  <DialogFooter>
+                <CardFooter>
+                  <DialogFooter className="w-full">
                     <Button
                       type="submit"
-                      className=" bg-green-600 hover:bg-green-700"
+                      className=" bg-green-600 hover:bg-green-700 w-full"
                     >
                       <Check /> Save
                     </Button>
@@ -249,7 +249,7 @@ export default function SleightModal({
   );
 }
 
-SleightModal.propTypes = {
+OrganizationModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   isClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,

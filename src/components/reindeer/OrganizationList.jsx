@@ -26,11 +26,8 @@ import { Pencil, CirclePlus, Trash2, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/useToast";
 
 export default function OrganizationList({
-  data: { organizationsData, reindeersData },
-  visualizerOrganizationState: {
-    visualizerOrganization: { previewOrganization, selectedOrganization },
-    setVisualizerOrganization,
-  },
+  data: { organizationsData },
+  organizationViewState: { organizationView, setOrganizationView },
   setModalState,
 }) {
   const toast = useToast();
@@ -42,7 +39,9 @@ export default function OrganizationList({
 
   const deleteReindeersOrganization = async (organizationDeleted) => {
     try {
-      await deleteReindeersOrganizationMutation.mutateAsync(organizationDeleted);
+      await deleteReindeersOrganizationMutation.mutateAsync(
+        organizationDeleted
+      );
       toast.success("Organization deleted successfully");
     } catch {
       toast.error("Failed to delete organization");
@@ -57,20 +56,20 @@ export default function OrganizationList({
     if (action === "delete") {
       deleteCheckedReindeerOrganization.mutateAsync(organizationChecked);
     }
-    toast.success("Organizations deleted successfully"); 
+    toast.success("Organizations deleted successfully");
     setChecketOrganization([]);
   };
 
   return (
     <Card className="h-full flex flex-col justify-evenly">
       <CardHeader>
-        <CardTitle>Organizations List</CardTitle>
+        <CardTitle>Organizations management</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
         <div className="flex flex-col gap-2">
           <Input
             type="text"
-            placeholder="Filter Organization names..."
+            placeholder="Filter organization names..."
             value={filter}
             onChange={(e) => {
               setFilter(e.target.value);
@@ -96,7 +95,7 @@ export default function OrganizationList({
                 }}
                 disabled={organizationsData.length <= 1}
               />
-              <Label>Select All</Label>
+              <Label>Select all</Label>
             </Card>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap 2">
               <AlertDialog>
@@ -116,7 +115,8 @@ export default function OrganizationList({
                     </AlertDialogTitle>
                     <AlertDialogDescription>
                       This action cannot be undone. This will permanently delete
-                      these organizations and remove them from Santa&apos;s Workshop
+                      these organizations and remove them from Santa&apos;s
+                      workshop
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
@@ -125,10 +125,7 @@ export default function OrganizationList({
                       className="bg-red-600 hover:bg-red-700"
                       onClick={() => {
                         handleCheckedOrganization("delete");
-                        setVisualizerOrganization((prevState) => ({
-                          ...prevState,
-                          previewOrganization: null,
-                        }));
+                        setOrganizationView(null);
                       }}
                     >
                       Continue
@@ -188,15 +185,10 @@ export default function OrganizationList({
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() =>
-                        setVisualizerOrganization((prevState) => ({
-                          ...prevState,
-                          previewOrganization: organization,
-                        }))
-                      }
+                      onClick={() => setOrganizationView(organization)}
                       className={
-                        previewOrganization &&
-                        previewOrganization.id == organization.id &&
+                        organizationView &&
+                        organizationView.id == organization.id &&
                         "text-orange-400"
                       }
                       disabled={!organization.isAvailable}
@@ -230,7 +222,7 @@ export default function OrganizationList({
                           <AlertDialogDescription>
                             This action cannot be undone. This will permanently
                             delete {organization.name} and remove it from
-                            Santa&apos;s Workshop.
+                            Santa&apos;s workshop.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
@@ -239,10 +231,7 @@ export default function OrganizationList({
                             className="bg-red-600 hover:bg-red-700"
                             onClick={() => {
                               deleteReindeersOrganization(organization);
-                              setVisualizerOrganization((prevState) => ({
-                                ...prevState,
-                                previewOrganization: null,
-                              }));
+                              setOrganizationView(null);
                             }}
                           >
                             Continue
