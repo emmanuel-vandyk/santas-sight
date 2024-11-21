@@ -42,7 +42,7 @@ export default function ReindeerList({
   addNewReindeer,
   updateReindeer,
   updateCheckedReindeersOrganization,
-  setVisualizerOrganization,
+  setOrganizationView,
 }) {
   const toast = useToast();
 
@@ -126,13 +126,13 @@ export default function ReindeerList({
     <>
       <Card className="h-full flex flex-col justify-evenly">
         <CardHeader>
-          <CardTitle>Reindeer Management</CardTitle>
+          <CardTitle>Reindeer management</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
           <div className="flex flex-col gap-2">
             <Input
               type="text"
-              placeholder="Filter Reindeer names..."
+              placeholder="Filter reindeer names..."
               value={filter}
               onChange={(e) => {
                 setFilter(e.target.value);
@@ -305,10 +305,7 @@ export default function ReindeerList({
                                 updateCheckedReindeersOrganization(
                                   findOrganizationsWithReindeer(reindeer.id)
                                 );
-                                setVisualizerOrganization((prevState) => ({
-                                  ...prevState,
-                                  previewOrganization: null,
-                                }));
+                                setOrganizationView(null);
                                 deleteReindeer(reindeer);
                               }}
                             >

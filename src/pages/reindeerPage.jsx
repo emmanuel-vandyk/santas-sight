@@ -40,11 +40,7 @@ export const ReindeerPage = () => {
     isOpen: false,
     organizationData: null,
   });
-
-  const [visualizerOrganization, setVisualizerOrganization] = React.useState({
-    previewOrganization: null,
-    selectedOrganization: null,
-  });
+  const [organizationView, setOrganizationView] = React.useState(null);
 
   const addNewReindeer = async (newReindeer) => {
     await addReindeerMutation.mutateAsync(newReindeer);
@@ -81,16 +77,16 @@ export const ReindeerPage = () => {
     <>
       <section>
         <h1 className="text-4xl font-bold text-red-600 text-center mb-8">
-        <UnderlineTitle text="Reindeer Setup" />
+          <UnderlineTitle text="Reindeer Setup" />
         </h1>
         <div className="flex flex-col gap-5 sm:p-8">
           {/* <WeatherCard /> */}
           <section className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <OrganizationOverview
               data={{ organizationsData, reindeersData }}
-              visualizerOrganizationState={{
-                visualizerOrganization,
-                setVisualizerOrganization,
+              organizationViewState={{
+                organizationView,
+                setOrganizationView,
               }}
               setModalState={setModalState}
               updateCheckedReindeersOrganization={
@@ -105,9 +101,9 @@ export const ReindeerPage = () => {
               <TabsContent value="organization">
                 <OrganizationList
                   data={{ organizationsData, reindeersData }}
-                  visualizerOrganizationState={{
-                    visualizerOrganization,
-                    setVisualizerOrganization,
+                  organizationViewState={{
+                    organizationView,
+                    setOrganizationView,
                   }}
                   setModalState={setModalState}
                 />
@@ -120,7 +116,7 @@ export const ReindeerPage = () => {
                   updateCheckedReindeersOrganization={
                     updateCheckedReindeersOrganization
                   }
-                  setVisualizerOrganization={setVisualizerOrganization}
+                  setOrganizationView={setOrganizationView}
                 />
               </TabsContent>
             </Tabs>
@@ -138,7 +134,7 @@ export const ReindeerPage = () => {
             : addNewReindeersOrganization
         }
         data={{ organizationData: modalState.organizationData, reindeersData }}
-        setVisualizerOrganization={setVisualizerOrganization}
+        setOrganizationView={setOrganizationView}
       />
     </>
   );

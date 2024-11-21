@@ -32,7 +32,7 @@ export default function OrganizationModal({
   isClose,
   onSubmit,
   data: { organizationData, reindeersData },
-  setVisualizerOrganization,
+  setOrganizationView,
 }) {
   const toast = useToast();
   const [addBestReindeer, setAddBestReindeer] = useState(false);
@@ -122,10 +122,7 @@ export default function OrganizationModal({
         ? allPositionsHaveReindeer
         : allPositionsHaveReindeer,
     });
-    setVisualizerOrganization((prevState) => ({
-      ...prevState,
-      previewOrganization: allPositionsHaveReindeer ? data : null,
-    }));
+    setOrganizationView(allPositionsHaveReindeer ? data : null);
     toast.success("Organization saved");
     isClose();
     reset();

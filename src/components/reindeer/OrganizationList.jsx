@@ -26,11 +26,8 @@ import { Pencil, CirclePlus, Trash2, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/useToast";
 
 export default function OrganizationList({
-  data: { organizationsData, reindeersData },
-  visualizerOrganizationState: {
-    visualizerOrganization: { previewOrganization, selectedOrganization },
-    setVisualizerOrganization,
-  },
+  data: { organizationsData },
+  organizationViewState: { organizationView, setOrganizationView },
   setModalState,
 }) {
   const toast = useToast();
@@ -128,10 +125,7 @@ export default function OrganizationList({
                       className="bg-red-600 hover:bg-red-700"
                       onClick={() => {
                         handleCheckedOrganization("delete");
-                        setVisualizerOrganization((prevState) => ({
-                          ...prevState,
-                          previewOrganization: null,
-                        }));
+                        setOrganizationView(null);
                       }}
                     >
                       Continue
@@ -191,15 +185,10 @@ export default function OrganizationList({
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() =>
-                        setVisualizerOrganization((prevState) => ({
-                          ...prevState,
-                          previewOrganization: organization,
-                        }))
-                      }
+                      onClick={() => setOrganizationView(organization)}
                       className={
-                        previewOrganization &&
-                        previewOrganization.id == organization.id &&
+                        organizationView &&
+                        organizationView.id == organization.id &&
                         "text-orange-400"
                       }
                       disabled={!organization.isAvailable}
@@ -242,10 +231,7 @@ export default function OrganizationList({
                             className="bg-red-600 hover:bg-red-700"
                             onClick={() => {
                               deleteReindeersOrganization(organization);
-                              setVisualizerOrganization((prevState) => ({
-                                ...prevState,
-                                previewOrganization: null,
-                              }));
+                              setOrganizationView(null);
                             }}
                           >
                             Continue

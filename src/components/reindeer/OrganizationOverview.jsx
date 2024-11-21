@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,30 +14,45 @@ import OrganizationComboBox from "@/components/reindeer/OrganizationComboBox";
 
 export default function OrganizationOverview({
   data: { organizationsData, reindeersData },
-  visualizerOrganizationState: {
-    visualizerOrganization: { previewOrganization, selectedOrganization },
-    setVisualizerOrganization,
-  },
+  organizationViewState: { organizationView, setOrganizationView },
   setModalState,
   updateCheckedReindeersOrganization,
 }) {
-
-    previewOrganization?.isSelected == undefined &&
-    setVisualizerOrganization((prevState) => ({
-      ...prevState,
-      previewOrganization: organizationsData.find(
-        (organization) => organization.isSelected == true
-      ),
-    }));
-
+  // Filter to get only available organizations
   const availableOrganizations = organizationsData.filter(
     (organization) => organization.isAvailable
   );
 
+  // useEffect hook to set a selected organization in the preview on component load
+  React.useEffect(() => {
+    if (organizationView?.isSelected === undefined) {
+      // Find the first selected organization and display it in the preview
+      const organizationSelected = organizationsData.find(
+        (organization) => organization.isSelected === true
+      );
+      organizationSelected && setOrganizationView(organizationSelected);
+    }
+  }, []);
+
+  const handleSelectOrganization = () => {
+    // Update the organizations to mark the selected one
+    const updatedOrganizations = organizationsData.map((organization) => ({
+      ...organization,
+      isSelected: organization.id === organizationView.id, // Mark as selected if it matches the preview
+    }));
+    //  Find the newly selected organization
+    const organizationSelected = updatedOrganizations.find(
+      (organization) => organization.isSelected === true
+    );
+    // Update Organization data and display the new selection in the preview
+    updateCheckedReindeersOrganization(updatedOrganizations);
+    setOrganizationView(organizationSelected);
+  };
+
   return (
     <Card>
       <div className="h-full flex flex-col justify-evenly box-border">
-        {previewOrganization ? (
+        {organizationView ? ( // Check if an organization is set in the preview
           <>
             <CardHeader>
               <CardTitle>Organization overview</CardTitle>
@@ -51,43 +67,30 @@ export default function OrganizationOverview({
               <ChristmasSantaSleight />
               <div className="flex flex-col w-1/2 gap-5">
                 <h3 className="ml-5 text-center font-semibold">
-                  {`${previewOrganization.name} Reindeers 🦌`}
+                  {`${organizationView.name} Reindeers 🦌`}
                 </h3>
                 <div className="grid grid-cols-3 gap-3 place-items-center">
-                  {previewOrganization.positions.map(
-                    ({ position, reindeer }) => (
+                  {organizationView.positions.map(({ position, reindeer }) => {
+                    // Get the name of the reindeer based on its ID in organization
+                    const reindeerName = reindeersData.find(
+                      ({ id }) => id === reindeer
+                    ).name;
+                    return (
                       <Card key={position} className="p-2 rounded-sm">
-                        <CardTitle>
-                          {reindeersData.find(({ id }) => id == reindeer).name}
-                        </CardTitle>
+                        <CardTitle>{reindeerName}</CardTitle>
                       </Card>
-                    )
-                  )}
+                    );
+                  })}
                 </div>
               </div>
             </CardContent>
             <CardFooter>
-              {!previewOrganization.isSelected && (
+              {!organizationView.isSelected && (
                 <Button
                   className="w-full bg-green-600 hover:bg-green-700"
-                  onClick={() => {
-                    const updatedOrganizations = organizationsData.map(
-                      (organization) => ({
-                        ...organization,
-                        isSelected:
-                          organization.id === previewOrganization.id
-                            ? true
-                            : false,
-                      })
-                    );
-                    updateCheckedReindeersOrganization(updatedOrganizations);
-                    setVisualizerOrganization((prevState) => ({
-                      ...prevState,
-                      previewOrganization: null,
-                    }));
-                  }}
+                  onClick={handleSelectOrganization}
                 >
-                  <Check /> Select {previewOrganization.name}
+                  <Check /> Select {organizationView.name}
                 </Button>
               )}
             </CardFooter>
@@ -118,7 +121,7 @@ export default function OrganizationOverview({
                 availableOrganizations.length > 0 && (
                   <OrganizationComboBox
                     data={availableOrganizations}
-                    setVisualizerOrganization={setVisualizerOrganization}
+                    setOrganizationView={setOrganizationView}
                   />
                 )}
             </CardFooter>
