@@ -17,7 +17,7 @@ import {
   useAddReindeersOrganization,
   useUpdateCheckedReindeerOrganizations,
 } from "@/services/reindeer/organizationapi";
-import { RoughNotation } from "react-rough-notation";
+import { UnderlineTitle } from "@/components/global/underlineTitle";
 
 export const ReindeerPage = () => {
   const {
@@ -81,21 +81,7 @@ export const ReindeerPage = () => {
     <>
       <section>
         <h1 className="text-4xl font-bold text-red-600 text-center mb-8">
-        <div className="relative inline-block">
-          <span className="relative z-10">Reindeer Setup</span>
-          <RoughNotation
-            type="underline"
-            show={true}
-            strokeWidth={3}
-            iterations={2}
-            animationDuration={5000}
-            color="green"
-            multiline={true}
-            className="absolute left-0 right-0 bottom-0"
-          >
-            <span className="invisible">Reindeer Setup</span>
-          </RoughNotation>
-        </div>
+        <UnderlineTitle text="Reindeer Setup" />
         </h1>
         <div className="flex flex-col gap-5 sm:p-8">
           {/* <WeatherCard /> */}
