@@ -20,9 +20,7 @@ export default function OrganizationOverview({
   setModalState,
   updateCheckedReindeersOrganization,
 }) {
-  // Select the reindeer organization with the isSelected property set to true.
-  // Important: If none is found, return undefined.
-  previewOrganization != null &&
+
     previewOrganization?.isSelected == undefined &&
     setVisualizerOrganization((prevState) => ({
       ...prevState,
@@ -41,7 +39,7 @@ export default function OrganizationOverview({
         {previewOrganization ? (
           <>
             <CardHeader>
-              <CardTitle>Organization Overview</CardTitle>
+              <CardTitle>Organization overview</CardTitle>
               <CardDescription>
                 View the real-time organization of Santa&apos;s sleigh team.
                 This dashboard displays the current positions of each reindeer,
@@ -97,7 +95,7 @@ export default function OrganizationOverview({
         ) : (
           <>
             <CardHeader>
-              <CardTitle>Choose an Organization</CardTitle>
+              <CardTitle>Choose an organization</CardTitle>
               <CardDescription>
                 Select or create an organization to view its details and
                 reindeer team arrangements. Once chosen, the team positions and
@@ -114,7 +112,7 @@ export default function OrganizationOverview({
                   setModalState({ isOpen: true, organizationData: null })
                 }
               >
-                <CirclePlus /> New Organization
+                <CirclePlus /> New organization
               </Button>
               {organizationsData.length > 0 &&
                 availableOrganizations.length > 0 && (

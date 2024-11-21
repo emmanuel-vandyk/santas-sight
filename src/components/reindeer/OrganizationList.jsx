@@ -66,13 +66,13 @@ export default function OrganizationList({
   return (
     <Card className="h-full flex flex-col justify-evenly">
       <CardHeader>
-        <CardTitle>Organizations Management</CardTitle>
+        <CardTitle>Organizations management</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
         <div className="flex flex-col gap-2">
           <Input
             type="text"
-            placeholder="Filter Organization names..."
+            placeholder="Filter organization names..."
             value={filter}
             onChange={(e) => {
               setFilter(e.target.value);
@@ -119,7 +119,7 @@ export default function OrganizationList({
                     <AlertDialogDescription>
                       This action cannot be undone. This will permanently delete
                       these organizations and remove them from Santa&apos;s
-                      Workshop
+                      workshop
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
@@ -233,7 +233,7 @@ export default function OrganizationList({
                           <AlertDialogDescription>
                             This action cannot be undone. This will permanently
                             delete {organization.name} and remove it from
-                            Santa&apos;s Workshop.
+                            Santa&apos;s workshop.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>

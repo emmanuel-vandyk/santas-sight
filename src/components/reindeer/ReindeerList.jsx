@@ -252,7 +252,7 @@ export default function ReindeerList({
                             ))}
                         </>
                       ) : (
-                        <Badge variant="destructive">Not Available</Badge>
+                        <Badge variant="destructive">Not available</Badge>
                       )}
                     </div>
                     <div className="flex justify-center">
@@ -294,7 +294,7 @@ export default function ReindeerList({
                             <AlertDialogDescription>
                               This action cannot be undone. This will
                               permanently delete {reindeer.name} and remove it
-                              from Santa&apos;s Workshop.
+                              from Santa&apos;s workshop.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>

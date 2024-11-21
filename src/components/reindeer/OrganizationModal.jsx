@@ -79,11 +79,11 @@ export default function OrganizationModal({
   useEffect(() => {
     const sortedReindeers = [...reindeersData].sort((a, b) => {
       const aScore =
-        a.skills.find((s) => s.skill === "Night Vision").value +
-        a.skills.find((s) => s.skill === "Climate Adaptability").value;
+        a.skills.find((s) => s.skill === "Night vision").value +
+        a.skills.find((s) => s.skill === "Climate adaptability").value;
       const bScore =
-        b.skills.find((s) => s.skill === "Night Vision").value +
-        b.skills.find((s) => s.skill === "Climate Adaptability").value;
+        b.skills.find((s) => s.skill === "Night vision").value +
+        b.skills.find((s) => s.skill === "Climate adaptability").value;
       return bScore - aScore;
     });
     setBestReindeers(sortedReindeers.slice(0, 6));
@@ -146,18 +146,18 @@ export default function OrganizationModal({
           <DialogHeader>
             <DialogTitle className="flex items-center justify-center text-2xl font-bold text-red-600">
               <span className="relative">
-                {organizationData ? "Edit Organization" : "New Organization"}
+                {organizationData ? "Edit organization" : "New organization"}
                 <img
                   src={santahat}
-                  alt="Santa Hat"
+                  alt="Santa hat"
                   className="absolute -top-11 -left-2 w-12 h-12"
                 />
               </span>
             </DialogTitle>
             <DialogDescription className="text-center text-green-700">
               {organizationData
-                ? "Edit the details of the Organization"
-                : "Add a new Reindeer Organization to Santa's workshop"}
+                ? "Edit the details of the organization"
+                : "Add a new reindeer organization to Santa's workshop"}
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={onSubmitForm} className="space-y-6">
@@ -217,7 +217,7 @@ export default function OrganizationModal({
                 <CardContent>
                   <div className="flex flex-col gap-5">
                     <h3 className="ml-5 text-center font-semibold">
-                      Select Reindeers 🦌
+                      Select reindeers 🦌
                     </h3>
                     <div className="grid grid-cols-2 gap-5 place-items-center md:grid-cols-3">
                       {positions.map((position, index) => (

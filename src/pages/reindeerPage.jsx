@@ -8,7 +8,7 @@ import {
 import SantaChristmasSpinner from "@/components/global/spinner";
 import OrganizationOverview from "@/components/reindeer/OrganizationOverview";
 import OrganizationModal from "@/components/reindeer/OrganizationModal";
-import { WeatherCard } from "@/components/reindeer/WeatherCard";
+// import { WeatherCard } from "@/components/reindeer/WeatherCard";
 import ReindeerList from "@/components/reindeer/ReindeerList";
 import OrganizationList from "@/components/reindeer/OrganizationList";
 import {
@@ -17,6 +17,7 @@ import {
   useAddReindeersOrganization,
   useUpdateCheckedReindeerOrganizations,
 } from "@/services/reindeer/organizationapi";
+import { RoughNotation } from "react-rough-notation";
 
 export const ReindeerPage = () => {
   const {
@@ -80,7 +81,21 @@ export const ReindeerPage = () => {
     <>
       <section>
         <h1 className="text-4xl font-bold text-red-600 text-center mb-8">
-          Reindeer Setup
+        <div className="relative inline-block">
+          <span className="relative z-10">Reindeer Setup</span>
+          <RoughNotation
+            type="underline"
+            show={true}
+            strokeWidth={3}
+            iterations={2}
+            animationDuration={5000}
+            color="green"
+            multiline={true}
+            className="absolute left-0 right-0 bottom-0"
+          >
+            <span className="invisible">Reindeer Setup</span>
+          </RoughNotation>
+        </div>
         </h1>
         <div className="flex flex-col gap-5 sm:p-8">
           {/* <WeatherCard /> */}
