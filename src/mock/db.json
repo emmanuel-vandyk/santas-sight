@@ -1,0 +1,384 @@
+{
+  "elves": [
+    {
+      "id": "1",
+      "name": "Arwen Vargas",
+      "height": "30",
+      "age": "22",
+      "address": "123 Rivendell St, Middle Earth",
+      "mail": "arwen@example.com",
+      "isDeleted": true
+    },
+    {
+      "id": "2",
+      "name": "Gimli",
+      "height": "18",
+      "age": "35",
+      "address": "456 Iron Hills Rd, Middle Earth",
+      "mail": "gimli@example.com",
+      "isDeleted": false
+    },
+    {
+      "id": "3",
+      "name": "Elrond",
+      "height": "27",
+      "age": "45",
+      "address": "789 Rivendell St, Middle Earth",
+      "mail": "elrond@example.com",
+      "isDeleted": true
+    },
+    {
+      "id": "4",
+      "name": "Boromir",
+      "height": "24",
+      "age": "32",
+      "address": "321 Gondor Way, Middle Earth",
+      "mail": "boromir@example.com",
+      "isDeleted": false
+    },
+    {
+      "id": "5",
+      "name": "Faramir",
+      "height": "23",
+      "age": "29",
+      "address": "654 Gondor Way, Middle Earth",
+      "mail": "faramir@example.com",
+      "isDeleted": false
+    },
+    {
+      "id": "6",
+      "name": "Frodoaa",
+      "height": "15",
+      "age": "33",
+      "address": "987 Shire Ln, Middle Earth",
+      "mail": "frodo@example.com",
+      "isDeleted": false
+    },
+    {
+      "id": "85",
+      "name": "Karen Backend",
+      "height": "34",
+      "age": "22",
+      "address": "Panama",
+      "mail": "r@r.com",
+      "isDeleted": false
+    },
+    {
+      "id": "23",
+      "name": "Luis",
+      "height": "34",
+      "age": "32",
+      "address": "Mexico, Chapas",
+      "mail": "luis@luis.com",
+      "isDeleted": false
+    },
+    {
+      "id": "66",
+      "name": "Roberto Vargas",
+      "height": "250",
+      "age": "22",
+      "address": "Panama, Ciudad de Panama",
+      "mail": "roberto@gmail.com",
+      "isDeleted": false
+    },
+    {
+      "id": "64",
+      "name": "Emmanuel Vasquez",
+      "height": "1.56",
+      "age": "34",
+      "address": "Panama",
+      "mail": "r@r.com",
+      "isDeleted": false
+    },
+    {
+      "id": "22",
+      "name": "Roberto Vargas",
+      "height": "1.34",
+      "age": "34",
+      "address": "Calle 50",
+      "mail": "roberto@gmail.com",
+      "isDeleted": false
+    }
+  ],
+  "reindeers": [
+    {
+      "id": "2",
+      "name": "Dasher",
+      "skills": [
+        {
+          "skill": "Speed",
+          "value": 10
+        },
+        {
+          "skill": "Stamina",
+          "value": 8
+        },
+        {
+          "skill": "Maneuverability",
+          "value": 8
+        },
+        {
+          "skill": "Night vision",
+          "value": 6
+        },
+        {
+          "skill": "Strength",
+          "value": 7
+        },
+        {
+          "skill": "Climate adaptability",
+          "value": 7
+        },
+        {
+          "skill": "Teamwork",
+          "value": 6
+        },
+        {
+          "skill": "Navigation intelligence",
+          "value": 5
+        }
+      ],
+      "type": "trainee",
+      "available": true
+    },
+    {
+      "id": "6",
+      "name": "Cupid",
+      "skills": [
+        {
+          "skill": "Speed",
+          "value": 8
+        },
+        {
+          "skill": "Stamina",
+          "value": 8
+        },
+        {
+          "skill": "Maneuverability",
+          "value": 6
+        },
+        {
+          "skill": "Night vision",
+          "value": 5
+        },
+        {
+          "skill": "Strength",
+          "value": 9
+        },
+        {
+          "skill": "Climate adaptability",
+          "value": 7
+        },
+        {
+          "skill": "Teamwork",
+          "value": 6
+        },
+        {
+          "skill": "Navigation intelligence",
+          "value": 6
+        }
+      ],
+      "type": "junior",
+      "available": true
+    },
+    {
+      "id": "64",
+      "name": "Roberto",
+      "type": "master",
+      "skills": [
+        {
+          "skill": "Speed",
+          "value": 10
+        },
+        {
+          "skill": "Stamina",
+          "value": 10
+        },
+        {
+          "skill": "Maneuverability",
+          "value": 10
+        },
+        {
+          "skill": "Night vision",
+          "value": 10
+        },
+        {
+          "skill": "Strength",
+          "value": 10
+        },
+        {
+          "skill": "Climate adaptability",
+          "value": 10
+        },
+        {
+          "skill": "Teamwork",
+          "value": 10
+        },
+        {
+          "skill": "Navigation intelligence",
+          "value": 10
+        }
+      ],
+      "available": true
+    },
+    {
+      "id": "84",
+      "name": "Emmanuel",
+      "type": "junior",
+      "skills": [
+        {
+          "skill": "Speed",
+          "value": 9
+        },
+        {
+          "skill": "Stamina",
+          "value": 10
+        },
+        {
+          "skill": "Maneuverability",
+          "value": 10
+        },
+        {
+          "skill": "Night vision",
+          "value": 10
+        },
+        {
+          "skill": "Strength",
+          "value": 10
+        },
+        {
+          "skill": "Climate adaptability",
+          "value": 10
+        },
+        {
+          "skill": "Teamwork",
+          "value": 10
+        },
+        {
+          "skill": "Navigation intelligence",
+          "value": 10
+        }
+      ],
+      "available": true
+    },
+    {
+      "id": "76",
+      "name": "Dancer",
+      "type": "trainee",
+      "skills": [
+        {
+          "skill": "Speed",
+          "value": 5
+        },
+        {
+          "skill": "Stamina",
+          "value": 10
+        },
+        {
+          "skill": "Maneuverability",
+          "value": 7
+        },
+        {
+          "skill": "Night vision",
+          "value": 8
+        },
+        {
+          "skill": "Strength",
+          "value": 8
+        },
+        {
+          "skill": "Climate adaptability",
+          "value": 10
+        },
+        {
+          "skill": "Teamwork",
+          "value": 10
+        },
+        {
+          "skill": "Navigation intelligence",
+          "value": 10
+        }
+      ],
+      "available": true
+    },
+    {
+      "id": "75",
+      "name": "Rudolph",
+      "type": "master",
+      "skills": [
+        {
+          "skill": "Speed",
+          "value": 7
+        },
+        {
+          "skill": "Stamina",
+          "value": 4
+        },
+        {
+          "skill": "Maneuverability",
+          "value": 8
+        },
+        {
+          "skill": "Night vision",
+          "value": 10
+        },
+        {
+          "skill": "Strength",
+          "value": 7
+        },
+        {
+          "skill": "Climate adaptability",
+          "value": 10
+        },
+        {
+          "skill": "Teamwork",
+          "value": 6
+        },
+        {
+          "skill": "Navigation intelligence",
+          "value": 4
+        }
+      ],
+      "available": true
+    }
+  ],
+  "reindeerOrganizations": [
+    {
+      "id": "6",
+      "name": "Speed Team",
+      "positions": [
+        {
+          "position": 1,
+          "reindeer": "84"
+        },
+        {
+          "position": 2,
+          "reindeer": "2"
+        },
+        {
+          "position": 3,
+          "reindeer": "76"
+        },
+        {
+          "position": 4,
+          "reindeer": "64"
+        },
+        {
+          "position": 5,
+          "reindeer": "75"
+        },
+        {
+          "position": 6,
+          "reindeer": "6"
+        }
+      ],
+      "isSelected": false,
+      "isAvailable": true
+    }
+  ],
+  "santaroutes": [
+    {
+      "locations": []
+    }    
+  ]
+}
