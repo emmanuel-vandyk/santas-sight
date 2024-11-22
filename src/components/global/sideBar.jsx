@@ -9,6 +9,7 @@ import {
   ChristmasElf,
   ChristmasSnowflake,
   ChristmasLogout,
+  Route,
 } from "@/components/global/iconsChristmas";
 import { SnowDecoration } from "@/components/global/snowDecoration";
 import useMediaQuery from "@/hooks/useMediaQuery";
@@ -24,7 +25,7 @@ const items = [
   {
     title: "Santa's Routes",
     url: "/santaroutes",
-    icon: ChristmasSnowflake,
+    icon: Route,
   },
   {
     title: "Reindeer Setup",

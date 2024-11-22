@@ -20,10 +20,10 @@ export default function SearchAddress({ onSearch }) {
                 placeholder="Search for a location"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="flex-grow rounded-full"
+                className="flex-grow rounded-full border-2 border-green-700 p-2"
             />
-            <Button type="submit" variant="outline" className="rounded-full p-2">
-                <SearchIcon className="h-4 w-4 hover:bg-green-50" />
+            <Button type="submit" className="rounded-full p-2 bg-green-700 text-zinc-800 hover:bg-red-500 hover:scale-110">
+                <SearchIcon className="h-4 w-4 text-white" />
             </Button>
         </form>
     );

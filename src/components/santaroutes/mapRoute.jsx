@@ -32,17 +32,24 @@ ChangeView.propTypes = {
 export default function MapRoute({ currentRoute, routeCoordinates, northPole }) {
   const mapRef = useRef(null);
 
+  useEffect(() => {
+    if (mapRef.current) {
+      mapRef.current.setView([northPole.lat, northPole.lng], 5);
+    }
+  }, [northPole]);
+
   const bounds = currentRoute 
     ? L.latLngBounds([northPole, [parseFloat(currentRoute.lat), parseFloat(currentRoute.lng)]])
     : null;
 
   return (
-    <div className='shadow-lg shadow-zinc-500'>
+    <div className='shadow-lg shadow-zinc-500 rounded-xl overflow-hidden'>
       <MapContainer
         center={[northPole.lat, northPole.lng]}
-        zoom={3}
-        style={{ height: '70vh', width: '100%', borderRadius: '20px' }}
+        zoom={5}
+        style={{ height: '50vh', width: '100%', borderRadius: '10px' }}
         ref={mapRef}
+        className="rounded-3xl"
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -90,4 +97,3 @@ MapRoute.propTypes = {
     name: PropTypes.string
   }).isRequired
 };
-

@@ -4,12 +4,13 @@ import SearchAddress from '@/components/santaroutes/searchAddress';
 import AddressHistory from '@/components/santaroutes/addressHistory';
 import { searchLocation, saveLocation, getSearchHistory, getRoute, deleteLocation } from '@/services/santaroutes/santaroutes';
 import { UnderlineTitle } from '@/components/global/underlineTitle';
+import { useToast } from '@/hooks/useToast';
 
-// North Pole, Yukon, Canada (approximate coordinates)
-const NORTH_POLE = { lat: 68.5788, lng: -135.9375, name: "North Pole, Yukon, Canada" };
+const NORTH_POLE = { lat: 19.4326, lng: -99.1332, name: "Mexico City, Mexico" };
 
 export const RoutesPage = () => {
   const queryClient = useQueryClient();
+  const toast = useToast();
 
   const { data: searchHistory } = useQuery({
     queryKey: ['searchHistory'],
@@ -29,7 +30,12 @@ export const RoutesPage = () => {
           saveMutation.mutate(location);
           routeMutation.mutate({ start: NORTH_POLE, end: location });
         }
+      } else {
+        toast.error('No location found.');
       }
+    },
+    onError: () => {
+      toast.error('Error searching location.');
     }
   });
 
@@ -37,6 +43,9 @@ export const RoutesPage = () => {
     mutationFn: saveLocation,
     onSuccess: () => {
       queryClient.invalidateQueries('searchHistory');
+    },
+    onError: () => {
+      toast.error('Error saving location.');
     }
   });
 
@@ -44,6 +53,10 @@ export const RoutesPage = () => {
     mutationFn: deleteLocation,
     onSuccess: () => {
       queryClient.invalidateQueries('searchHistory');
+      toast.success('Location deleted successfully!');
+    },
+    onError: () => {
+      toast.error('Error deleting location.');
     }
   });
 
@@ -57,7 +70,13 @@ export const RoutesPage = () => {
           start: variables.start,
           end: variables.end
         });
+        toast.success('Route found successfully!');
+      } else {
+        toast.error('No route found.');
       }
+    },
+    onError: () => {
+      toast.error('Error getting route.');
     }
   });
 
@@ -111,22 +130,24 @@ export const RoutesPage = () => {
   const currentRoute = queryClient.getQueryData(['currentRoute']);
 
   return (
-    <div className="flex h-screen overflow-hidden">
-      <div className="flex-1 overflow-auto">
-        <div className="p-4">
-          <h1 className="text-4xl font-bold text-red-700 mb-10 text-center">
-          <UnderlineTitle text="Santa&apos;s Routes" />
-          </h1>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="md:col-span-2">
+    <div className="flex flex-col h-full md:h-screen md:overflow-y-hidden">
+      <div className="px-4 w-full">
+        <h1 className="text-4xl font-bold text-red-700 mb-10 text-center">
+          <UnderlineTitle text="Santa's Routes" />
+        </h1>
+        <div className="flex flex-col space-y-4">
+          <div className="w-full md:w-1/2 self-start">
+            <SearchAddress onSearch={handleSearch} />
+          </div>
+          <div className="flex flex-col lg:flex-row w-full gap-4">
+            <div className="w-full lg:w-3/5">
               <MapRoute 
-                currentRoute={currentRoute?.end} 
+                currentRoute={currentRoute?.end || NORTH_POLE}
                 routeCoordinates={currentRoute?.coordinates}
                 northPole={NORTH_POLE}
               />
             </div>
-            <div className="space-y-4">
-              <SearchAddress onSearch={handleSearch} />
+            <div className="w-full lg:w-2/5">
               <AddressHistory 
                 locations={searchHistory || []} 
                 onRestore={handleRestore}
@@ -139,4 +160,3 @@ export const RoutesPage = () => {
     </div>
   );
 };
-
