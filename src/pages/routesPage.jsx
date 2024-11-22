@@ -46,6 +46,7 @@ export const RoutesPage = () => {
     },
     onError: () => {
       toast.error("Error searching location.");
+      
     },
   });
 
@@ -63,7 +64,9 @@ export const RoutesPage = () => {
     mutationFn: deleteLocation,
     onSuccess: () => {
       queryClient.invalidateQueries("searchHistory");
-      toast.success("Location deleted successfully!");
+      if (deleteMutation.isSuccess) {
+        toast.success("Location deleted successfully!");
+      }
     },
     onError: () => {
       toast.error("Error deleting location.");

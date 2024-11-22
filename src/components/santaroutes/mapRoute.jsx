@@ -47,7 +47,7 @@ export default function MapRoute({ currentRoute, routeCoordinates, northPole }) 
       <MapContainer
         center={[northPole.lat, northPole.lng]}
         zoom={5}
-        style={{ height: '50vh', width: '100%', borderRadius: '10px' }}
+        style={{ height: '75vh', width: '100%', borderRadius: '10px' }}
         ref={mapRef}
         className="rounded-3xl"
       >

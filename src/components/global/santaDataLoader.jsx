@@ -1,4 +1,5 @@
 import SantaChristmasSpinner from "@/components/global/spinner";
+import { ErrorPage } from "@/pages/errorPage";
 
 export function LoadingScreen() {
   return (
@@ -9,5 +10,9 @@ export function LoadingScreen() {
 }
 
 export function ErrorScreen() {
-  return <div>Error fetching</div>;
+  return (
+    <div className="grid place-items-center h-full">
+      <ErrorPage />
+    </div>
+  );
 }
