@@ -100,15 +100,15 @@ export default function Component() {
           </div>
         );
       },
-    },
-    {
+        },
+        {
       accessorKey: "id",
       header: ({ column }) => <p>ID</p>,
       cell: ({ row }) => (
         <div className="text-center font-medium">{row.getValue("id")}</div>
       ),
-    },
-    {
+        },
+        {
       accessorKey: "name",
       header: ({ column }) => (
         <Button
@@ -123,8 +123,8 @@ export default function Component() {
       cell: ({ row }) => (
         <div className="capitalize">{row.getValue("name")}</div>
       ),
-    },
-    {
+        },
+        {
       accessorKey: "height",
       header: ({ column }) => <p className="hidden md:block">Height</p>,
       cell: ({ row }) => (
@@ -132,8 +132,8 @@ export default function Component() {
           {row.getValue("height")}
         </div>
       ),
-    },
-    {
+        },
+        {
       accessorKey: "age",
       header: ({ column }) => <p className="hidden md:block">Age</p>,
       cell: ({ row }) => (
@@ -141,8 +141,8 @@ export default function Component() {
           {row.getValue("age")}
         </div>
       ),
-    },
-    {
+        },
+        {
       accessorKey: "address",
       header: ({ column }) => <p className="hidden md:block">Address</p>,
       cell: ({ row }) => (
@@ -150,8 +150,8 @@ export default function Component() {
           {row.getValue("address")}
         </div>
       ),
-    },
-    {
+        },
+        {
       accessorKey: "mail",
       header: ({ column }) => (
         <Button
@@ -166,22 +166,23 @@ export default function Component() {
       cell: ({ row }) => (
         <div className="lowercase hidden md:block">{row.getValue("mail")}</div>
       ),
-    },
-    {
+        },
+        {
       accessorKey: "status",
       header: ({ column }) => <p className="hidden md:block">Status</p>,
       cell: ({ row }) => (
-        <Badge
-          variant={row.original.isDeleted ? "destructive" : "outline"}
-          className={`hidden md:inline-flex ${
-            !row.original.isDeleted && "bg-green-300"
-          }`}
-        >
-          {row.original.isDeleted ? "Not Available" : "Available"}
-        </Badge>
+        <div className="w-full">
+          <Badge
+            className={`hidden md:inline-flex text-center ${
+              row.original.isDeleted ? "bg-red-500 text-white px-3" : "bg-green-500 text-white px-5"
+            }`}
+          >
+            {row.original.isDeleted ? "Unavailable" : "Available"}
+          </Badge>
+        </div>
       ),
-    },
-    {
+        },
+        {
       id: "actions",
       cell: ({ row }) => {
         const elve = row.original;
