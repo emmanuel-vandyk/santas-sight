@@ -22,7 +22,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Check } from "lucide-react";
+import { BadgeInfo, Check } from "lucide-react";
 import santahat from "@/assets/santahat.svg";
 import { useToast } from "@/hooks/useToast";
 
@@ -156,7 +156,7 @@ export default function OrganizationModal({
       filteredReindeerIDs.length !== new Set(filteredReindeerIDs).size;
 
     isDuplicated &&
-      toast.warning("A reindeer cannot be in more than one position");
+      toast.info("A reindeer cannot be in more than one position");
   }, [reindeersSelected]);
 
   // Function to check if the button should be disabled
@@ -247,9 +247,12 @@ export default function OrganizationModal({
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-col gap-5">
-                    <h3 className="ml-5 text-center font-semibold">
-                      Select reindeers
-                    </h3>
+                    <p
+                      className={`flex text-sm text-muted-foreground gap-2 items-center`}
+                    >
+                      <BadgeInfo size={16} />A reindeer cannot be in more than
+                      one position
+                    </p>
                     <div className="grid grid-cols-2 gap-5 place-items-center md:grid-cols-3">
                       {positions.map((position, index) => (
                         <ReindeerComboBox
