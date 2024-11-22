@@ -344,20 +344,20 @@
   ],
   "reindeerOrganizations": [
     {
-      "id": "56",
-      "name": "Classic Team",
+      "id": "6",
+      "name": "Speed Team",
       "positions": [
         {
           "position": 1,
-          "reindeer": "76"
+          "reindeer": "84"
         },
         {
           "position": 2,
-          "reindeer": "76"
+          "reindeer": "2"
         },
         {
           "position": 3,
-          "reindeer": "84"
+          "reindeer": "76"
         },
         {
           "position": 4,
@@ -365,43 +365,11 @@
         },
         {
           "position": 5,
-          "reindeer": "2"
+          "reindeer": "75"
         },
         {
           "position": 6,
-          "reindeer": "84"
-        }
-      ],
-      "isSelected": false,
-      "isAvailable": true
-    },
-    {
-      "id": "2",
-      "name": "Speedy Team",
-      "positions": [
-        {
-          "position": 1,
-          "reindeer": "84"
-        },
-        {
-          "position": 2,
-          "reindeer": "64"
-        },
-        {
-          "position": 3,
           "reindeer": "6"
-        },
-        {
-          "position": 4,
-          "reindeer": "76"
-        },
-        {
-          "position": 5,
-          "reindeer": "2"
-        },
-        {
-          "position": 6,
-          "reindeer": "76"
         }
       ],
       "isSelected": false,

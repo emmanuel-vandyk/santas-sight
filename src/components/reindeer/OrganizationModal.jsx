@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
 import ReindeerComboBox from "@/components/reindeer/ReindeerComboBox";
 import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -38,6 +37,12 @@ export default function OrganizationModal({
   const [addBestReindeer, setAddBestReindeer] = useState(false);
   const [bestReindeers, setBestReindeers] = useState(null);
   const [initialPositions, setInitialPositions] = useState([]);
+  const [reindeersSelected, setReindeersSelected] = useState(
+    Array.from({ length: 6 }, (_, index) => ({
+      position: index + 1,
+      reindeer: "",
+    }))
+  );
 
   const defaultValues = organizationData || {
     name: "",
@@ -123,6 +128,12 @@ export default function OrganizationModal({
         : allPositionsHaveReindeer,
     });
     setOrganizationView(allPositionsHaveReindeer ? data : null);
+    setReindeersSelected(
+      Array.from({ length: 6 }, (_, index) => ({
+        position: index + 1,
+        reindeer: "",
+      }))
+    );
     toast.success("Organization saved");
     isClose();
     reset();
@@ -135,6 +146,29 @@ export default function OrganizationModal({
       name: reindeer.name,
       position: reindeer.position,
     }));
+
+  useEffect(() => {
+    const filteredReindeerIDs = reindeersSelected
+      .map(({ reindeer }) => reindeer)
+      .filter((reindeerID) => reindeerID !== "");
+
+    const isDuplicated =
+      filteredReindeerIDs.length !== new Set(filteredReindeerIDs).size;
+
+    isDuplicated &&
+      toast.warning("A reindeer cannot be in more than one position");
+  }, [reindeersSelected]);
+
+  // Function to check if the button should be disabled
+  const isButtonDisabled = () => {
+    // // Extracts the reindeer IDs and filters out empty strings
+    const filteredReindeerIDs = reindeersSelected
+      .map(({ reindeer }) => reindeer)
+      .filter((reindeerID) => reindeerID !== "");
+
+    // Returns true if there are duplicates
+    return filteredReindeerIDs.length !== new Set(filteredReindeerIDs).size;
+  };
 
   return (
     <>
@@ -214,7 +248,7 @@ export default function OrganizationModal({
                 <CardContent>
                   <div className="flex flex-col gap-5">
                     <h3 className="ml-5 text-center font-semibold">
-                      Select reindeers 🦌
+                      Select reindeers
                     </h3>
                     <div className="grid grid-cols-2 gap-5 place-items-center md:grid-cols-3">
                       {positions.map((position, index) => (
@@ -222,9 +256,16 @@ export default function OrganizationModal({
                           key={position.position}
                           data={listReindeers}
                           value={position.reindeer}
-                          onChange={(value) =>
-                            setValue(`positions.${index}.reindeer`, value)
-                          }
+                          onChange={(value) => {
+                            setValue(`positions.${index}.reindeer`, value);
+                            setReindeersSelected((positions) =>
+                              positions.map((position) =>
+                                position.position === index + 1
+                                  ? { ...position, reindeer: value.toString() }
+                                  : position
+                              )
+                            );
+                          }}
                         />
                       ))}
                     </div>
@@ -235,6 +276,7 @@ export default function OrganizationModal({
                     <Button
                       type="submit"
                       className=" bg-green-600 hover:bg-green-700 w-full"
+                      disabled={isButtonDisabled()}
                     >
                       <Check /> Save
                     </Button>

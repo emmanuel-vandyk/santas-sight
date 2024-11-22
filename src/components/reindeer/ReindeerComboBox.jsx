@@ -34,6 +34,7 @@ export default function ReindeerComboBox({ data, value, onChange }) {
           aria-expanded={open}
           className="justify-between bg-transparent"
         >
+          🦌
           {value ? (
             data.find((reindeer) => reindeer.id === value)?.name || (
               <SquarePlus className="text-amber-900" />
@@ -51,8 +52,8 @@ export default function ReindeerComboBox({ data, value, onChange }) {
             <CommandGroup>
               {data.map((reindeer) => (
                 <CommandItem
-                  key={reindeer.id}
                   value={reindeer.name}
+                  key={reindeer.id}
                   onSelect={() => handleSelect(reindeer.id)}
                 >
                   {reindeer.name}

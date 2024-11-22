@@ -41,7 +41,7 @@ export default function ReindeerList({
   data: { organizationsData, reindeersData: reindeers },
   addNewReindeer,
   updateReindeer,
-  updateCheckedReindeersOrganization,
+  updateCheckedOrganization,
   setOrganizationView,
 }) {
   const toast = useToast();
@@ -302,7 +302,7 @@ export default function ReindeerList({
                             <AlertDialogAction
                               className="bg-red-600 hover:bg-red-700"
                               onClick={() => {
-                                updateCheckedReindeersOrganization(
+                                updateCheckedOrganization(
                                   findOrganizationsWithReindeer(reindeer.id)
                                 );
                                 setOrganizationView(null);
