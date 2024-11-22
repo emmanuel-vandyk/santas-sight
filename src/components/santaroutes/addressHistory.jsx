@@ -1,10 +1,31 @@
+import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { HistoryIcon, MapPinIcon, TrashIcon, RefreshCw } from 'lucide-react'
 import PropTypes from 'prop-types'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 export default function AddressHistory({ locations, onRestore, onDelete }) {
+  const [locationToDelete, setLocationToDelete] = useState(null)
+
+  const handleDelete = () => {
+    if (locationToDelete) {
+      onDelete(locationToDelete)
+      setLocationToDelete(null)
+    }
+  }
+
   return (
     <Card className="h-100vh md:h-full bg-gradient-to-r from-red-50 to-green-50">
       <CardHeader>
@@ -36,13 +57,32 @@ export default function AddressHistory({ locations, onRestore, onDelete }) {
                 >
                   <RefreshCw className="h-4 w-4 text-green-700  " />
                 </Button>
-                <Button
-                  size="icon"
-                  onClick={() => onDelete(location)}
-                  className="bg-transparent hover:bg-red-100"
-                >
-                  <TrashIcon className="h-4 w-4 text-red-700" />
-                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      size="icon"
+                      onClick={() => setLocationToDelete(location)}
+                      className="bg-transparent hover:bg-red-100"
+                    >
+                      <TrashIcon className="h-4 w-4 text-red-700" />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure you want to delete this route?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete
+                        this route and remove it from Santa&apos;s workshop
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={handleDelete} className="bg-red-500">Delete</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </div>
           ))}
@@ -57,3 +97,4 @@ AddressHistory.propTypes = {
   onRestore: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired
 }
+

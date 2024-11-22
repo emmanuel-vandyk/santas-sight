@@ -1,10 +1,20 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import MapRoute from '@/components/santaroutes/mapRoute';
-import SearchAddress from '@/components/santaroutes/searchAddress';
-import AddressHistory from '@/components/santaroutes/addressHistory';
-import { searchLocation, saveLocation, getSearchHistory, getRoute, deleteLocation } from '@/services/santaroutes/santaroutes';
-import { UnderlineTitle } from '@/components/global/underlineTitle';
-import { useToast } from '@/hooks/useToast';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import MapRoute from "@/components/santaroutes/mapRoute";
+import SearchAddress from "@/components/santaroutes/searchAddress";
+import AddressHistory from "@/components/santaroutes/addressHistory";
+import {
+  searchLocation,
+  saveLocation,
+  getSearchHistory,
+  getRoute,
+  deleteLocation,
+} from "@/services/santaroutes/santaroutes";
+import { UnderlineTitle } from "@/components/global/underlineTitle";
+import { useToast } from "@/hooks/useToast";
+import {
+  LoadingScreen,
+  ErrorScreen,
+} from "@/components/global/santaDataLoader";
 
 const NORTH_POLE = { lat: 19.4326, lng: -99.1332, name: "Mexico City, Mexico" };
 
@@ -13,8 +23,8 @@ export const RoutesPage = () => {
   const toast = useToast();
 
   const { data: searchHistory } = useQuery({
-    queryKey: ['searchHistory'],
-    queryFn: getSearchHistory
+    queryKey: ["searchHistory"],
+    queryFn: getSearchHistory,
   });
 
   const searchMutation = useMutation({
@@ -24,40 +34,40 @@ export const RoutesPage = () => {
         const location = {
           name: data[0].display_name,
           lat: parseFloat(data[0].lat),
-          lng: parseFloat(data[0].lon)
+          lng: parseFloat(data[0].lon),
         };
         if (!isNaN(location.lat) && !isNaN(location.lng)) {
           saveMutation.mutate(location);
           routeMutation.mutate({ start: NORTH_POLE, end: location });
         }
       } else {
-        toast.error('No location found.');
+        toast.error("No location found.");
       }
     },
     onError: () => {
-      toast.error('Error searching location.');
-    }
+      toast.error("Error searching location.");
+    },
   });
 
   const saveMutation = useMutation({
     mutationFn: saveLocation,
     onSuccess: () => {
-      queryClient.invalidateQueries('searchHistory');
+      queryClient.invalidateQueries("searchHistory");
     },
     onError: () => {
-      toast.error('Error saving location.');
-    }
+      toast.error("Error saving location.");
+    },
   });
 
   const deleteMutation = useMutation({
     mutationFn: deleteLocation,
     onSuccess: () => {
-      queryClient.invalidateQueries('searchHistory');
-      toast.success('Location deleted successfully!');
+      queryClient.invalidateQueries("searchHistory");
+      toast.success("Location deleted successfully!");
     },
     onError: () => {
-      toast.error('Error deleting location.');
-    }
+      toast.error("Error deleting location.");
+    },
   });
 
   const routeMutation = useMutation({
@@ -65,19 +75,19 @@ export const RoutesPage = () => {
     onSuccess: (data, variables) => {
       if (data && data.routes && data.routes[0]) {
         const coordinates = decodePolyline(data.routes[0].geometry);
-        queryClient.setQueryData(['currentRoute'], { 
+        queryClient.setQueryData(["currentRoute"], {
           coordinates,
           start: variables.start,
-          end: variables.end
+          end: variables.end,
         });
-        toast.success('Route found successfully!');
+        toast.success("Route found successfully!");
       } else {
-        toast.error('No route found.');
+        toast.error("No route found.");
       }
     },
     onError: () => {
-      toast.error('Error getting route.');
-    }
+      toast.error("Error getting route.");
+    },
   });
 
   const handleSearch = (query) => {
@@ -88,7 +98,7 @@ export const RoutesPage = () => {
     const parsedLocation = {
       ...location,
       lat: parseFloat(location.lat),
-      lng: parseFloat(location.lng)
+      lng: parseFloat(location.lng),
     };
     if (!isNaN(parsedLocation.lat) && !isNaN(parsedLocation.lng)) {
       routeMutation.mutate({ start: NORTH_POLE, end: parsedLocation });
@@ -101,17 +111,21 @@ export const RoutesPage = () => {
 
   function decodePolyline(encoded) {
     const poly = [];
-    let index = 0, len = encoded.length;
-    let lat = 0, lng = 0;
+    let index = 0,
+      len = encoded.length;
+    let lat = 0,
+      lng = 0;
 
     while (index < len) {
-      let b, shift = 0, result = 0;
+      let b,
+        shift = 0,
+        result = 0;
       do {
         b = encoded.charCodeAt(index++) - 63;
         result |= (b & 0x1f) << shift;
         shift += 5;
       } while (b >= 0x20);
-      const dlat = ((result & 1) ? ~(result >> 1) : (result >> 1));
+      const dlat = result & 1 ? ~(result >> 1) : result >> 1;
       lat += dlat;
       shift = 0;
       result = 0;
@@ -120,14 +134,32 @@ export const RoutesPage = () => {
         result |= (b & 0x1f) << shift;
         shift += 5;
       } while (b >= 0x20);
-      const dlng = ((result & 1) ? ~(result >> 1) : (result >> 1));
+      const dlng = result & 1 ? ~(result >> 1) : result >> 1;
       lng += dlng;
       poly.push([lat / 1e5, lng / 1e5]);
     }
     return poly;
   }
 
-  const currentRoute = queryClient.getQueryData(['currentRoute']);
+  const currentRoute = queryClient.getQueryData(["currentRoute"]);
+
+  if (
+    searchMutation.isLoading ||
+    saveMutation.isLoading ||
+    deleteMutation.isLoading ||
+    routeMutation.isLoading
+  ) {
+    return <LoadingScreen />;
+  }
+
+  if (
+    searchMutation.isError ||
+    saveMutation.isError ||
+    deleteMutation.isError ||
+    routeMutation.isError
+  ) {
+    return <ErrorScreen />;
+  }
 
   return (
     <div className="flex flex-col h-full md:h-screen md:overflow-y-hidden">
@@ -141,15 +173,15 @@ export const RoutesPage = () => {
           </div>
           <div className="flex flex-col lg:flex-row w-full gap-4">
             <div className="w-full lg:w-3/5">
-              <MapRoute 
+              <MapRoute
                 currentRoute={currentRoute?.end || NORTH_POLE}
                 routeCoordinates={currentRoute?.coordinates}
                 northPole={NORTH_POLE}
               />
             </div>
             <div className="w-full lg:w-2/5">
-              <AddressHistory 
-                locations={searchHistory || []} 
+              <AddressHistory
+                locations={searchHistory || []}
                 onRestore={handleRestore}
                 onDelete={handleDelete}
               />
