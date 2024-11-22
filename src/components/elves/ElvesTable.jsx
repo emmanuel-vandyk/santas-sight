@@ -14,7 +14,6 @@ import {
   RotateCcw,
   Trash2,
 } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -41,7 +40,10 @@ import {
   useLogicalDeleteElves,
   useRestoreElves,
 } from "@/services/elvescrud/elvesapi";
-import SantaChristmasSpinner from "@/components/global/spinner";
+import {
+  LoadingScreen,
+  ErrorScreen,
+} from "@/components/global/santaDataLoader";
 import ElvesAvatar from "@/components/elves/ElvesAvatar";
 import { useToast } from "@/hooks/useToast";
 
@@ -323,15 +325,8 @@ export default function Component() {
     setIsModalOpen(true);
   };
 
-  if (isLoading) {
-    return (
-      <div className="grid place-items-center h-full">
-        <SantaChristmasSpinner />
-      </div>
-    );
-  }
-
-  if (isError) return <div>Error fetching elves</div>;
+  if (isLoading) return <LoadingScreen />;
+  if (isError) return <ErrorScreen />;
 
   const selectedRows = table.getFilteredSelectedRowModel().rows;
   const hasSelectedDeletedElves = selectedRows.some(

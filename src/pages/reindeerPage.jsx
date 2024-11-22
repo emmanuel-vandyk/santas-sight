@@ -5,7 +5,10 @@ import {
   useAddReindeer,
   useUpdateReindeer,
 } from "@/services/reindeer/reindeerapi";
-import SantaChristmasSpinner from "@/components/global/spinner";
+import {
+  LoadingScreen,
+  ErrorScreen,
+} from "@/components/global/santaDataLoader";
 import OrganizationOverview from "@/components/reindeer/OrganizationOverview";
 import OrganizationModal from "@/components/reindeer/OrganizationModal";
 // import { WeatherCard } from "@/components/reindeer/WeatherCard";
@@ -20,58 +23,46 @@ import {
 import { UnderlineTitle } from "@/components/global/underlineTitle";
 
 export const ReindeerPage = () => {
+  // Fetching data and states for reindeers.
   const {
     data: reindeersData,
     isLoading: isLoadingReindeers,
     isError: isErrorReindeers,
   } = useReindeers();
+  // Fetching data and states for organizations.
   const {
     data: organizationsData,
     isLoading: isLoadingOrganizations,
     isError: isErrorOrganizations,
   } = useReindeersOrganizations();
+
+  //State for tracking the currently selected organization view
+  const [organizationView, setOrganizationView] = React.useState(null);
+
+  // Mutations for adding and updating reindeer data.
   const addReindeerMutation = useAddReindeer();
-  const addReindeersOrganizationMutation = useAddReindeersOrganization();
   const updateReindeerMutation = useUpdateReindeer();
-  const updateReindeersOrganizationMutation = useUpdateReindeersOrganization();
-  const updateCheckedReindeerOrganizations =
-    useUpdateCheckedReindeerOrganizations();
+
+  // Mutations for managing organization data.
+  const addOrganizationMutation = useAddReindeersOrganization();
+  const updateOrganizationMutation = useUpdateReindeersOrganization();
+  const updateCheckedOrganizations = useUpdateCheckedReindeerOrganizations();
+
+  // State for controlling the modal's visibility and content.
   const [modalState, setModalState] = React.useState({
     isOpen: false,
     organizationData: null,
   });
-  const [organizationView, setOrganizationView] = React.useState(null);
 
-  const addNewReindeer = async (newReindeer) => {
-    await addReindeerMutation.mutateAsync(newReindeer);
+  // Generic function to handle async mutation calls.
+  const hadleMutation = async (mutation, data) => {
+    await mutation.mutateAsync(data);
   };
 
-  const addNewReindeersOrganization = async (newOrganization) => {
-    await addReindeersOrganizationMutation.mutateAsync(newOrganization);
-  };
-
-  const updateReindeer = async (reindeerUpdated) => {
-    await updateReindeerMutation.mutateAsync(reindeerUpdated);
-  };
-
-  const updateReindeersOrganization = async (organizationUpdated) => {
-    await updateReindeersOrganizationMutation.mutateAsync(organizationUpdated);
-  };
-
-  const updateCheckedReindeersOrganization = async (organizationsUpdated) => {
-    await updateCheckedReindeerOrganizations.mutateAsync(organizationsUpdated);
-  };
-
-  if (isLoadingReindeers || isLoadingOrganizations) {
-    return (
-      <div className="grid place-items-center h-full">
-        <SantaChristmasSpinner />
-      </div>
-    );
-  }
-
-  if (isErrorReindeers || isErrorOrganizations)
-    return <div>Error fetching</div>;
+  // Display the loading screen if any data is still loading.
+  if (isLoadingReindeers || isLoadingOrganizations) return <LoadingScreen />;
+  // Display the error screen if there was an issue fetching data.
+  if (isErrorReindeers || isErrorOrganizations) return <ErrorScreen />;
 
   return (
     <>
@@ -89,8 +80,8 @@ export const ReindeerPage = () => {
                 setOrganizationView,
               }}
               setModalState={setModalState}
-              updateCheckedReindeersOrganization={
-                updateCheckedReindeersOrganization
+              updateCheckedOrganization={(data) =>
+                hadleMutation(updateCheckedOrganizations, data)
               }
             />
             <Tabs defaultValue="organization">
@@ -111,10 +102,14 @@ export const ReindeerPage = () => {
               <TabsContent value="reindeers">
                 <ReindeerList
                   data={{ organizationsData, reindeersData }}
-                  addNewReindeer={addNewReindeer}
-                  updateReindeer={updateReindeer}
-                  updateCheckedReindeersOrganization={
-                    updateCheckedReindeersOrganization
+                  addNewReindeer={(data) =>
+                    hadleMutation(addReindeerMutation, data)
+                  }
+                  updateReindeer={(data) =>
+                    hadleMutation(updateReindeerMutation, data)
+                  }
+                  updateCheckedOrganization={(data) =>
+                    hadleMutation(updateCheckedOrganizations, data)
                   }
                   setOrganizationView={setOrganizationView}
                 />
@@ -128,10 +123,13 @@ export const ReindeerPage = () => {
         isClose={() => {
           setModalState({ isOpen: false, organizationData: null });
         }}
-        onSubmit={
-          modalState.organizationData
-            ? updateReindeersOrganization
-            : addNewReindeersOrganization
+        onSubmit={(data) =>
+          hadleMutation(
+            modalState.organizationData
+              ? updateOrganizationMutation
+              : addOrganizationMutation,
+            data
+          )
         }
         data={{ organizationData: modalState.organizationData, reindeersData }}
         setOrganizationView={setOrganizationView}

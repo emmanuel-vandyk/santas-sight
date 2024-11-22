@@ -16,7 +16,7 @@ export default function OrganizationOverview({
   data: { organizationsData, reindeersData },
   organizationViewState: { organizationView, setOrganizationView },
   setModalState,
-  updateCheckedReindeersOrganization,
+  updateCheckedOrganization,
 }) {
   // Filter to get only available organizations
   const availableOrganizations = organizationsData.filter(
@@ -45,7 +45,7 @@ export default function OrganizationOverview({
       (organization) => organization.isSelected === true
     );
     // Update Organization data and display the new selection in the preview
-    updateCheckedReindeersOrganization(updatedOrganizations);
+    updateCheckedOrganization(updatedOrganizations);
     setOrganizationView(organizationSelected);
   };
 
