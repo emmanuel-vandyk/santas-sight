@@ -2,8 +2,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import MapRoute from '@/components/santaroutes/mapRoute';
 import SearchAddress from '@/components/santaroutes/searchAddress';
 import AddressHistory from '@/components/santaroutes/addressHistory';
-import { GiftIcon } from 'lucide-react';
 import { searchLocation, saveLocation, getSearchHistory, getRoute, deleteLocation } from '@/services/santaroutes/santaroutes';
+import { UnderlineTitle } from '@/components/global/underlineTitle';
 
 // North Pole, Yukon, Canada (approximate coordinates)
 const NORTH_POLE = { lat: 68.5788, lng: -135.9375, name: "North Pole, Yukon, Canada" };
@@ -114,8 +114,8 @@ export const RoutesPage = () => {
     <div className="flex h-screen overflow-hidden">
       <div className="flex-1 overflow-auto">
         <div className="p-4">
-          <h1 className="text-4xl font-bold text-red-700 mb-4 text-center">
-            Santa&apos;s Routes
+          <h1 className="text-4xl font-bold text-red-700 mb-10 text-center">
+          <UnderlineTitle text="Santa&apos;s Routes" />
           </h1>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="md:col-span-2">

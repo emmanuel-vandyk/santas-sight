@@ -14,7 +14,7 @@ export default function SearchAddress({ onSearch }) {
     };
 
     return (
-        <form onSubmit={handleSearch} className="flex space-x-2">
+        <form onSubmit={handleSearch} className="flex space-x-2 mt-12 md:mt-0">
             <Input
                 type="text"
                 placeholder="Search for a location"
@@ -23,7 +23,7 @@ export default function SearchAddress({ onSearch }) {
                 className="flex-grow rounded-full"
             />
             <Button type="submit" variant="outline" className="rounded-full p-2">
-                <SearchIcon className="h-4 w-4" />
+                <SearchIcon className="h-4 w-4 hover:bg-green-50" />
             </Button>
         </form>
     );

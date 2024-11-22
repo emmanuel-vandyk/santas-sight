@@ -37,41 +37,43 @@ export default function MapRoute({ currentRoute, routeCoordinates, northPole }) 
     : null;
 
   return (
-    <MapContainer
-      center={[northPole.lat, northPole.lng]}
-      zoom={3}
-      style={{ height: '70vh', width: '100%', borderRadius: '20px' }}
-      ref={mapRef}
-    >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      />
-      <Marker position={[northPole.lat, northPole.lng]} icon={christmasIcon}>
-        <Popup>{northPole.name} - Santa&apos;s Workshop</Popup>
-      </Marker>
-      {currentRoute && (
-        <Marker position={[parseFloat(currentRoute.lat), parseFloat(currentRoute.lng)]} icon={christmasIcon}>
-          <Popup>
-            <div className="flex items-center">
-              <GiftIcon className="mr-2 text-red-500" />
-              {currentRoute.name}
-            </div>
-          </Popup>
+    <div className='shadow-lg shadow-zinc-500'>
+      <MapContainer
+        center={[northPole.lat, northPole.lng]}
+        zoom={3}
+        style={{ height: '70vh', width: '100%', borderRadius: '20px' }}
+        ref={mapRef}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        <Marker position={[northPole.lat, northPole.lng]} icon={christmasIcon}>
+          <Popup>{northPole.name} - Santa&apos;s Workshop</Popup>
         </Marker>
-      )}
-      {routeCoordinates && (
-        <Polyline
-          positions={routeCoordinates}
-          color="green"
-          weight={3}
-          opacity={0.7}
-        >
-          <Popup>Route from {northPole.name} to {currentRoute?.name}</Popup>
-        </Polyline>
-      )}
-      <ChangeView bounds={bounds} />
-    </MapContainer>
+        {currentRoute && (
+          <Marker position={[parseFloat(currentRoute.lat), parseFloat(currentRoute.lng)]} icon={christmasIcon}>
+            <Popup>
+              <div className="flex items-center">
+                <GiftIcon className="mr-2 text-red-500" />
+                {currentRoute.name}
+              </div>
+            </Popup>
+          </Marker>
+        )}
+        {routeCoordinates && (
+          <Polyline
+            positions={routeCoordinates}
+            color="green"
+            weight={3}
+            opacity={0.7}
+          >
+            <Popup>Route from {northPole.name} to {currentRoute?.name}</Popup>
+          </Polyline>
+        )}
+        <ChangeView bounds={bounds} />
+      </MapContainer>
+    </div>
   );
 }
 

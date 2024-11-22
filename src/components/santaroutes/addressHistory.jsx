@@ -5,14 +5,14 @@ import PropTypes from 'prop-types'
 
 export default function AddressHistory({ locations, onRestore, onDelete }) {
   return (
-    <div className="bg-white p-4 rounded-lg shadow">
+    <div className="p-4 rounded-lg shadow-lg shadow-zinc-500 bg-gradient-to-b from-red-100 to-green-100">
       <h2 className="text-xl font-semibold mb-4 flex items-center text-green-800">
         <HistoryIcon className="mr-2" />
         Santa&apos;s Previous Stops
       </h2>
       <ScrollArea className="h-64">
         {locations.map((location, index) => (
-          <div key={index} className="flex items-center justify-between mb-2 p-2 bg-red-50 rounded">
+          <div key={index} className="flex items-center justify-between mb-2 p-2 bg-white-50 rounded shadow-md ">
             <div className="flex items-center flex-grow mr-2">
               <MapPinIcon className="mr-2 text-red-500" />
               <span className="text-sm truncate">
@@ -26,19 +26,17 @@ export default function AddressHistory({ locations, onRestore, onDelete }) {
               </span>
             </div>
             <div className="flex items-center">
-              <Button 
-                variant="outline" 
+              <Button  
                 size="sm"
                 onClick={() => onRestore(location)}
-                className="mr-2 p-2"
+                className="mr-2 p-2 text-green-600 bg-transparent hover:bg-green-100"
               >
                 <RefreshCw className="h-4 w-4" />
               </Button>
               <Button
-                variant="outline"
                 size="sm"
                 onClick={() => onDelete(location)}
-                className="p-2"
+                className="p-2 text-red-600 bg-transparent hover:bg-red-100"
               >
                 <TrashIcon className="h-4 w-4" />
               </Button>
