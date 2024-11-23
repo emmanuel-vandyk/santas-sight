@@ -3,6 +3,7 @@
 import { AlignCenter, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
+import { Cookie } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,6 +33,11 @@ const items = [
     title: "Elve Management",
     url: "/elves",
     icon: ChristmasElf,
+  },
+  {
+    title: "Santa's Calories Counter",
+    url: "/calories",
+    icon: Cookie,
   },
   {
     title: "Settings",

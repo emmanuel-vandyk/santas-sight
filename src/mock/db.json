@@ -375,5 +375,21 @@
       "isSelected": false,
       "isAvailable": true
     }
+  ],
+  "cookiesForSanta": [
+    {
+      "id": "1",
+      "name": "Chocolate Cookie",
+      "calories": 200,
+      "quantity": 0,
+      "totalCalories": 0
+    },
+    {
+      "id": "2",
+      "name": "Sugar Cookie",
+      "calories": 150,
+      "quantity": 0,
+      "totalCalories": 0
+    }
   ]
 }
