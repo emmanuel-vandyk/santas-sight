@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
+import { toast as customToast } from "react-toastify";
 import ReindeerComboBox from "@/components/reindeer/ReindeerComboBox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,6 +26,7 @@ import {
 import { BadgeInfo, Check } from "lucide-react";
 import santahat from "@/assets/santahat.svg";
 import { useToast } from "@/hooks/useToast";
+import { ChristmasSanta } from "@/components/global/iconsChristmas";
 
 export default function OrganizationModal({
   isOpen,
@@ -33,7 +35,7 @@ export default function OrganizationModal({
   data: { organizationData, reindeersData },
   setOrganizationView,
 }) {
-  const toast = useToast();
+  const { toast } = useToast();
   const [addBestReindeer, setAddBestReindeer] = useState(false);
   const [bestReindeers, setBestReindeers] = useState(null);
   const [initialPositions, setInitialPositions] = useState([]);
@@ -156,7 +158,13 @@ export default function OrganizationModal({
       filteredReindeerIDs.length !== new Set(filteredReindeerIDs).size;
 
     isDuplicated &&
-      toast.info("A reindeer cannot be in more than one position");
+      customToast("A reindeer cannot be in more than one position", {
+        className:
+          "bg-white bg-opacity-55 backdrop-filter backdrop-blur-lg border border-red-200 text-red-700 rounded-lg shadow-lg",
+        bodyClassName: "text-sm font-medium text-black",
+        progressClassName: "bg-red-500",
+        icon: <ChristmasSanta className="w-8 h-8" />,
+      });
   }, [reindeersSelected]);
 
   // Function to check if the button should be disabled
