@@ -16,29 +16,37 @@ import {
   ErrorScreen,
 } from "@/components/global/santaDataLoader";
 
-const NORTH_POLE = { lat: 19.4326, lng: -99.1332, name: "Mexico City, Mexico" };
+const NORTH_POLE = { lat: 19.4326, lng: -99.1332, display_name: "Mexico City" };
 
 export const RoutesPage = () => {
   const queryClient = useQueryClient();
   const toast = useToast();
 
-  const { data: searchHistory } = useQuery({
+  const { data: searchHistoryData, isLoading: isHistoryLoading, isError: isHistoryError } = useQuery({
     queryKey: ["searchHistory"],
     queryFn: getSearchHistory,
   });
+  const searchHistory = searchHistoryData?.data || [];
 
   const searchMutation = useMutation({
     mutationFn: searchLocation,
     onSuccess: (data) => {
       if (data && data.length > 0) {
         const location = {
-          name: data[0].display_name,
-          lat: parseFloat(data[0].lat),
-          lng: parseFloat(data[0].lon),
+          display_name: data[0].display_name,
+          lat: data[0].lat,
+          lon: data[0].lon,
         };
-        if (!isNaN(location.lat) && !isNaN(location.lng)) {
+        if (location) {
           saveMutation.mutate(location);
-          routeMutation.mutate({ start: NORTH_POLE, end: location });
+          routeMutation.mutate({
+            start: NORTH_POLE,
+            end: {
+              lat: parseFloat(location.lat),
+              lng: parseFloat(location.lon),
+              name: location.display_name
+            }
+          });
         }
       } else {
         toast.error("No location found.");
@@ -46,7 +54,6 @@ export const RoutesPage = () => {
     },
     onError: () => {
       toast.error("Error searching location.");
-      
     },
   });
 
@@ -64,9 +71,6 @@ export const RoutesPage = () => {
     mutationFn: deleteLocation,
     onSuccess: () => {
       queryClient.invalidateQueries("searchHistory");
-      if (deleteMutation.isSuccess) {
-        toast.success("Location deleted successfully!");
-      }
     },
     onError: () => {
       toast.error("Error deleting location.");
@@ -103,8 +107,11 @@ export const RoutesPage = () => {
       lat: parseFloat(location.lat),
       lng: parseFloat(location.lng),
     };
-    if (!isNaN(parsedLocation.lat) && !isNaN(parsedLocation.lng)) {
-      routeMutation.mutate({ start: NORTH_POLE, end: parsedLocation });
+    if (parsedLocation) {
+      routeMutation.mutate({
+        start: NORTH_POLE,
+        end: parsedLocation,
+      });
     }
   };
 
@@ -150,7 +157,8 @@ export const RoutesPage = () => {
     searchMutation.isLoading ||
     saveMutation.isLoading ||
     deleteMutation.isLoading ||
-    routeMutation.isLoading
+    routeMutation.isLoading ||
+    isHistoryLoading
   ) {
     return <LoadingScreen />;
   }
@@ -159,7 +167,8 @@ export const RoutesPage = () => {
     searchMutation.isError ||
     saveMutation.isError ||
     deleteMutation.isError ||
-    routeMutation.isError
+    routeMutation.isError ||
+    isHistoryError
   ) {
     return <ErrorScreen />;
   }
@@ -180,11 +189,12 @@ export const RoutesPage = () => {
                 currentRoute={currentRoute?.end || NORTH_POLE}
                 routeCoordinates={currentRoute?.coordinates}
                 northPole={NORTH_POLE}
+                searchHistory={searchHistory}
               />
             </div>
             <div className="w-full lg:w-2/5">
               <AddressHistory
-                locations={searchHistory || []}
+                locations={searchHistory}
                 onRestore={handleRestore}
                 onDelete={handleDelete}
               />
@@ -195,3 +205,4 @@ export const RoutesPage = () => {
     </div>
   );
 };
+

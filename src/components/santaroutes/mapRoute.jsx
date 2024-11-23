@@ -36,7 +36,7 @@ export default function MapRoute({ currentRoute, routeCoordinates, northPole }) 
     if (mapRef.current) {
       mapRef.current.setView([northPole.lat, northPole.lng], 5);
     }
-  }, [northPole]);
+  }, [northPole]); 
 
   const bounds = currentRoute 
     ? L.latLngBounds([northPole, [parseFloat(currentRoute.lat), parseFloat(currentRoute.lng)]])
@@ -62,7 +62,7 @@ export default function MapRoute({ currentRoute, routeCoordinates, northPole }) 
           <Marker position={[parseFloat(currentRoute.lat), parseFloat(currentRoute.lng)]} icon={christmasIcon}>
             <Popup>
               <div className="flex items-center">
-                <GiftIcon className="mr-2 text-red-500" />
+                <GiftIcon className="mr-2 text-red-700" />
                 {currentRoute.name}
               </div>
             </Popup>
@@ -71,7 +71,7 @@ export default function MapRoute({ currentRoute, routeCoordinates, northPole }) 
         {routeCoordinates && (
           <Polyline
             positions={routeCoordinates}
-            color="green"
+            color="red"
             weight={3}
             opacity={0.7}
           >
