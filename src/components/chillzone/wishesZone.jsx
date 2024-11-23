@@ -24,7 +24,7 @@ export const Wishes = ({ players }) => {
       <Card className="w-full max-w-4xl bg-transparent backdrop-blur-md md:my-10">
         <CardContent className="p-4 md:p-8">
           <div className="text-xl md:text-2xl font-bold mb-8 text-center">
-            <h2 className="text-red-600">We wish you a merry christmas 🎄</h2>
+            <h2 className="text-white font-bold">We wish you a merry christmas 🎄</h2>
           </div>
           {!gameStarted ? (
             <div>

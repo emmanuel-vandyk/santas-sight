@@ -21,7 +21,7 @@ export const NowPlaying = ({
   return (
     <Card className="bg-gradient-to-b from-red-50 to-green-50 backdrop-blur-lg">
       <CardHeader>
-        <CardTitle className="text-green-700 font-bold">Now Playing</CardTitle>
+        <CardTitle className="text-green-700 font-bold">Now playing</CardTitle>
         <CardDescription className="text-zinc-600 font-bold italic">
           Enjoy your favorite Christmas tunes
         </CardDescription>

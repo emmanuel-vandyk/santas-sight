@@ -48,16 +48,16 @@ export default function AddressHistory({ locations, onRestore, onDelete }) {
         <CardTitle className="text-xl font-semibold flex items-center justify-between text-green-800">
           <div className="flex items-center">
             <HistoryIcon className="mr-2" />
-            Santa&apos;s Previous Stops
+            Santa&apos;s previous stops
           </div>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button
                 size="icon"
                 onClick={() => setLocationToDelete(null)}
-                className="w-32 bg-transparent hover:bg-red-100 text-red-500 shadow-zinc-500"
+                className="w-32 bg-transparent hover:bg-red-100 text-red-700 shadow-zinc-500"
               >
-                Delete All
+                Delete all
                 <TrashIcon className="h-4 w-4 text-red-700" />
               </Button>
             </AlertDialogTrigger>
@@ -75,9 +75,9 @@ export default function AddressHistory({ locations, onRestore, onDelete }) {
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={handleDeleteAll}
-                  className=" text-white bg-red-500"
+                  className=" text-white bg-red-700"
                 >
-                  Delete All
+                  Delete all
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -135,7 +135,7 @@ export default function AddressHistory({ locations, onRestore, onDelete }) {
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction
                         onClick={handleDelete}
-                        className="bg-red-500"
+                        className="bg-red-700"
                       >
                         Delete
                       </AlertDialogAction>

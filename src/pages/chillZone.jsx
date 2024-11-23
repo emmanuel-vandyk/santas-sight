@@ -81,13 +81,13 @@ export const ChillZone = () => {
     },
     {
       id: 6,
-      name: "Rayberg",
-      image: "/placeholder.svg?height=40&width=40",
+      name: "Raydberg",
+      image: "https://avatars.githubusercontent.com/u/144204205?v=4",
       role: "Backend Developer",
       message:
-        "DevOps Engineer with a focus on automation and infrastructure management. Wishing you a festive Christmas and a successful New Year!",
-      github: "https://github.com/rayberg",
-      linkedin: "https://linkedin.com/in/rayberg",
+        "Merry Christmas! May your days be filled with joy, your home with love, and your heart with peace this holiday season.",
+      github: "https://github.com/Raydberg",
+      linkedin: "https://www.linkedin.com/in/raydbergchuquival",
     },
   ];
 
