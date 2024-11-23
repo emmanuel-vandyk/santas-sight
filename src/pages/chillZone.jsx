@@ -5,8 +5,11 @@ import { NowPlaying } from "@/components/chillzone/nowPlaying";
 import { Playlist } from "@/components/chillzone/playlist";
 import { VolumeControl } from "@/components/chillzone/volumeControl";
 import { UnderlineTitle } from "@/components/global/underlineTitle";
-import { GoogleGame } from "@/components/chillzone/googleGame";
-import { LoadingScreen, ErrorScreen } from "@/components/global/santaDataLoader";
+import { Wishes } from "@/components/chillzone/wishesZone";
+import {
+  LoadingScreen,
+  ErrorScreen,
+} from "@/components/global/santaDataLoader";
 import roberto from "@/assets/fotoRV.png";
 
 export const ChillZone = () => {
@@ -38,23 +41,23 @@ export const ChillZone = () => {
     },
     {
       id: 2,
-      name: "Maxi",
-      image: "/placeholder.svg?height=40&width=40",
+      name: "Máximo",
+      image: "https://github.com/maximoev.png",
       role: "Frontend Developer",
       message:
-        "Creative Designer focused on user experience and visual design. Wishing you a wonderful Christmas filled with love and happiness.",
-      github: "https://github.com/maxi",
-      linkedin: "https://linkedin.com/in/maxi",
+        "Merry Christmas! Wishing you joy, peace, and love this holiday season.",
+      github: "https://github.com/maximoev",
+      linkedin: "https://www.linkedin.com/in/maximoev",
     },
     {
       id: 3,
       name: "Pedro",
-      image: "/placeholder.svg?height=40&width=40",
+      image: "https://avatars.githubusercontent.com/u/91698863?v=4",
       role: "Backend Developer",
       message:
-        "Backend Developer specializing in server-side logic and database management. Merry Christmas and a prosperous New Year!",
-      github: "https://github.com/pedro",
-      linkedin: "https://linkedin.com/in/pedro",
+        "May the magic of Christmas fill your home with love and gratitude and give you a year full of success and happiness. Happy holidays!",
+      github: "https://github.com/puriihuaman",
+      linkedin: "https://www.linkedin.com/in/puriihuaman/",
     },
     {
       id: 4,
@@ -151,8 +154,8 @@ export const ChillZone = () => {
     }
   }, [christmasSongs, currentSongIndex]);
 
-   if (isLoading) return <LoadingScreen />;
-   if (error) return <ErrorScreen />;
+  if (isLoading) return <LoadingScreen />;
+  if (error) return <ErrorScreen />;
 
   return (
     <div className="min-h-screen text-white p-4 md:p-8">
@@ -184,7 +187,7 @@ export const ChillZone = () => {
         </div>
       </div>
       <div className="mt-8">
-        <GoogleGame players={players} />
+        <Wishes players={players} />
       </div>
     </div>
   );

@@ -174,7 +174,7 @@ export default function Component() {
         <div className="w-full">
           <Badge
             className={`hidden md:inline-flex text-center ${
-              row.original.isDeleted ? "bg-red-500 text-white px-3" : "bg-green-500 text-white px-5"
+              row.original.isDeleted ? "bg-red-600 text-white px-3" : "bg-green-700 text-white px-5"
             }`}
           >
             {row.original.isDeleted ? "Unavailable" : "Available"}

@@ -5,13 +5,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import horns from "@/assets/horns.png";
 import dev from "@/assets/background_dev.jpeg";
 import propTypes from "prop-types";
-import { Gift } from "lucide-react";
 
-export const GoogleGame = ({ players }) => {
+export const Wishes = ({ players }) => {
   const [gameStarted, setGameStarted] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState(null);
 
-  const handleStartGame = () => {
+  const handleStartWishes = () => {
     if (selectedPlayer) {
       setGameStarted(true);
     }
@@ -33,7 +32,10 @@ export const GoogleGame = ({ players }) => {
                 {players.map((player) => (
                   <Button
                     key={player.id}
-                    onClick={() => setSelectedPlayer(player)}
+                    onClick={() => {
+                      setSelectedPlayer(player);
+                      handleStartWishes();
+                    }}
                     className={`
                       ${
                         selectedPlayer?.id === player.id
@@ -51,15 +53,7 @@ export const GoogleGame = ({ players }) => {
                   </Button>
                 ))}
               </div>
-              <div className="flex justify-center">
-                <Button
-                  onClick={handleStartGame}
-                  disabled={!selectedPlayer}
-                  className="bg-red-600"
-                >
-                  Open! <Gift className="ml-2" />
-                </Button>
-              </div>
+              
             </div>
           ) : (
             <div className="flex flex-col items-center">
@@ -123,6 +117,6 @@ export const GoogleGame = ({ players }) => {
   );
 };
 
-GoogleGame.propTypes = {
+Wishes.propTypes = {
   players: propTypes.array,
 };

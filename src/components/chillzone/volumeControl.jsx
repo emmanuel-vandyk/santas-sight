@@ -26,10 +26,9 @@ export const VolumeControl = ({ volume, onVolumeChange }) => {
       <CardContent className="flex items-center justify-between p-4 text-green-700">
         <div className="flex items-center">
           <Button
-            variant="ghost"
             size="icon"
             onClick={handleMuteToggle}
-            className="mr-2 hover:scale-110 transition-transform"
+            className="mr-2 hover:scale-110 transition-transform hover:bg-green-50 bg-transparent text-green-700"
           >
             {isMuted ? (
               <VolumeX className="h-6 w-6" />
