@@ -38,8 +38,8 @@ const items = [
     icon: ChristmasElf,
   },
   {
-    title: "Settings",
-    url: "#",
+    title: "Chill Zone",
+    url: "/chillzone",
     icon: ChristmasSnowflake,
   },
 ];
