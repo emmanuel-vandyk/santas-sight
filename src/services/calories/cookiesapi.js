@@ -4,7 +4,7 @@ import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 // const URL = import.meta.env.VITE_API_URL;
 const MOCKURL = import.meta.env.VITE_MOCK_API_URL;
 
-// fetch all reindeers cookiess
+// fetch all cookiess
 export const useCookiesForSanta = () => {
   return useQuery({
     queryKey: ["cookies"],
@@ -15,7 +15,7 @@ export const useCookiesForSanta = () => {
   });
 };
 
-// add new reindeer
+// add new cookie
 export const useAddCookiesForSanta = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -27,7 +27,7 @@ export const useAddCookiesForSanta = () => {
   });
 };
 
-// update reindeers cookies
+// update cookie
 export const useUpdateCookiesForSanta = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -42,7 +42,7 @@ export const useUpdateCookiesForSanta = () => {
   });
 };
 
-// update checked reindeer cookiess
+// update checked cookiess
 export const useUpdateCheckedCookiesForSanta = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -58,7 +58,7 @@ export const useUpdateCheckedCookiesForSanta = () => {
   });
 };
 
-// delete reindeers cookies
+// delete cookies
 export const useDeleteCookiesForSanta = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -73,7 +73,7 @@ export const useDeleteCookiesForSanta = () => {
   });
 };
 
-// delete checked reindeer cookiess
+// delete checked cookies
 export const useDeleteCheckedCookiesForSanta = () => {
   const queryClient = useQueryClient();
   return useMutation({
