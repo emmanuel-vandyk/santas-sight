@@ -1,9 +1,5 @@
 import * as React from "react";
-import { useCookiesForSanta } from "@/services/calories/cookiesapi";
-import {
-  LoadingScreen,
-  ErrorScreen,
-} from "@/components/global/santaDataLoader";
+
 import {
   Card,
   CardContent,
@@ -14,19 +10,20 @@ import {
 import CookiesList from "@/components/calories/CookiesList";
 import CookiesOverview from "@/components/calories/CookiesOverview";
 
-export default function CookiesTracker() {
-  // Fetching data for cookies.
-  const { data: cookiesData, isLoading, isError } = useCookiesForSanta();
+export default function CookiesTracker({ data: cookiesData }) {
+  const [cookiesToSend, setCookiesToSend] = React.useState([]);
 
-  // Generic function to handle async mutation calls.
-  const hadleMutation = async (mutation, data) => {
-    await mutation.mutateAsync(data);
+  // Function to generate the list of cookies to send, based on the provided cookie IDs
+  const generateCookiesToSend = (cookieIds) => {
+    // Map the cookie IDs and get the corresponding data for each cookie
+    const selectedCookies = [].concat(cookieIds).map((id) => {
+      // Find the cookie in the cookiesData array by matching the id
+      return cookiesData.find((cookie) => cookie.id === id);
+    });
+
+    // Set the state with the selected cookies list
+    setCookiesToSend(selectedCookies);
   };
-
-  // Display the loading screen if any data is still loading.
-  if (isLoading) return <LoadingScreen />;
-  // Display the error screen if there was an issue fetching data.
-  if (isError) return <ErrorScreen />;
 
   return (
     <Card>
@@ -39,9 +36,12 @@ export default function CookiesTracker() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2">
-          <CookiesList data={cookiesData} />
-          <CookiesOverview />
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+          <CookiesList
+            data={cookiesData}
+            generateCookiesToSend={generateCookiesToSend}
+          />
+          <CookiesOverview data={cookiesToSend} />
         </div>
       </CardContent>
     </Card>

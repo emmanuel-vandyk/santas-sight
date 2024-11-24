@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -12,7 +11,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CirclePlus, Trash2, Eye, EyeOff, Cookie } from "lucide-react";
+import {
+  PlusSquare,
+  Trash2,
+  Eye,
+  EyeOff,
+  Cookie,
+  ArrowDownUp,
+  ArrowUpNarrowWide,
+  ArrowDownWideNarrow,
+} from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -26,9 +34,29 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-export default function CookiesList({ data: cookiesData }) {
+export default function CookiesList({
+  data: cookiesData,
+  generateCookiesToSend,
+}) {
   const [filter, setFilter] = React.useState("");
+  const [checkedCookies, setCheckedCookies] = React.useState([]);
+
+  const toggleCheckedCookies = (id, isChecked) => {
+    setCheckedCookies((prevState) =>
+      isChecked
+        ? [...prevState, id]
+        : prevState.filter((cookieId) => cookieId !== id)
+    );
+  };
 
   return (
     <Card className="flex flex-col gap-2 box-border">
@@ -36,7 +64,7 @@ export default function CookiesList({ data: cookiesData }) {
         <CardTitle>Cookies list</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-3 gap-2">
           <Input
             className="col-span-2"
             type="text"
@@ -46,44 +74,46 @@ export default function CookiesList({ data: cookiesData }) {
               setFilter(e.target.value);
             }}
           />
-          <Button variant="outline" className="col-span-2">
-            Order by
-          </Button>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="outline" className="col-span-2 lg:col-span-1">
-                <Trash2 /> Delete
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Order <ArrowDownUp />
               </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  Are you absolutely sure you want to delete these cookies?
-                </AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete
-                  these cookies
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction className="bg-red-600 hover:bg-red-700">
-                  Continue
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-          <Button variant="outline" className="col-span-2 lg:col-span-1">
-            <CirclePlus />
-            New
-          </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Options</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <ArrowUpNarrowWide />
+                Asc
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <ArrowDownWideNarrow />
+                Desc
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Card
-            className="flex items-center justify-center p-2 gap-3 rounded-sm col-span-2"
+            className="flex items-center p-2 gap-3 rounded-sm col-span-2"
             variant="outline"
           >
-            <Checkbox />
+            <Checkbox
+              checked={
+                checkedCookies.length === cookiesData.length &&
+                cookiesData.length > 0
+              }
+              onCheckedChange={(checked) =>
+                setCheckedCookies(
+                  checked ? cookiesData.map((cookie) => cookie.id) : []
+                )
+              }
+            />
             <Label>Select all</Label>
           </Card>
+          <Button variant="outline">
+            <PlusSquare />
+            New
+          </Button>
         </div>
         <ScrollArea className="h-72 rounded-md border p-1 box-border">
           {cookiesData
@@ -95,7 +125,12 @@ export default function CookiesList({ data: cookiesData }) {
                 <Card className="grid grid-cols-1 gap-3 items-center p-3">
                   <CardHeader className="p-0">
                     <div className="flex flex-col gap-3 items-center justify-center lg:justify-normal sm:flex-row">
-                      <Checkbox />
+                      <Checkbox
+                        checked={checkedCookies.includes(cookie.id)}
+                        onCheckedChange={(checked) =>
+                          toggleCheckedCookies(cookie.id, checked)
+                        }
+                      />
                       <CardTitle className="flex items-center gap-1">
                         <Cookie size={18} />
                         {cookie.name}
@@ -107,7 +142,11 @@ export default function CookiesList({ data: cookiesData }) {
                       Calories: {cookie.calories}
                     </CardDescription>
                     <div className="flex justify-center">
-                      <Button variant="ghost" size="icon">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => generateCookiesToSend(cookie.id)}
+                      >
                         <Eye />
                       </Button>
                       <AlertDialog>
@@ -142,6 +181,43 @@ export default function CookiesList({ data: cookiesData }) {
             ))}
         </ScrollArea>
       </CardContent>
+      <CardFooter className="grid grid-cols-1 lg:grid-cols-2">
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="outline" disabled={checkedCookies.length < 2}>
+              <Trash2 /> Delete cookies
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                Are you absolutely sure you want to delete these cookies?
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete these
+                cookies
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction className="bg-red-600 hover:bg-red-700">
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+        <Button
+          variant="outline"
+          onClick={() => {
+            generateCookiesToSend(checkedCookies);
+            setCheckedCookies([]);
+          }}
+          disabled={checkedCookies.length < 2}
+        >
+          <PlusSquare />
+          Add cookies
+        </Button>
+      </CardFooter>
     </Card>
   );
 }
