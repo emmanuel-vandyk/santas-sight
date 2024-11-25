@@ -16,7 +16,7 @@ export default function CookiesTracker({ data: cookiesData }) {
   // Function to generate the list of cookies to send, based on the provided cookie IDs
   const generateCookiesToSend = (cookieIds) => {
     // Map the cookie IDs and get the corresponding data for each cookie
-    const selectedCookies = [].concat(cookieIds).map((id) => {
+    const selectedCookies = Array.prototype.concat(cookieIds).map((id) => {
       // Find the cookie in the cookiesData array by matching the id
       return cookiesData.find((cookie) => cookie.id === id);
     });
@@ -36,7 +36,7 @@ export default function CookiesTracker({ data: cookiesData }) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
           <CookiesList
             data={cookiesData}
             generateCookiesToSend={generateCookiesToSend}

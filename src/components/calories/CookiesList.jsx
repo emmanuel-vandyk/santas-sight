@@ -59,7 +59,7 @@ export default function CookiesList({
   };
 
   return (
-    <Card className="flex flex-col gap-2 box-border">
+    <Card className="flex flex-col justify-between gap-2 box-border">
       <CardHeader>
         <CardTitle>Cookies list</CardTitle>
       </CardHeader>
@@ -132,7 +132,7 @@ export default function CookiesList({
                         }
                       />
                       <CardTitle className="flex items-center gap-1">
-                        <Cookie size={18} />
+                        <Cookie size={18} className="text-amber-900" />
                         {cookie.name}
                       </CardTitle>
                     </div>
@@ -181,7 +181,7 @@ export default function CookiesList({
             ))}
         </ScrollArea>
       </CardContent>
-      <CardFooter className="grid grid-cols-1 lg:grid-cols-2">
+      <CardFooter className="grid grid-cols-1 gap-2 lg:grid-cols-2">
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="outline" disabled={checkedCookies.length < 2}>

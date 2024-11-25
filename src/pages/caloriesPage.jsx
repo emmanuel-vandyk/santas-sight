@@ -4,9 +4,9 @@ import {
   LoadingScreen,
   ErrorScreen,
 } from "@/components/global/santaDataLoader";
-import { Card } from "@/components/ui/card";
 import { UnderlineTitle } from "@/components/global/underlineTitle";
 import CookiesTracker from "@/components/calories/CookiesTracker";
+import CaloriesOverview from "@/components/calories/CaloriesOverview";
 
 export const CaloriesPage = () => {
   // Fetching data for cookies.
@@ -31,9 +31,7 @@ export const CaloriesPage = () => {
         <div className="lg:col-span-2">
           <CookiesTracker data={cookiesData} />
         </div>
-        <Card className="flex items-center justify-center">
-          Preview Calories
-        </Card>
+        <CaloriesOverview />
       </div>
     </section>
   );

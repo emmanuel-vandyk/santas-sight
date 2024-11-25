@@ -11,19 +11,20 @@ import {
 } from "@/components/ui/card";
 import { Pencil, PlusSquare } from "lucide-react";
 import CookiesCarousel from "@/components/calories/CookiesCarousel";
+import CookieSelector from "@/components/calories/CookieSelector";
 
 export default function CookiesOverview({ data: cookiesData }) {
   // Determines if there is available cookie data. If cookiesData has elements, isDataAvailable will be true.
   const isDataAvailable = cookiesData.length > 0;
 
   return (
-    <Card>
+    <Card className="flex flex-col justify-between gap-2 box-border ">
       {isDataAvailable ? (
         <CookiesCarousel data={cookiesData} />
       ) : (
-        <Card>No data</Card>
+        <CookieSelector />
       )}
-      <CardFooter>
+      <CardFooter className="grid grid-cols-1 gap-2 lg:grid-cols-2">
         <Button
           variant="outline"
           className={cn({
@@ -36,7 +37,7 @@ export default function CookiesOverview({ data: cookiesData }) {
           variant="outline"
           className={cn({
             hidden: !isDataAvailable,
-            "w-full": isDataAvailable,
+            "col-span-2": cookiesData.length > 1,
           })}
         >
           <PlusSquare />
