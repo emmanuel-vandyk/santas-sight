@@ -1,6 +1,6 @@
 import * as React from "react";
-import { cn } from "@/lib/utils";
 import { ModalContext } from "@/components/calories/CookiesTracker";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardFooter } from "@/components/ui/card";
 import { Pencil, PlusSquare } from "lucide-react";
@@ -20,24 +20,28 @@ export default function CookiesOverview({ data: cookiesData }) {
       ) : (
         <CookieSelector />
       )}
-      <CardFooter className="grid grid-cols-1 gap-2 lg:grid-cols-2">
+      <CardFooter className="flex justify-center">
         <Button
           variant="outline"
-          className={cn({
-            hidden: !isDataAvailable || cookiesData.length >= 2,
-          })}
-          onClick={() =>
-            setModalState({ isOpen: true, cookieData: cookiesData[0] })
-          }
+          onClick={() => setModalState({ isOpen: true, cookieData: null })}
+          className={cn(
+            {
+              hidden: isDataAvailable,
+            },
+            "w-full"
+          )}
         >
-          <Pencil /> Edit
+          <PlusSquare />
+          New cookie
         </Button>
         <Button
           variant="outline"
-          className={cn({
-            hidden: !isDataAvailable,
-            "col-span-2": cookiesData.length > 1,
-          })}
+          className={cn(
+            {
+              hidden: !isDataAvailable,
+            },
+            "w-full"
+          )}
         >
           <PlusSquare />
           Add

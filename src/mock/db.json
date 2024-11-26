@@ -376,6 +376,10 @@
       "isAvailable": true
     }
   ],
+  "santaCalories": {
+    "totalCookies": 0,
+    "totalCalories": 0
+  },
   "cookiesForSanta": [
     {
       "id": "1",

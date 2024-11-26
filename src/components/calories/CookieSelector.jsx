@@ -1,12 +1,10 @@
-import { Button } from "@/components/ui/button";
+import * as React from "react";
 import {
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { PlusSquare } from "lucide-react";
 import { ChristmasCookies } from "@/components/global/iconsChristmas";
 
 export default function CookieSelector() {
@@ -26,12 +24,6 @@ export default function CookieSelector() {
           <ChristmasCookies className="w-1/2" />
         </div>
       </CardContent>
-      <CardFooter className="flex justify-center">
-        <Button variant="outline">
-          <PlusSquare />
-          New cookie
-        </Button>
-      </CardFooter>
     </>
   );
 }

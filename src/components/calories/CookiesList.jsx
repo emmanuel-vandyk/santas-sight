@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import {
   PlusSquare,
+  Pencil,
   Trash2,
   Eye,
   Cookie,
@@ -120,7 +121,7 @@ export default function CookiesList({
             )
             .map((cookie) => (
               <div key={cookie.id}>
-                <Card className="grid grid-cols-1 gap-3 items-center p-3">
+                <Card className="grid grid-cols-1 gap-5 items-center p-3">
                   <div className="flex flex-col gap-3 items-center justify-center lg:justify-normal sm:flex-row">
                     <Checkbox
                       checked={checkedCookies.includes(cookie.id)}
@@ -144,6 +145,15 @@ export default function CookiesList({
                         onClick={() => generateCookiesToSend(cookie.id)}
                       >
                         <Eye />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() =>
+                          setModalState({ isOpen: true, cookieData: cookie })
+                        }
+                      >
+                        <Pencil />
                       </Button>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
