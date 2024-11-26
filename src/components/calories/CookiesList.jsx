@@ -1,7 +1,7 @@
 import * as React from "react";
+import { ModalContext } from "@/components/calories/CookiesTracker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Card,
@@ -15,7 +15,6 @@ import {
   PlusSquare,
   Trash2,
   Eye,
-  EyeOff,
   Cookie,
   ArrowDownUp,
   ArrowUpNarrowWide,
@@ -42,11 +41,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import SelectAll from "@/components/global/selectAll";
 
 export default function CookiesList({
   data: cookiesData,
   generateCookiesToSend,
 }) {
+  // Use the context to access the state and its updater function
+  const { setModalState } = React.useContext(ModalContext);
+
   const [filter, setFilter] = React.useState("");
   const [checkedCookies, setCheckedCookies] = React.useState([]);
 
@@ -64,9 +67,9 @@ export default function CookiesList({
         <CardTitle>Cookies list</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-4 gap-2">
           <Input
-            className="col-span-2"
+            className="col-span-3"
             type="text"
             placeholder="Filter cookies names..."
             value={filter}
@@ -77,7 +80,7 @@ export default function CookiesList({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
-                Order <ArrowDownUp />
+                <ArrowDownUp />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
@@ -93,29 +96,24 @@ export default function CookiesList({
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Card
-            className="flex items-center p-2 gap-3 rounded-sm col-span-2"
+          <SelectAll
+            className="col-span-2"
+            items={cookiesData}
+            selectedItems={checkedCookies}
+            onSelectionChange={(newSelection) =>
+              setCheckedCookies(newSelection)
+            }
+          />
+          <Button
             variant="outline"
+            className="col-span-2"
+            onClick={() => setModalState({ isOpen: true, cookieData: null })}
           >
-            <Checkbox
-              checked={
-                checkedCookies.length === cookiesData.length &&
-                cookiesData.length > 0
-              }
-              onCheckedChange={(checked) =>
-                setCheckedCookies(
-                  checked ? cookiesData.map((cookie) => cookie.id) : []
-                )
-              }
-            />
-            <Label>Select all</Label>
-          </Card>
-          <Button variant="outline">
             <PlusSquare />
             New
           </Button>
         </div>
-        <ScrollArea className="h-72 rounded-md border p-1 box-border">
+        <ScrollArea className="h-72 rounded-md border p-2 box-border">
           {cookiesData
             .filter((cookie) =>
               cookie.name.toLowerCase().includes(filter.toLowerCase())
@@ -123,21 +121,19 @@ export default function CookiesList({
             .map((cookie) => (
               <div key={cookie.id}>
                 <Card className="grid grid-cols-1 gap-3 items-center p-3">
-                  <CardHeader className="p-0">
-                    <div className="flex flex-col gap-3 items-center justify-center lg:justify-normal sm:flex-row">
-                      <Checkbox
-                        checked={checkedCookies.includes(cookie.id)}
-                        onCheckedChange={(checked) =>
-                          toggleCheckedCookies(cookie.id, checked)
-                        }
-                      />
-                      <CardTitle className="flex items-center gap-1">
-                        <Cookie size={18} className="text-amber-900" />
-                        {cookie.name}
-                      </CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardFooter className="flex flex-col items-center justify-between p-0 lg:flex-row">
+                  <div className="flex flex-col gap-3 items-center justify-center lg:justify-normal sm:flex-row">
+                    <Checkbox
+                      checked={checkedCookies.includes(cookie.id)}
+                      onCheckedChange={(checked) =>
+                        toggleCheckedCookies(cookie.id, checked)
+                      }
+                    />
+                    <CardTitle className="flex items-center gap-1">
+                      <Cookie size={18} className="text-amber-900" />
+                      {cookie.name}
+                    </CardTitle>
+                  </div>
+                  <div className="flex flex-col items-center justify-between lg:flex-row">
                     <CardDescription>
                       Calories: {cookie.calories}
                     </CardDescription>
@@ -174,7 +170,7 @@ export default function CookiesList({
                         </AlertDialogContent>
                       </AlertDialog>
                     </div>
-                  </CardFooter>
+                  </div>
                 </Card>
                 <Separator className="my-3" />
               </div>
@@ -185,7 +181,8 @@ export default function CookiesList({
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="outline" disabled={checkedCookies.length < 2}>
-              <Trash2 /> Delete cookies
+              <Trash2 />
+              Delete
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
@@ -214,8 +211,8 @@ export default function CookiesList({
           }}
           disabled={checkedCookies.length < 2}
         >
-          <PlusSquare />
-          Add cookies
+          <Eye />
+          View
         </Button>
       </CardFooter>
     </Card>

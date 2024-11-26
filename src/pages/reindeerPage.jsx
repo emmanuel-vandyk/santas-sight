@@ -54,6 +54,8 @@ export const ReindeerPage = () => {
     organizationData: null,
   });
 
+  console.log(modalState);
+
   // Generic function to handle async mutation calls.
   const hadleMutation = async (mutation, data) => {
     await mutation.mutateAsync(data);
@@ -121,7 +123,10 @@ export const ReindeerPage = () => {
       <OrganizationModal
         isOpen={modalState.isOpen}
         isClose={() => {
-          setModalState({ isOpen: false, organizationData: null });
+          setModalState({
+            isOpen: false,
+            organizationData: null,
+          });
         }}
         onSubmit={(data) =>
           hadleMutation(

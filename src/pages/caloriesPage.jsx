@@ -12,11 +12,6 @@ export const CaloriesPage = () => {
   // Fetching data for cookies.
   const { data: cookiesData, isLoading, isError } = useCookiesForSanta();
 
-  // Generic function to handle async mutation calls.
-  const hadleMutation = async (mutation, data) => {
-    await mutation.mutateAsync(data);
-  };
-
   // Display the loading screen if any data is still loading.
   if (isLoading) return <LoadingScreen />;
   // Display the error screen if there was an issue fetching data.

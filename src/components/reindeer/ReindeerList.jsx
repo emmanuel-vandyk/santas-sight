@@ -3,6 +3,7 @@ import {
   useUpdateCheckedReindeers,
   useDeleteReindeer,
 } from "@/services/reindeer/reindeerapi";
+import SelectAll from "@/components/global/selectAll";
 import { ReindeerModalInfo } from "@/components/reindeer/ReindeerModalInfo";
 import ReindeerModal from "@/components/reindeer/ReindeerModal";
 import ReindeerSettings from "@/components/reindeer/ReindeerSettings";
@@ -139,26 +140,14 @@ export default function ReindeerList({
               }}
             />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-              <Card
-                className="flex items-center p-2 gap-3 rounded-sm lg:w-4/5"
-                variant="outline"
-              >
-                <Checkbox
-                  checked={
-                    checkedReindeer.length === reindeers.length &&
-                    reindeers.length > 0
-                  }
-                  onCheckedChange={(checked) => {
-                    checked
-                      ? setChecketReindeer(
-                          reindeers.map((reindeer) => reindeer.id)
-                        )
-                      : setChecketReindeer([]);
-                  }}
-                  disabled={reindeers.length <= 1}
-                />
-                <Label>Select all</Label>
-              </Card>
+              <SelectAll
+                className="lg:w-4/5"
+                items={reindeers}
+                selectedItems={checkedReindeer}
+                onSelectionChange={(newSelection) =>
+                  setChecketReindeer(newSelection)
+                }
+              />
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
                 <Select
                   disabled={checkedReindeer.length < 2}

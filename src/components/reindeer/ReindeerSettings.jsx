@@ -42,44 +42,35 @@ export default function ReindeerSettings({
           View stats
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Change status</DropdownMenuSubTrigger>
-          <DropdownMenuPortal>
-            <DropdownMenuSubContent>
-              <DropdownMenuLabel>Select a status</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {!reindeer.available ? (
-                <>
-                  <DropdownMenuItem
-                    onClick={() =>
-                      updateReindeer({
-                        ...reindeer,
-                        available: true,
-                      })
-                    }
-                    className="cursor-pointer text-green-600"
-                  >
-                    Active
-                  </DropdownMenuItem>
-                </>
-              ) : (
-                <>
-                  <DropdownMenuItem
-                    onClick={() =>
-                      updateReindeer({
-                        ...reindeer,
-                        available: false,
-                      })
-                    }
-                    className="cursor-pointer text-red-600"
-                  >
-                    Deactivate
-                  </DropdownMenuItem>
-                </>
-              )}
-            </DropdownMenuSubContent>
-          </DropdownMenuPortal>
-        </DropdownMenuSub>
+        {!reindeer.available ? (
+          <>
+            <DropdownMenuItem
+              onClick={() =>
+                updateReindeer({
+                  ...reindeer,
+                  available: true,
+                })
+              }
+              className="cursor-pointer text-green-600"
+            >
+              Active
+            </DropdownMenuItem>
+          </>
+        ) : (
+          <>
+            <DropdownMenuItem
+              onClick={() =>
+                updateReindeer({
+                  ...reindeer,
+                  available: false,
+                })
+              }
+              className="cursor-pointer text-red-600"
+            >
+              Deactivate
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
