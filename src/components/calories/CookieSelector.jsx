@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import {
   CardContent,
   CardDescription,
@@ -14,9 +15,8 @@ export default function CookieSelector() {
         <CardTitle>Choose Your Cookie</CardTitle>
         <CardDescription>
           Explore and manage cookies for Santa. Select one or multiple cookies
-          from the list, get detailed information about each, or add more
-          cookies for Santa. You can also create a new cookie or select an
-          existing one below.
+          from the list, view detailed information about each, or add more
+          cookies for Santa.
         </CardDescription>
       </CardHeader>
       <CardContent>

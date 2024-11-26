@@ -1,6 +1,10 @@
 import * as React from "react";
 
 import {
+  useAddCookiesForSanta,
+  useUpdateCookiesForSanta,
+} from "@/services/calories/cookiesapi";
+import {
   Card,
   CardContent,
   CardDescription,
@@ -15,6 +19,10 @@ import CookieModal from "@/components/calories/CookieModal";
 export const ModalContext = React.createContext();
 
 export default function CookiesTracker({ data: cookiesData }) {
+  // Mutations for adding and updating cookies data.
+  const addCookiesMutation = useAddCookiesForSanta();
+  const updateCookiesMutation = useUpdateCookiesForSanta();
+
   // State for controlling the modal's visibility and content.
   const [modalState, setModalState] = React.useState({
     isOpen: false,
@@ -30,6 +38,7 @@ export default function CookiesTracker({ data: cookiesData }) {
 
   // Function to generate the list of cookies to send, based on the provided cookie IDs
   const generateCookiesToSend = (cookieIds) => {
+    console.log(cookieIds);
     // Map the cookie IDs and get the corresponding data for each cookie
     const selectedCookies = Array.prototype.concat(cookieIds).map((id) => {
       // Find the cookie in the cookiesData array by matching the id
@@ -71,7 +80,12 @@ export default function CookiesTracker({ data: cookiesData }) {
             cookieData: null,
           });
         }}
-        onSubmit={(data) => console.log("eviar: ", data)}
+        onSubmit={(data) =>
+          hadleMutation(
+            modalState.cookieData ? updateCookiesMutation : addCookiesMutation,
+            data
+          )
+        }
         data={modalState.cookieData}
       />
     </>

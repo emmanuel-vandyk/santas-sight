@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import * as React from "react";
+
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -35,7 +36,7 @@ export default function CookieModal({
     defaultValues,
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (cookieData) {
       reset(cookieData);
     } else {
@@ -50,7 +51,7 @@ export default function CookieModal({
         : Math.round(Math.random() * 100).toString(),
       ...data,
       quantity: cookieData ? cookieData.quantity : 0,
-      totalCalories: cookieData ? cookieData.quantity : 0,
+      totalCalories: cookieData ? cookieData.totalCalories : 0,
     });
     toast.success("Cookie saved successfully");
     isClose();
@@ -146,5 +147,7 @@ CookieModal.propTypes = {
     id: PropTypes.string, // This is a number, I use string because i can't query with ID number on json server
     name: PropTypes.string,
     calories: PropTypes.number,
+    quantity: PropTypes.number,
+    totalCalories: PropTypes.number,
   }),
 };

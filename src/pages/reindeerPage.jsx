@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   useReindeers,
@@ -53,8 +54,6 @@ export const ReindeerPage = () => {
     isOpen: false,
     organizationData: null,
   });
-
-  console.log(modalState);
 
   // Generic function to handle async mutation calls.
   const hadleMutation = async (mutation, data) => {

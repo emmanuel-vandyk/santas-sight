@@ -1,5 +1,9 @@
 import * as React from "react";
-import { useCookiesForSanta } from "@/services/calories/cookiesapi";
+
+import {
+  useCookiesForSanta,
+  useSantaCalories,
+} from "@/services/calories/cookiesapi";
 import {
   LoadingScreen,
   ErrorScreen,
@@ -10,12 +14,21 @@ import CaloriesOverview from "@/components/calories/CaloriesOverview";
 
 export const CaloriesPage = () => {
   // Fetching data for cookies.
-  const { data: cookiesData, isLoading, isError } = useCookiesForSanta();
+  const {
+    data: cookiesData,
+    isLoading: isLoadingCookies,
+    isError: isErrorCookies,
+  } = useCookiesForSanta();
+  const {
+    data: caloriesData,
+    isLoading: isLoadingCalories,
+    isError: isErrorCalories,
+  } = useSantaCalories();
 
   // Display the loading screen if any data is still loading.
-  if (isLoading) return <LoadingScreen />;
+  if (isLoadingCookies || isLoadingCalories) return <LoadingScreen />;
   // Display the error screen if there was an issue fetching data.
-  if (isError) return <ErrorScreen />;
+  if (isErrorCookies || isErrorCalories) return <ErrorScreen />;
 
   return (
     <section>
@@ -26,7 +39,7 @@ export const CaloriesPage = () => {
         <div className="lg:col-span-2">
           <CookiesTracker data={cookiesData} />
         </div>
-        <CaloriesOverview />
+        <CaloriesOverview data={caloriesData} />
       </div>
     </section>
   );

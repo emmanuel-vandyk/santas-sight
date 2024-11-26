@@ -1,6 +1,5 @@
 import * as React from "react";
-import { Check, SquarePlus } from "lucide-react";
-
+import { Check, ScrollText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,11 +16,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export default function ReindeerComboBox({ data, value, onChange = () => {} }) {
+export default function ComboBox({ data, tittle = "", onChange = () => {} }) {
   const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
 
   const handleSelect = (selectedValue) => {
-    onChange(selectedValue === value ? "" : selectedValue);
+    setValue(selectedValue.id === value ? "" : selectedValue.id);
+    onChange(selectedValue);
     setOpen(false);
   };
 
@@ -32,35 +33,29 @@ export default function ReindeerComboBox({ data, value, onChange = () => {} }) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="justify-between bg-transparent"
+          className=" justify-between bg-transparent"
         >
-          🦌
-          {value ? (
-            data.find((reindeer) => reindeer.id === value)?.name || (
-              <SquarePlus className="text-amber-900" />
-            )
-          ) : (
-            <SquarePlus className="text-amber-900" />
-          )}
+          <ScrollText />
+          <>{tittle}</>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0">
         <Command>
-          <CommandInput placeholder="Search reindeer..." className="h-9" />
+          <CommandInput placeholder="Search organization..." className="h-9" />
           <CommandList>
-            <CommandEmpty>No reindeer found.</CommandEmpty>
+            <CommandEmpty>No {tittle.toLowerCase()} found.</CommandEmpty>
             <CommandGroup>
-              {data.map((reindeer) => (
+              {data.map((element) => (
                 <CommandItem
-                  value={reindeer.name}
-                  key={reindeer.id}
-                  onSelect={() => handleSelect(reindeer.id)}
+                  key={element.id}
+                  value={element.name}
+                  onSelect={() => handleSelect(element)}
                 >
-                  {reindeer.name}
+                  {element.name}
                   <Check
                     className={cn(
                       "ml-auto",
-                      value === reindeer.id ? "opacity-100" : "opacity-0"
+                      value === element.id ? "opacity-100" : "opacity-0"
                     )}
                   />
                 </CommandItem>

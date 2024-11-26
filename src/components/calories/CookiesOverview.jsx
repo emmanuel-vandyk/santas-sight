@@ -3,7 +3,7 @@ import { ModalContext } from "@/components/calories/CookiesTracker";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardFooter } from "@/components/ui/card";
-import { Pencil, PlusSquare } from "lucide-react";
+import { PlusSquare } from "lucide-react";
 import CookiesCarousel from "@/components/calories/CookiesCarousel";
 import CookieSelector from "@/components/calories/CookieSelector";
 

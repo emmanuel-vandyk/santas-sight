@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { ModalContext } from "@/components/calories/CookiesTracker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,8 +19,8 @@ import {
   Eye,
   Cookie,
   ArrowDownUp,
-  ArrowUpNarrowWide,
-  ArrowDownWideNarrow,
+  ArrowUp,
+  ArrowDown,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -88,11 +89,11 @@ export default function CookiesList({
               <DropdownMenuLabel>Options</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <ArrowUpNarrowWide />
+                <ArrowUp />
                 Asc
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <ArrowDownWideNarrow />
+                <ArrowDown />
                 Desc
               </DropdownMenuItem>
             </DropdownMenuContent>

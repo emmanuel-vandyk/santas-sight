@@ -4,6 +4,17 @@ import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 // const URL = import.meta.env.VITE_API_URL;
 const MOCKURL = import.meta.env.VITE_MOCK_API_URL;
 
+// fetch santa calories
+export const useSantaCalories = () => {
+  return useQuery({
+    queryKey: ["calories"],
+    queryFn: async () => {
+      const { data } = await axios.get(`${MOCKURL}/santaCalories`);
+      return data;
+    },
+  });
+};
+
 // fetch all cookiess
 export const useCookiesForSanta = () => {
   return useQuery({
