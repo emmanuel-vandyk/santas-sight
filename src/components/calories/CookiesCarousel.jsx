@@ -31,7 +31,7 @@ function CookieCard({ cookieData }) {
       <CardContent className="flex flex-col gap-3 p-2">
         <Card>
           <CardContent className="flex flex-row items-center justify-between p-3 mt-0">
-            <CardTitle>Cookies Consumed</CardTitle>
+            <CardTitle>Cookies consumed</CardTitle>
             <CardDescription className="flex gap-2 mt-0">
               {cookieData.quantity}
               <Cookie size={18} />
@@ -58,7 +58,7 @@ function CookieCard({ cookieData }) {
         />
         <Card className="sm:col-span-2">
           <CardHeader>
-            <CardTitle>Total Calories</CardTitle>
+            <CardTitle>Total calories</CardTitle>
             <CardDescription>{`${cookieData.totalCalories} Calories`}</CardDescription>
           </CardHeader>
         </Card>
