@@ -1,5 +1,10 @@
 import * as React from "react";
 
+import {
+  useDeleteCookiesForSanta,
+  useDeleteCheckedCookiesForSanta,
+} from "@/services/calories/cookiesapi";
+import { useToast } from "@/hooks/useToast";
 import { ModalContext } from "@/components/calories/CookiesTracker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -49,13 +54,47 @@ export default function CookiesList({
   data: cookiesData,
   generateCookiesToSend,
 }) {
+  const toast = useToast();
+
+  const deleteCookiesMutation = useDeleteCookiesForSanta();
+  const deleteCheckedCookies = useDeleteCheckedCookiesForSanta();
+
   // Use the context to access the state and its updater function
   const { setModalState } = React.useContext(ModalContext);
 
   const [filter, setFilter] = React.useState("");
+
+  // Declare a state variable to hold the checked cookies' IDs
   const [checkedCookies, setCheckedCookies] = React.useState([]);
 
+  // Function to handle deleting a cookie
+  const handleDeleteCookies = async (cookiesDeleted) => {
+    try {
+      await deleteCookiesMutation.mutateAsync(cookiesDeleted);
+      toast.success("Cookies deleted successfully");
+    } catch {
+      toast.error("Failed to delete cookies");
+    }
+  };
+
+  // Function to handle deleting cookies that are currently checked
+  const handleDeleteCheckedCookies = async () => {
+    const cookiesToDelete = checkedCookies.map((id) =>
+      cookiesData.find((cookies) => cookies.id === id)
+    );
+
+    try {
+      await deleteCheckedCookies.mutateAsync(cookiesToDelete);
+      toast.success("Cookies deleted successfully");
+      setCheckedCookies([]);
+    } catch {
+      toast.error("Failed to delete selected cookies");
+    }
+  };
+
+  // Function to toggle the checked state of a cookie by its ID
   const toggleCheckedCookies = (id, isChecked) => {
+    // Update the state of checkedCookies based on whether the cookie is checked or unchecked
     setCheckedCookies((prevState) =>
       isChecked
         ? [...prevState, id]
@@ -174,7 +213,13 @@ export default function CookiesList({
                           </AlertDialogHeader>
                           <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction className="bg-red-600 hover:bg-red-700">
+                            <AlertDialogAction
+                              className="bg-red-600 hover:bg-red-700"
+                              onClick={() => {
+                                handleDeleteCookies(cookie);
+                                generateCookiesToSend([]);
+                              }}
+                            >
                               Continue
                             </AlertDialogAction>
                           </AlertDialogFooter>
@@ -208,7 +253,13 @@ export default function CookiesList({
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction className="bg-red-600 hover:bg-red-700">
+              <AlertDialogAction
+                className="bg-red-600 hover:bg-red-700"
+                onClick={() => {
+                  handleDeleteCheckedCookies();
+                  generateCookiesToSend([]);
+                }}
+              >
                 Continue
               </AlertDialogAction>
             </AlertDialogFooter>
