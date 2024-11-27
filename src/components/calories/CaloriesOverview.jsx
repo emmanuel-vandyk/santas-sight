@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { ChristmasSantaClaus } from "@/components/global/iconsChristmas";
 
-export default function CaloriesOverview() {
+export default function CaloriesOverview({ data: caloriesData }) {
   return (
     <Card className="flex flex-col justify-between">
       <CardHeader>
@@ -24,19 +24,19 @@ export default function CaloriesOverview() {
           <Card className=" w-full text-center">
             <CardHeader>
               <CardTitle>Cookies</CardTitle>
-              <CardDescription>{`0 Cookies`}</CardDescription>
+              <CardDescription>{`${caloriesData.totalCookies} Cookies`}</CardDescription>
             </CardHeader>
           </Card>
           <Card className=" w-full text-center">
             <CardHeader>
               <CardTitle>Cookies consumed</CardTitle>
-              <CardDescription>{`0 Cookies`}</CardDescription>
+              <CardDescription>{`${caloriesData.totalConsumed} Cookies`}</CardDescription>
             </CardHeader>
           </Card>
           <Card className=" w-full text-center">
             <CardHeader>
               <CardTitle>Total calories</CardTitle>
-              <CardDescription>{`0 Calories`}</CardDescription>
+              <CardDescription>{`${caloriesData.totalCalories} Calories`}</CardDescription>
             </CardHeader>
           </Card>
         </div>

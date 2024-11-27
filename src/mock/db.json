@@ -377,6 +377,7 @@
     }
   ],
   "santaCalories": {
+    "totalCookies": 0,
     "totalConsumed": 0,
     "totalCalories": 0
   },
@@ -386,7 +387,7 @@
       "name": "Chocolate Cookie",
       "calories": 200,
       "quantity": 230,
-      "consumed": 0,
+      "consumed": 230,
       "totalCalories": 0
     },
     {

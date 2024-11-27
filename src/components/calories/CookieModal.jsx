@@ -140,7 +140,7 @@ export default function CookieModal({
                 })}
                 className="w-full border border-red-400 rounded-md px-3 py-2"
                 type="number"
-                min="1"
+                min={`${cookieData ? cookieData.consumed : 1}`}
               />
               {errors.quantity && (
                 <p role="alert" className="text-xs font-bold text-red-500 mt-1">
