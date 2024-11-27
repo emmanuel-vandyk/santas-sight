@@ -33,7 +33,7 @@ function CookieCard({ cookieData }) {
           <CardContent className="flex flex-row items-center justify-between p-3 mt-0">
             <CardTitle>Cookies consumed</CardTitle>
             <CardDescription className="flex gap-2 mt-0">
-              {cookieData.quantity}
+              {`${cookieData.consumed} / ${cookieData.quantity}`}
               <Cookie size={18} />
             </CardDescription>
           </CardContent>
@@ -55,6 +55,7 @@ function CookieCard({ cookieData }) {
           type="number"
           placeholder="Number of cookies for Santa"
           min="0"
+          max={cookieData.quantity}
         />
         <Card className="sm:col-span-2">
           <CardHeader>

@@ -25,6 +25,7 @@ export default function CookieModal({
   const defaultValues = cookieData || {
     name: "",
     calories: null,
+    quantity: null,
   };
 
   const {
@@ -50,7 +51,7 @@ export default function CookieModal({
         ? cookieData.id
         : Math.round(Math.random() * 100).toString(),
       ...data,
-      quantity: cookieData ? cookieData.quantity : 0,
+      consumed: cookieData ? cookieData.consumed : 0,
       totalCalories: cookieData ? cookieData.totalCalories : 0,
     });
     toast.success("Cookie saved successfully");
@@ -125,6 +126,29 @@ export default function CookieModal({
               )}
             </div>
           </div>
+          <div className="flex items-center justify-center gap-4">
+            <Label
+              htmlFor="quantity"
+              className="text-center text-zinc-500 col-span-1 w-1/4"
+            >
+              Quantity
+            </Label>
+            <div className="col-span-1 w-full">
+              <Input
+                {...register("quantity", {
+                  required: "Quantity is required",
+                })}
+                className="w-full border border-red-400 rounded-md px-3 py-2"
+                type="number"
+                min="1"
+              />
+              {errors.quantity && (
+                <p role="alert" className="text-xs font-bold text-red-500 mt-1">
+                  {errors.quantity.message}
+                </p>
+              )}
+            </div>
+          </div>
           <DialogFooter>
             <Button
               type="submit"
@@ -148,6 +172,7 @@ CookieModal.propTypes = {
     name: PropTypes.string,
     calories: PropTypes.number,
     quantity: PropTypes.number,
+    consumed: PropTypes.number,
     totalCalories: PropTypes.number,
   }),
 };
