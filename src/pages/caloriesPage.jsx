@@ -12,6 +12,8 @@ import { UnderlineTitle } from "@/components/global/underlineTitle";
 import CookiesTracker from "@/components/calories/CookiesTracker";
 import CaloriesOverview from "@/components/calories/CaloriesOverview";
 
+export const CookiesContext = React.createContext();
+
 export const CaloriesPage = () => {
   // Fetching data for cookies.
   const {
@@ -35,12 +37,14 @@ export const CaloriesPage = () => {
       <h1 className="text-4xl font-bold text-red-600 text-center mb-8">
         <UnderlineTitle text="Santa's Calories Counter" />
       </h1>
-      <div className="grid grid-cols-1 gap-3 sm:p-8  lg:grid-cols-3">
-        <div className="lg:col-span-2">
-          <CookiesTracker data={cookiesData} />
+      <CookiesContext.Provider value={{ cookiesData, caloriesData }}>
+        <div className="grid grid-cols-1 gap-3 sm:p-8  lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <CookiesTracker />
+          </div>
+          <CaloriesOverview />
         </div>
-        <CaloriesOverview data={caloriesData} />
-      </div>
+      </CookiesContext.Provider>
     </section>
   );
 };

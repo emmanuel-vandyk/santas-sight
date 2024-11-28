@@ -14,14 +14,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import santahat from "@/assets/santahat.svg";
-import { useToast } from "@/hooks/useToast";
 export default function CookieModal({
   isOpen,
   isClose,
   onSubmit,
   data: cookieData,
 }) {
-  const toast = useToast();
   const defaultValues = cookieData || {
     name: "",
     calories: null,
@@ -51,10 +49,10 @@ export default function CookieModal({
         ? cookieData.id
         : Math.round(Math.random() * 100).toString(),
       ...data,
+      quantity: cookieData ? cookieData.quantity : Number(data.quantity),
       consumed: cookieData ? cookieData.consumed : 0,
       totalCalories: cookieData ? cookieData.totalCalories : 0,
     });
-    toast.success("Cookie saved successfully");
     isClose();
     reset();
   });

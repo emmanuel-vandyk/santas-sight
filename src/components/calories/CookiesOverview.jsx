@@ -7,16 +7,28 @@ import { PlusSquare } from "lucide-react";
 import CookiesCarousel from "@/components/calories/CookiesCarousel";
 import CookieSelector from "@/components/calories/CookieSelector";
 
-export default function CookiesOverview({ data: cookiesData }) {
+export default function CookiesOverview({
+  generateCookiesToSend,
+  generateCalories = () => {},
+  data: cookiesToSend,
+}) {
   // Use the context to access the state and its updater function
   const { setModalState } = React.useContext(ModalContext);
+  const [cookies, setCookies] = React.useState([]);
+
+  React.useEffect(() => {
+    if (cookiesToSend) {
+      setCookies(cookiesToSend);
+    }
+  }, [cookiesToSend]);
+
   // Determines if there is available cookie data. If cookiesData has elements, isDataAvailable will be true.
-  const isDataAvailable = cookiesData.length > 0;
+  const isDataAvailable = cookiesToSend.length > 0;
 
   return (
     <Card className="flex flex-col justify-between gap-2 box-border ">
       {isDataAvailable ? (
-        <CookiesCarousel data={cookiesData} />
+        <CookiesCarousel data={cookiesToSend} setCookies={setCookies} />
       ) : (
         <CookieSelector />
       )}
@@ -42,9 +54,18 @@ export default function CookiesOverview({ data: cookiesData }) {
             },
             "w-full"
           )}
+          onClick={() => {
+            generateCookiesToSend([]);
+            generateCalories(cookies);
+          }}
+          disabled={
+            cookiesToSend.length == 1
+              ? cookiesToSend[0].consumed === cookiesToSend[0].quantity
+              : false
+          }
         >
           <PlusSquare />
-          Add
+          Add calories
         </Button>
       </CardFooter>
     </Card>

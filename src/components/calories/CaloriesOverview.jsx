@@ -1,14 +1,18 @@
+import * as React from "react";
+
+import { CookiesContext } from "@/pages/caloriesPage";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { ChristmasSantaClaus } from "@/components/global/iconsChristmas";
 
-export default function CaloriesOverview({ data: caloriesData }) {
+export default function CaloriesOverview() {
+  const { caloriesData } = React.useContext(CookiesContext);
+
   return (
     <Card className="flex flex-col justify-between">
       <CardHeader>

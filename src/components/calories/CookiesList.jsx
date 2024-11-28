@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { CookiesContext } from "@/pages/caloriesPage";
 import {
   useDeleteCookiesForSanta,
   useDeleteCheckedCookiesForSanta,
@@ -50,12 +51,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import SelectAll from "@/components/global/selectAll";
 
-export default function CookiesList({
-  data: cookiesData,
-  generateCookiesToSend,
-}) {
+export default function CookiesList({ generateCookiesToSend }) {
   const toast = useToast();
-
+  const { cookiesData } = React.useContext(CookiesContext);
   const deleteCookiesMutation = useDeleteCookiesForSanta();
   const deleteCheckedCookies = useDeleteCheckedCookiesForSanta();
 
