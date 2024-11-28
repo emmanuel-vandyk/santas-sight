@@ -9,6 +9,7 @@ import {
   ChristmasElf,
   ChristmasSnowflake,
   ChristmasLogout,
+  Letters,
   Route,
 } from "@/components/global/iconsChristmas";
 import { SnowDecoration } from "@/components/global/snowDecoration";
@@ -36,6 +37,11 @@ const items = [
     title: "Elve Management",
     url: "/elves",
     icon: ChristmasElf,
+  },
+  {
+    title: "Letters",
+    url: "/navcards",
+    icon: Letters,
   },
   {
     title: "Chill Zone",
