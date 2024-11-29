@@ -59,9 +59,7 @@ export default function CookiesOverview({
             generateCalories(cookies);
           }}
           disabled={
-            cookiesToSend.length == 1
-              ? cookiesToSend[0].consumed === cookiesToSend[0].quantity
-              : false
+            cookiesToSend.length == 1 ? cookiesToSend[0].quantity == 0 : false
           }
         >
           <PlusSquare />
