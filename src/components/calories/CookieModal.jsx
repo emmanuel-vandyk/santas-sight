@@ -50,6 +50,7 @@ export default function CookieModal({
         ? cookieData.id
         : Math.round(Math.random() * 100).toString(),
       ...data,
+      calories: Number(data.calories),
       quantity: cookieData ? cookieData.quantity : Number(data.quantity),
       consumed: cookieData ? cookieData.consumed : 0,
       totalCalories: cookieData ? cookieData.totalCalories : 0,

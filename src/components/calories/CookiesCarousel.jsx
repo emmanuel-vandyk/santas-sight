@@ -30,9 +30,8 @@ function CookieCard({ data: cookieData, setCookies }) {
   // Handle changes to the number of consumed cookies
   const handleConsumedChange = (e) => {
     // Make sure the entered value is between zero and the available quantity of cookies.
-    const newConsumed = Math.min(
-      Math.max(0, e.target.value),
-      cookieData.quantity
+    const newConsumed = Math.round(
+      Math.min(Math.max(0, e.target.value), cookieData.quantity)
     );
 
     // Update the state of cookies
