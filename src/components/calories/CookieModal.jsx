@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import PropTypes from "prop-types";
+import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -49,7 +50,7 @@ export default function CookieModal({
         ? cookieData.id
         : Math.round(Math.random() * 100).toString(),
       ...data,
-      quantity: Number(data.quantity),
+      quantity: cookieData ? cookieData.quantity : Number(data.quantity),
       consumed: cookieData ? cookieData.consumed : 0,
       totalCalories: cookieData ? cookieData.totalCalories : 0,
     });
@@ -124,7 +125,12 @@ export default function CookieModal({
               )}
             </div>
           </div>
-          <div className="flex items-center justify-center gap-4">
+          <div
+            className={cn({
+              hidden: cookieData,
+              "flex items-center justify-center gap-4": !cookieData,
+            })}
+          >
             <Label
               htmlFor="quantity"
               className="text-center text-zinc-500 col-span-1 w-1/4"

@@ -386,7 +386,7 @@
       "id": "1",
       "name": "Chocolate Cookie",
       "calories": 200,
-      "quantity": 230,
+      "quantity": 0,
       "consumed": 230,
       "totalCalories": 0
     },
@@ -394,9 +394,9 @@
       "id": "2",
       "name": "Sugar Cookie",
       "calories": 150,
-      "quantity": 100,
-      "consumed": 0,
-      "totalCalories": 0
+      "quantity": 50,
+      "consumed": 50,
+      "totalCalories": 7500
     },
     {
       "id": "3",
