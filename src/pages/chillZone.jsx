@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchChristmasSongs } from "@/services/chillzone/chillzone";
+import { fetchChristmasSongs, fetchAllMembers } from "@/services/chillzone/chillzone";
 import { NowPlaying } from "@/components/chillzone/nowPlaying";
 import { Playlist } from "@/components/chillzone/playlist";
 import { VolumeControl } from "@/components/chillzone/volumeControl";
@@ -10,103 +10,106 @@ import {
   LoadingScreen,
   ErrorScreen,
 } from "@/components/global/santaDataLoader";
-import roberto from "@/assets/fotoRV.png";
 
 export const ChillZone = () => {
+  console.log("ChillZone component is rendering");
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(10);
-  const audioRef = useRef(new Audio());
+  const audioRef = useRef(null);
   const [currentSongIndex, setCurrentSongIndex] = useState(3);
 
   const {
     data: christmasSongs,
-    isLoading,
-    error,
+    isLoading: isSongsLoading,
+    error: songsError,
   } = useQuery({
     queryKey: ["christmasSongs"],
     queryFn: fetchChristmasSongs,
   });
 
-  const players = [
-    {
-      id: 1,
-      name: "Roberto",
-      image: roberto,
-      role: "Frontend Developer",
-      message:
-        "I wish you all a Merry Christmas and a Happy New Year! Hoping this page brings you joy and festive cheer.",
-      github: "https://github.com/RVSolutionsplus507",
-      linkedin: "https://www.linkedin.com/in/roberto-j-vargas-d-69631159/",
-    },
-    {
-      id: 2,
-      name: "Máximo",
-      image: "https://github.com/maximoev.png",
-      role: "Frontend Developer",
-      message:
-        "Merry Christmas! Wishing you joy, peace, and love this holiday season.",
-      github: "https://github.com/maximoev",
-      linkedin: "https://www.linkedin.com/in/maximoev",
-    },
-    {
-      id: 3,
-      name: "Pedro",
-      image: "https://avatars.githubusercontent.com/u/91698863?v=4",
-      role: "Backend Developer",
-      message:
-        "May the magic of Christmas fill your home with love and gratitude and give you a year full of success and happiness. Happy holidays!",
-      github: "https://github.com/puriihuaman",
-      linkedin: "https://www.linkedin.com/in/puriihuaman/",
-    },
-    {
-      id: 4,
-      name: "Emmanuel Van Dick",
-      image: "https://i.postimg.cc/hPdn8BMt/emma-vandick.png",
-      role: "Frontend Developer",
-      message: "Merry Christmas Developers",
-      github: "https://github.com/emmanuel-vandyk",
-      linkedin: "https://linkedin.com/in/emmanuel-vandyk/",
-    },
-    {
-      id: 5,
-      name: "Luis Eduardo",
-      image: "https://avatars.githubusercontent.com/u/110699874?v=4",
-      role: "Backend Developer",
-      message: "Merry Christmas to all!",
-      github: "https://github.com/LUISEDOCCOR",
-      linkedin: "https://www.linkedin.com/in/luiseduardoocegueda/",
-    },
-    {
-      id: 6,
-      name: "Raydberg",
-      image: "https://avatars.githubusercontent.com/u/144204205?v=4",
-      role: "Backend Developer",
-      message:
-        "Merry Christmas! May your days be filled with joy, your home with love, and your heart with peace this holiday season.",
-      github: "https://github.com/Raydberg",
-      linkedin: "https://www.linkedin.com/in/raydbergchuquival",
-    },
-  ];
+  const {
+    data: members,
+    isLoading: isMembersLoading,
+    error: membersError
+  } = useQuery({
+    queryKey: ["members"],
+    queryFn: fetchAllMembers,
+  });
+
+  useEffect(() => {
+    console.log("Initial useEffect is running");
+    audioRef.current = new Audio();
+    audioRef.current.volume = volume / 100;
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = '';
+      }
+    };
+  }, [volume]);
+
+  useEffect(() => {
+    console.log("useEffect for currentSong is running", { currentSong, isPlaying });
+    if (currentSong && audioRef.current) {
+      audioRef.current.src = currentSong.previewUrl;
+      if (isPlaying) {
+        const playPromise = audioRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((error) => {
+            console.error("Playback failed:", error);
+            setIsPlaying(false);
+          });
+        }
+      }
+    }
+  }, [currentSong, isPlaying]);
+
+  useEffect(() => {
+    if (christmasSongs && christmasSongs.length > 0) {
+      const initialSong = christmasSongs[currentSongIndex];
+      setCurrentSong(initialSong);
+      setIsPlaying(false);
+      if (audioRef.current) {
+        audioRef.current.src = initialSong.previewUrl;
+      }
+    }
+  }, [christmasSongs, currentSongIndex]);
+
+  if (isSongsLoading || isMembersLoading) return <LoadingScreen />;
+  if (songsError || membersError) return <ErrorScreen />;
+  if (!christmasSongs || !christmasSongs.length || !members || !Array.isArray(members)) {
+    return <ErrorScreen />;
+  }
 
   const handlePlayPause = () => {
     if (isPlaying) {
       audioRef.current.pause();
+      setIsPlaying(false);
     } else {
-      audioRef.current.play();
+      audioRef.current.play().catch(error => {
+        console.error("Playback failed:", error);
+        setIsPlaying(false);
+      });
+      setIsPlaying(true);
     }
-    setIsPlaying(!isPlaying);
   };
 
   const handleVolumeChange = (newVolume) => {
     setVolume(newVolume[0]);
-    audioRef.current.volume = newVolume[0] / 100;
+    if (audioRef.current) {
+      audioRef.current.volume = newVolume[0] / 100;
+    }
   };
 
   const handleSongSelect = (song, index) => {
     setCurrentSong(song);
     setCurrentSongIndex(index);
-    setIsPlaying(true);
+    if (audioRef.current) {
+      audioRef.current.src = song.previewUrl;
+    }
+    setIsPlaying(false);
   };
 
   const handleSkipForward = () => {
@@ -123,37 +126,6 @@ export const ChillZone = () => {
       handleSongSelect(christmasSongs[prevIndex], prevIndex);
     }
   };
-
-  useEffect(() => {
-    if (currentSong) {
-      audioRef.current.src = currentSong.previewUrl;
-      if (isPlaying) {
-        audioRef.current
-          .play()
-          .catch((error) => console.error("Playback failed:", error));
-      }
-    }
-  }, [currentSong, isPlaying]);
-
-  useEffect(() => {
-    audioRef.current.volume = volume / 100;
-  }, [volume]);
-
-  useEffect(() => {
-    if (christmasSongs && christmasSongs.length > 0) {
-      const initialSong = christmasSongs[currentSongIndex];
-      setCurrentSong(initialSong);
-      setIsPlaying(true);
-      audioRef.current.src = initialSong.previewUrl;
-      audioRef.current.volume = volume / 100;
-      audioRef.current
-        .play()
-        .catch((error) => console.error("Initial playback failed:", error));
-    }
-  }, [christmasSongs, currentSongIndex]);
-
-  if (isLoading) return <LoadingScreen />;
-  if (error) return <ErrorScreen />;
 
   return (
     <div className="min-h-screen text-white p-4 md:p-8">
@@ -185,8 +157,9 @@ export const ChillZone = () => {
         </div>
       </div>
       <div className="mt-8">
-        <Wishes players={players} />
+        <Wishes members={members} />
       </div>
     </div>
   );
 };
+

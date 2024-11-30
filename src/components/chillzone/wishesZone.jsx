@@ -5,17 +5,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
 import dev from "@/assets/background_dev.jpeg"
 import propTypes from "prop-types"
-import { PlayerModal } from "./PlayerModal"
+import { MemberModal } from "@/components/chillzone/memberModal"
 
-export const Wishes = ({ players }) => {
-  const [selectedPlayer, setSelectedPlayer] = useState(null)
+export const Wishes = ({ members }) => {
+  const [selectedMember, setSelectedMember] = useState(null)
 
-  const handleOpenModal = (player) => {
-    setSelectedPlayer(player)
+  const handleOpenModal = (member) => {
+    setSelectedMember(member)
   }
 
   const handleCloseModal = () => {
-    setSelectedPlayer(null)
+    setSelectedMember(null)
   }
 
   const words = `Team 3 wishes everyone a Merry Christmas! 🎄`
@@ -31,32 +31,32 @@ export const Wishes = ({ players }) => {
             <TextGenerateEffect words={words} duration={2} filter={true} repeat={true} interval={5} />
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
-            {players.map((player) => (
+            {members.map((member) => (
               <Button
-                key={player.id}
-                onClick={() => handleOpenModal(player)}
+                key={member.id}
+                onClick={() => handleOpenModal(member)}
                 className="bg-transparent shadow-black hover:bg-green-700 shadow-sm flex flex-col items-center justify-center p-2 h-auto"
               >
                 <Avatar className="w-12 h-12 mb-2">
-                  <AvatarImage src={player.image} alt={player.name} />
-                  <AvatarFallback>{player.name[0]}</AvatarFallback>
+                  <AvatarImage src={member.image} alt={member.name} />
+                  <AvatarFallback>{member.name[0]}</AvatarFallback>
                 </Avatar>
-                <span className="text-xs text-center">{player.name}</span>
+                <span className="text-xs text-center">{member.name}</span>
               </Button>
             ))}
           </div>
         </CardContent>
       </Card>
-      <PlayerModal
-        isOpen={!!selectedPlayer}
+      <MemberModal
+        isOpen={!!selectedMember}
         onClose={handleCloseModal}
-        player={selectedPlayer}
+        member={selectedMember}
       />
     </div>
   )
 }
 
 Wishes.propTypes = {
-  players: propTypes.array,
+  members: propTypes.array,
 }
 

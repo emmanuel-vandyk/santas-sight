@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const SPOTIFY_API_BASE_URL = 'https://api.spotify.com/v1';
 const SPOTIFY_ACCOUNTS_URL = 'https://accounts.spotify.com/api/token';
+const API_URL = import.meta.env.VITE_MOCK_API_URL;
 
 let accessToken = '';
 let tokenExpirationTime = 0;
@@ -97,3 +98,32 @@ export const fetchSongDetails = async (songId) => {
   }
 };
 
+export const fetchAllMembers = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/api/member`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all members:', error);
+    throw error;
+  }
+};
+
+export const fetchMemberById = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/api/member/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching member with ID ${id}:`, error);
+    throw error;
+  }
+};
+
+export const createMember = async (member) => {
+  try {
+    const response = await axios.post(`${API_URL}/api/member`, member);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating member:', error);
+    throw error;
+  }
+};
