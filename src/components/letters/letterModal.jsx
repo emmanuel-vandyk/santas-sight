@@ -18,7 +18,7 @@ export const LetterModal = ({ isOpen, onClose, letter }) => {
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-green-700 flex items-center">
             <MailOpenIcon className="mr-2 text-red-700" />
-            Letter from {letter.children_id}
+            Letter from {letter.children.name}
           </DialogTitle>
         </DialogHeader>
         <div className="relative mt-4 p-6 bg-transparent shadow-md shadow-zinc-800 rounded-lg ">

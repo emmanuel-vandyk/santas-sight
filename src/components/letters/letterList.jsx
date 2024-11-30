@@ -18,7 +18,7 @@ export const LetterList = ({ letters, onOpenLetter, onToggleReadStatus }) => {
 }
 
 LetterList.propTypes = {
-  letters: propTypes.array.isRequired,
+  letters: propTypes.arrayOf(propTypes.object).isRequired,
   onOpenLetter: propTypes.func.isRequired,
   onToggleReadStatus: propTypes.func.isRequired,
 }
