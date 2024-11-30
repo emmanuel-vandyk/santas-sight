@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchChristmasSongs, fetchAllMembers } from "@/services/chillzone/chillzone";
 import { NowPlaying } from "@/components/chillzone/nowPlaying";
@@ -12,7 +12,6 @@ import {
 } from "@/components/global/santaDataLoader";
 
 export const ChillZone = () => {
-  console.log("ChillZone component is rendering");
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(10);
@@ -21,80 +20,64 @@ export const ChillZone = () => {
 
   const {
     data: christmasSongs,
-    isLoading: isSongsLoading,
-    error: songsError,
+    isLoading,
+    error,
   } = useQuery({
     queryKey: ["christmasSongs"],
     queryFn: fetchChristmasSongs,
   });
 
   const {
-    data: members,
-    isLoading: isMembersLoading,
-    error: membersError
+    data,
   } = useQuery({
     queryKey: ["members"],
     queryFn: fetchAllMembers,
   });
 
   useEffect(() => {
-    console.log("Initial useEffect is running");
-    audioRef.current = new Audio();
-    audioRef.current.volume = volume / 100;
-
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.src = '';
-      }
-    };
-  }, [volume]);
-
-  useEffect(() => {
-    console.log("useEffect for currentSong is running", { currentSong, isPlaying });
-    if (currentSong && audioRef.current) {
-      audioRef.current.src = currentSong.previewUrl;
-      if (isPlaying) {
-        const playPromise = audioRef.current.play();
-        if (playPromise !== undefined) {
-          playPromise.catch((error) => {
-            console.error("Playback failed:", error);
-            setIsPlaying(false);
-          });
-        }
-      }
-    }
-  }, [currentSong, isPlaying]);
-
-  useEffect(() => {
     if (christmasSongs && christmasSongs.length > 0) {
-      const initialSong = christmasSongs[currentSongIndex];
-      setCurrentSong(initialSong);
-      setIsPlaying(false);
-      if (audioRef.current) {
-        audioRef.current.src = initialSong.previewUrl;
+      const song = christmasSongs[currentSongIndex];
+      setCurrentSong(song);
+      if (audioRef.current && song.previewUrl) {
+        audioRef.current.src = song.previewUrl;
+        audioRef.current.load();
       }
     }
   }, [christmasSongs, currentSongIndex]);
 
-  if (isSongsLoading || isMembersLoading) return <LoadingScreen />;
-  if (songsError || membersError) return <ErrorScreen />;
-  if (!christmasSongs || !christmasSongs.length || !members || !Array.isArray(members)) {
-    return <ErrorScreen />;
-  }
-
-  const handlePlayPause = () => {
-    if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      audioRef.current.play().catch(error => {
-        console.error("Playback failed:", error);
-        setIsPlaying(false);
-      });
-      setIsPlaying(true);
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume / 100;
     }
-  };
+  }, [volume]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.play().catch(error => {
+          console.error("Autoplay failed:", error);
+          setIsPlaying(false);
+        });
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [isPlaying]);
+
+  const handlePlayPause = useCallback(() => {
+    if (audioRef.current && audioRef.current.src) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play().catch(error => {
+          console.error("Playback failed:", error);
+        });
+      }
+      setIsPlaying(!isPlaying);
+    } else {
+      console.error("No audio source available");
+    }
+  }, [isPlaying]);
 
   const handleVolumeChange = (newVolume) => {
     setVolume(newVolume[0]);
@@ -103,14 +86,15 @@ export const ChillZone = () => {
     }
   };
 
-  const handleSongSelect = (song, index) => {
+  const handleSongSelect = useCallback((song, index) => {
     setCurrentSong(song);
     setCurrentSongIndex(index);
-    if (audioRef.current) {
-      audioRef.current.src = song.previewUrl;
-    }
     setIsPlaying(false);
-  };
+    if (audioRef.current && song.previewUrl) {
+      audioRef.current.src = song.previewUrl;
+      audioRef.current.load();
+    }
+  }, []);
 
   const handleSkipForward = () => {
     if (christmasSongs && christmasSongs.length > 0) {
@@ -126,6 +110,16 @@ export const ChillZone = () => {
       handleSongSelect(christmasSongs[prevIndex], prevIndex);
     }
   };
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  if (error) {
+    return <ErrorScreen />;
+  }
+
+  const members = Array.isArray(data?.data) ? data.data : []
 
   return (
     <div className="min-h-screen text-white p-4 md:p-8">
@@ -159,6 +153,11 @@ export const ChillZone = () => {
       <div className="mt-8">
         <Wishes members={members} />
       </div>
+      <audio
+        ref={audioRef}
+        src={currentSong?.previewUrl}
+        onEnded={handleSkipForward}
+      />
     </div>
   );
 };

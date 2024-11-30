@@ -3,6 +3,7 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
+    DialogDescription,
 } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import horns from "@/assets/horns.png";
@@ -13,12 +14,15 @@ export const MemberModal = ({ isOpen, onClose, member }) => {
     if (!member) return null;
 
     return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
+        <Dialog open={isOpen} onOpenChange={onClose} aria-describedby={member?.description ? 'member-description' : undefined}>
             <DialogContent className="bg-transparent backdrop-blur-md md:my-10 max-w-4xl h-auto">
                 <DialogHeader className="mb-8">
                     <DialogTitle className="text-center text-4xl">
                         <span className="text-red-500">{member.name}</span> <span className="text-white">- {member.role}</span>
                     </DialogTitle>
+                    <DialogDescription id="member-description" className="text-center text-lg text-gray-300">
+                        {member.description || "Team member"}
+                    </DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col items-center w-full">
                     <div className="relative w-48 h-48">
@@ -69,3 +73,4 @@ MemberModal.propTypes = {
     onClose: propTypes.func,
     member: propTypes.object,
 };
+

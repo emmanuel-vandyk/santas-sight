@@ -1,4 +1,4 @@
-import propTypes from "prop-types";
+import PropTypes from "prop-types";
 import {
   Card,
   CardContent,
@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Play, Pause, SkipForward, SkipBack } from "lucide-react";
+import { Play, Pause, SkipForward, SkipBack } from 'lucide-react';
 
 export const NowPlaying = ({
   currentSong,
@@ -17,6 +17,7 @@ export const NowPlaying = ({
   onPlayPause,
   onSkipForward,
   onSkipBack,
+  isPlayable,
 }) => {
   return (
     <Card className="bg-gradient-to-b from-red-50 to-green-50 backdrop-blur-lg">
@@ -39,6 +40,11 @@ export const NowPlaying = ({
             <p className="text-lg md:text-xl text-red-700 text-center">
               {currentSong.artist}
             </p>
+            {!isPlayable && (
+              <p className="text-sm text-yellow-600 mt-2">
+                Preview unavailable for this song
+              </p>
+            )}
           </div>
         ) : (
           <div className="text-center">
@@ -58,6 +64,7 @@ export const NowPlaying = ({
           className="bg-transparent shadow-md shadow-zinc-500 text-red-700 hover:bg-red-200"
           size="icon"
           onClick={onPlayPause}
+          disabled={!isPlayable}
         >
           {isPlaying ? (
             <Pause className="h-4 w-4" />
@@ -78,9 +85,11 @@ export const NowPlaying = ({
 };
 
 NowPlaying.propTypes = {
-  currentSong: propTypes.object,
-  isPlaying: propTypes.bool,
-  onPlayPause: propTypes.func,
-  onSkipForward: propTypes.func,
-  onSkipBack: propTypes.func,
+  currentSong: PropTypes.object,
+  isPlaying: PropTypes.bool,
+  onPlayPause: PropTypes.func,
+  onSkipForward: PropTypes.func,
+  onSkipBack: PropTypes.func,
+  isPlayable: PropTypes.bool,
 };
+
