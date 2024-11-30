@@ -61,23 +61,21 @@ export const ChillZone = () => {
     },
     {
       id: 4,
-      name: "Emmanuel",
-      image: "/placeholder.svg?height=40&width=40",
+      name: "Emmanuel Van Dick",
+      image: "https://i.postimg.cc/hPdn8BMt/emma-vandick.png",
       role: "Frontend Developer",
-      message:
-        "Project Manager with expertise in agile methodologies and team coordination. Wishing you a joyous Christmas season.",
-      github: "https://github.com/emmanuel",
-      linkedin: "https://linkedin.com/in/emmanuel",
+      message: "Merry Christmas Developers",
+      github: "https://github.com/emmanuel-vandyk",
+      linkedin: "https://linkedin.com/in/emmanuel-vandyk/",
     },
     {
       id: 5,
-      name: "Luis",
-      image: "/placeholder.svg?height=40&width=40",
+      name: "Luis Eduardo",
+      image: "https://avatars.githubusercontent.com/u/110699874?v=4",
       role: "Backend Developer",
-      message:
-        "QA Engineer ensuring the quality and reliability of software products. Have a Merry Christmas and a Happy New Year!",
-      github: "https://github.com/luis",
-      linkedin: "https://linkedin.com/in/luis",
+      message: "Merry Christmas to all!",
+      github: "https://github.com/LUISEDOCCOR",
+      linkedin: "https://www.linkedin.com/in/luiseduardoocegueda/",
     },
     {
       id: 6,
