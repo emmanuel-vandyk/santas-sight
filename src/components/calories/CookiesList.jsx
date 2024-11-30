@@ -1,12 +1,12 @@
 import * as React from "react";
 
 import { CookiesContext } from "@/pages/caloriesPage";
+import { ModalContext } from "@/components/calories/CookiesManager";
 import {
   useDeleteCookiesForSanta,
   useDeleteCheckedCookiesForSanta,
 } from "@/services/calories/cookiesapi";
 import { useToast } from "@/hooks/useToast";
-import { ModalContext } from "@/components/calories/CookiesTracker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";

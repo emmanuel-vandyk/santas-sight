@@ -21,7 +21,7 @@ import CookieModal from "@/components/calories/CookieModal";
 // Create a context to store and provide the modal state
 export const ModalContext = React.createContext();
 
-export default function CookiesTracker() {
+export default function CookiesManager() {
   const { cookiesData } = React.useContext(CookiesContext);
   const toast = useToast();
   // Mutations for adding and updating cookies data.
@@ -81,7 +81,6 @@ export default function CookiesTracker() {
               <CookiesList generateCookiesToSend={generateCookiesToSend} />
               <CookiesOverview
                 data={cookiesToSend}
-                generateCookiesToSend={generateCookiesToSend}
                 generateCalories={(data) => {
                   // Check if data has any cookies
                   if (data.length > 0) {
@@ -100,6 +99,7 @@ export default function CookiesTracker() {
                       "Failed to add cookies. Please verify the information."
                     );
                   }
+                  generateCookiesToSend([]);
                 }}
               />
             </ModalContext.Provider>

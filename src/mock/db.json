@@ -388,15 +388,7 @@
       "calories": 200,
       "quantity": 0,
       "consumed": 230,
-      "totalCalories": 0
-    },
-    {
-      "id": "2",
-      "name": "Sugar Cookie",
-      "calories": 150,
-      "quantity": 50,
-      "consumed": 50,
-      "totalCalories": 7500
+      "totalCalories": 46000
     },
     {
       "id": "3",

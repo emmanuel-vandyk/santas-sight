@@ -9,7 +9,7 @@ import {
   ErrorScreen,
 } from "@/components/global/santaDataLoader";
 import { UnderlineTitle } from "@/components/global/underlineTitle";
-import CookiesTracker from "@/components/calories/CookiesTracker";
+import CookiesManager from "@/components/calories/CookiesManager";
 import CaloriesOverview from "@/components/calories/CaloriesOverview";
 
 export const CookiesContext = React.createContext();
@@ -40,7 +40,7 @@ export const CaloriesPage = () => {
       <CookiesContext.Provider value={{ cookiesData, caloriesData }}>
         <div className="grid grid-cols-1 gap-3 sm:p-8  lg:grid-cols-3">
           <div className="lg:col-span-2">
-            <CookiesTracker />
+            <CookiesManager />
           </div>
           <CaloriesOverview />
         </div>
