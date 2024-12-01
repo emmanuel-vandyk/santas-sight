@@ -7,13 +7,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  ArrowUpDown,
-  ChevronDown,
-  Pencil,
-  RotateCcw,
-  Trash2,
-} from "lucide-react";
+import { ArrowUpDown, ChevronDown, Pencil, RotateCcw, Trash2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -47,8 +41,10 @@ import {
 import ElvesAvatar from "@/components/elves/ElvesAvatar";
 import { useToast } from "@/hooks/useToast";
 
-export default function Component() {
-  const { data: elves, isLoading, isError } = useElves();
+export default function ElvesTable() {
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+  const { data: elvesData, isLoading, isError } = useElves(page, limit);
   const addElveMutation = useAddElves();
   const updateElveMutation = useUpdateElves();
   const logicalDeleteMutation = useLogicalDeleteElves();
@@ -63,7 +59,8 @@ export default function Component() {
 
   const toast = useToast();
 
-  const data = useMemo(() => elves || [], [elves]);
+  const data = useMemo(() => elvesData?.data || [], [elvesData]);
+  const pagination = elvesData?.pagination || { count: 0, current_page: 1, pages: 1 };
 
   const columns = [
     {
@@ -100,15 +97,15 @@ export default function Component() {
           </div>
         );
       },
-        },
-        {
+    },
+    {
       accessorKey: "id",
       header: ({ column }) => <p>ID</p>,
       cell: ({ row }) => (
         <div className="text-center font-medium">{row.getValue("id")}</div>
       ),
-        },
-        {
+    },
+    {
       accessorKey: "name",
       header: ({ column }) => (
         <Button
@@ -123,8 +120,8 @@ export default function Component() {
       cell: ({ row }) => (
         <div className="capitalize">{row.getValue("name")}</div>
       ),
-        },
-        {
+    },
+    {
       accessorKey: "height",
       header: ({ column }) => <p className="hidden md:block">Height</p>,
       cell: ({ row }) => (
@@ -132,8 +129,8 @@ export default function Component() {
           {row.getValue("height")}
         </div>
       ),
-        },
-        {
+    },
+    {
       accessorKey: "age",
       header: ({ column }) => <p className="hidden md:block">Age</p>,
       cell: ({ row }) => (
@@ -141,8 +138,8 @@ export default function Component() {
           {row.getValue("age")}
         </div>
       ),
-        },
-        {
+    },
+    {
       accessorKey: "address",
       header: ({ column }) => <p className="hidden md:block">Address</p>,
       cell: ({ row }) => (
@@ -150,39 +147,39 @@ export default function Component() {
           {row.getValue("address")}
         </div>
       ),
-        },
-        {
-      accessorKey: "mail",
+    },
+    {
+      accessorKey: "email",
       header: ({ column }) => (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="hidden md:flex w-full"
         >
-          Mail
+          Email
           <ArrowUpDown className="hidden md:flex items-center size-4" />
         </Button>
       ),
       cell: ({ row }) => (
-        <div className="lowercase hidden md:block">{row.getValue("mail")}</div>
+        <div className="lowercase hidden md:block">{row.getValue("email")}</div>
       ),
-        },
-        {
-      accessorKey: "status",
+    },
+    {
+      accessorKey: "isDeleted",
       header: ({ column }) => <p className="hidden md:block">Status</p>,
       cell: ({ row }) => (
         <div className="w-full">
           <Badge
             className={`hidden md:inline-flex text-center ${
-              row.original.isDeleted ? "bg-red-600 text-white px-3" : "bg-green-700 text-white px-5"
+              row.getValue("isDeleted") ? "bg-red-600 text-white px-3" : "bg-green-700 text-white px-5"
             }`}
           >
-            {row.original.isDeleted ? "Unavailable" : "Available"}
+            {row.getValue("isDeleted") ? "Unavailable" : "Available"}
           </Badge>
         </div>
       ),
-        },
-        {
+    },
+    {
       id: "actions",
       cell: ({ row }) => {
         const elve = row.original;
@@ -249,8 +246,8 @@ export default function Component() {
     try {
       await addElveMutation.mutateAsync(newElve);
       toast.success("Elve added successfully");
-    } catch {
-      toast.error("Error adding elve");
+    } catch (error) {
+      toast.error("Error adding elve: " + error.message);
     }
   };
 
@@ -258,8 +255,8 @@ export default function Component() {
     try {
       await updateElveMutation.mutateAsync(elveUpdated);
       toast.success("Elve updated successfully");
-    } catch {
-      toast.error("Error updating elve");
+    } catch (error) {
+      toast.error("Error updating elve: " + error.message);
     }
   };
 
@@ -278,8 +275,8 @@ export default function Component() {
         } deleted successfully`
       );
       setRowSelection({});
-    } catch {
-      toast.error("Error deleting elves");
+    } catch (error) {
+      toast.error("Error deleting elves: " + error.message);
     }
   };
 
@@ -287,8 +284,8 @@ export default function Component() {
     try {
       await logicalDeleteMutation.mutateAsync(elve.id);
       toast.success(`Elve ${elve.name} deleted successfully`);
-    } catch {
-      toast.error(`Error deleting elve ${elve.name}`);
+    } catch (error) {
+      toast.error(`Error deleting elve ${elve.name}: ${error.message}`);
     }
   };
 
@@ -296,8 +293,8 @@ export default function Component() {
     try {
       await restoreMutation.mutateAsync(elve.id);
       toast.success("Elve restored successfully");
-    } catch {
-      toast.error("Error restoring elve");
+    } catch (error) {
+      toast.error("Error restoring elve: " + error.message);
     }
   };
 
@@ -316,8 +313,8 @@ export default function Component() {
         } restored successfully`
       );
       setRowSelection({});
-    } catch {
-      toast.error("Error restoring elves");
+    } catch (error) {
+      toast.error("Error restoring elves: " + error.message);
     }
   };
 
@@ -455,23 +452,25 @@ export default function Component() {
         </div>
         <div className="mt-4 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="text-sm text-muted-foreground">
-            {selectedRows.length} of {table.getFilteredRowModel().rows.length}{" "}
-            row(s) selected.
+            {selectedRows.length} of {pagination.count} row(s) selected.
           </div>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             <Button
               variant="outline"
               size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
+              onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+              disabled={page === 1}
             >
               Previous
             </Button>
+            <span className="text-sm">
+              Page {pagination.current_page} of {pagination.pages}
+            </span>
             <Button
               variant="outline"
               size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
+              onClick={() => setPage((prev) => Math.min(pagination.pages, prev + 1))}
+              disabled={page >= pagination.pages}
             >
               Next
             </Button>
@@ -490,3 +489,4 @@ export default function Component() {
     </div>
   );
 }
+
