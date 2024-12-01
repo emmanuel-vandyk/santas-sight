@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, useCallback} from "react";
+import { useMemo, useState, useRef, useCallback } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -7,7 +7,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, Pencil, RotateCcw, Trash2 } from 'lucide-react';
+import {
+  ArrowUpDown,
+  ChevronDown,
+  Pencil,
+  RotateCcw,
+  Trash2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -45,16 +51,20 @@ import { debounce } from "@/services/elvescrud/debounce";
 export default function ElvesTable() {
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
-  const [sortBy, setSortBy] = useState('id');
-  const [sortOrder, setSortOrder] = useState('asc');
+  const [sortBy, setSortBy] = useState("id");
+  const [sortOrder, setSortOrder] = useState("asc");
   const [filterValue, setFilterValue] = useState("");
   const [debouncedFilter, setDebouncedFilter] = useState({});
-  const { data: elvesData, isLoading, isError } = useElves(page, limit, sortBy, sortOrder, debouncedFilter);
+  const {
+    data: elvesData,
+    isLoading,
+    isError,
+  } = useElves(page, limit, sortBy, sortOrder, debouncedFilter);
   const addElveMutation = useAddElves();
   const updateElveMutation = useUpdateElves();
   const logicalDeleteMutation = useLogicalDeleteElves();
   const restoreMutation = useRestoreElves();
-  
+
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
@@ -62,23 +72,30 @@ export default function ElvesTable() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingElve, setEditingElve] = useState(null);
   const toast = useToast();
-  
+
   const debouncedSetFilter = useCallback(
-    (value) => {
-      debounce(() => {
-        setDebouncedFilter(value ? { name: value } : {});
-      }, 5000)();
-    },
+    debounce((value) => {
+      setDebouncedFilter(value ? { name: value } : {});
+    }, 500),
     []
   );
-
-  useEffect(() => {
-    debouncedSetFilter(filterValue);
-  }, [filterValue, debouncedSetFilter]);
   
-  const data = useMemo(() => elvesData?.data || [], [elvesData]);
-  const pagination = elvesData?.pagination || { count: 0, current_page: 1, pages: 1 };
 
+  const debouncedFilterRef = useRef(debouncedSetFilter);
+  debouncedFilterRef.current = debouncedSetFilter;
+
+  const handleFilterChange = useCallback((event) => {
+    const value = event.target.value;
+    setFilterValue(value);
+    debouncedFilterRef.current(value);
+  }, []);
+
+  const data = useMemo(() => elvesData?.data || [], [elvesData]);
+  const pagination = elvesData?.pagination || {
+    count: 0,
+    current_page: 1,
+    pages: 1,
+  };
 
   const columns = [
     {
@@ -364,10 +381,10 @@ export default function ElvesTable() {
     <div className="flex flex-col items-center gap-8 p-4 md:p-8">
       <div className="w-full max-w-7xl">
         <section className="mb-2 md:mb-4 flex flex-col-reverse gap-2 md:flex-row justify-between">
-        <Input
+          <Input
             placeholder="Filter names..."
             value={filterValue}
-            onChange={(event) => setFilterValue(event.target.value)}
+            onChange={handleFilterChange}
             className="max-w-sm"
           />
           <div className="flex flex-col items-center md:flex-row md:items-stretch gap-3 md:gap-2">

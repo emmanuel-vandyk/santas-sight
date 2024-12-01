@@ -14,7 +14,7 @@ export const useElves = (page = 1, limit = 10, sortBy = 'id', sortOrder = 'asc',
         limit: limit.toString(),
         sortBy,
         sortOrder,
-        ...filter
+        ...(filter.name ? { name: filter.name } : {})
       });
       const { data } = await axios.get(`${MOCKURL}/api/elfo?${params.toString()}`);
       return data;
