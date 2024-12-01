@@ -4,7 +4,6 @@ import { CookiesContext } from "@/pages/caloriesPage";
 import {
   useAddCookiesForSanta,
   useUpdateCookiesForSanta,
-  useUpdateCheckedCookiesForSanta,
 } from "@/services/calories/cookiesapi";
 import {
   Card,
@@ -14,9 +13,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/useToast";
-import CookiesList from "@/components/calories/CookiesList";
-import CookiesOverview from "@/components/calories/CookiesOverview";
 import CookieModal from "@/components/calories/CookieModal";
+import CookiesList from "@/components/calories/CookiesList";
+import CaloriesManager from "@/components/calories/CaloriesManager";
+import CaloriesGuide from "@/components/calories/CaloriesGuide";
 
 // Create a context to store and provide the modal state
 export const ModalContext = React.createContext();
@@ -27,7 +27,6 @@ export default function CookiesManager() {
   // Mutations for adding and updating cookies data.
   const addCookiesMutation = useAddCookiesForSanta();
   const updateCookiesMutation = useUpdateCookiesForSanta();
-  const updateCheckedCookiesMutation = useUpdateCheckedCookiesForSanta();
 
   // State for controlling the modal's visibility and content.
   const [modalState, setModalState] = React.useState({
@@ -64,6 +63,9 @@ export default function CookiesManager() {
     setCookiesToSend(selectedCookies);
   };
 
+  // Determines if there is available cookie data. If cookiesData has elements, isDataAvailable will be true.
+  const isDataAvailable = cookiesToSend.length > 0;
+
   return (
     <>
       <Card>
@@ -79,29 +81,11 @@ export default function CookiesManager() {
           <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
             <ModalContext.Provider value={{ modalState, setModalState }}>
               <CookiesList generateCookiesToSend={generateCookiesToSend} />
-              <CookiesOverview
-                data={cookiesToSend}
-                generateCalories={(data) => {
-                  // Check if data has any cookies
-                  if (data.length > 0) {
-                    // If there is exactly one item in data, use updateCookiesMutation
-                    hadleMutation(
-                      data.length === 1
-                        ? updateCookiesMutation
-                        : updateCheckedCookiesMutation,
-                      data.length === 1 ? data[0] : data, // Pass the single item or the entire array
-                      "Cookies added successfully",
-                      "Failed to added cookies"
-                    );
-                  } else {
-                    // If data is empty, show a toast with an error message
-                    toast.info(
-                      "Failed to add cookies. Please verify the information."
-                    );
-                  }
-                  generateCookiesToSend([]);
-                }}
-              />
+              {isDataAvailable ? (
+                <CaloriesManager data={cookiesToSend} />
+              ) : (
+                <CaloriesGuide setModalState />
+              )}
             </ModalContext.Provider>
           </div>
         </CardContent>
