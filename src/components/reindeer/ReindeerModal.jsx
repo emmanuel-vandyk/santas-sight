@@ -39,11 +39,11 @@ export default function ReindeerModal({
       { skill: "Speed", value: "" },
       { skill: "Stamina", value: "" },
       { skill: "Maneuverability", value: "" },
-      { skill: "Night Vision", value: "" },
+      { skill: "Night vision", value: "" },
       { skill: "Strength", value: "" },
-      { skill: "Climate Adaptability", value: "" },
+      { skill: "Climate adaptability", value: "" },
       { skill: "Teamwork", value: "" },
-      { skill: "Navigation Intelligence", value: "" },
+      { skill: "Navigation intelligence", value: "" },
     ],
     available: true,
   };
@@ -85,18 +85,18 @@ export default function ReindeerModal({
         <DialogHeader>
           <DialogTitle className="flex items-center justify-center text-2xl font-bold text-red-600">
             <span className="relative">
-              {initialData ? "Edit Reindeer" : "+ New Reindeer"}
+              {initialData ? "Edit reindeer" : "+ New reindeer"}
               <img
                 src={santahat}
-                alt="Santa Hat"
+                alt="Santa hat"
                 className="absolute -top-11 -left-2 w-12 h-12"
               />
             </span>
           </DialogTitle>
           <DialogDescription className="text-center text-green-700">
             {initialData
-              ? "Edit the details of the Reindeer"
-              : "Add a new Reindeer to Santa's workshop"}
+              ? "Edit the details of the reindeer"
+              : "Add a new reindeer to Santa's workshop"}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={onSubmitForm} className="space-y-6">
@@ -119,10 +119,9 @@ export default function ReindeerModal({
                 className="w-full border border-red-400 rounded-md px-3 py-2"
               />
               {errors.name && (
-                <Alert variant="destructive" className="mt-2">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertDescription>{errors.name.message}</AlertDescription>
-                </Alert>
+                <p role="alert" className="text-xs font-bold text-red-500 mt-1">
+                  {errors.name.message}
+                </p>
               )}
             </div>
           </div>
@@ -189,9 +188,9 @@ export default function ReindeerModal({
           <DialogFooter>
             <Button
               type="submit"
-              className="bg-green-600 hover:bg-green-700 text-white"
+              className="bg-green-600 hover:bg-green-700 text-white w-full"
             >
-              {initialData ? "Save Reindeer" : "Add Reindeer"}
+              {initialData ? "Save reindeer" : "Add reindeer"}
             </Button>
           </DialogFooter>
         </form>

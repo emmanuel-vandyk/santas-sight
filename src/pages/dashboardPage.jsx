@@ -15,7 +15,7 @@ export const DashboardPage = () => {
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold flex items-center justify-center gap-2">
             <FaHardHat className="text-yellow-500" />
-            Page Under Construction
+            Page under construction
           </CardTitle>
           <CardDescription>
             We&apos;re working hard to bring you something amazing!
@@ -31,7 +31,7 @@ export const DashboardPage = () => {
           </p>
           <div className="flex justify-center">
             <Button variant="default" className="mt-4">
-              Return Home
+              Return home
             </Button>
           </div>
         </CardContent>

@@ -39,11 +39,11 @@ export default function ReindeerSettings({
           className="cursor-pointer"
         >
           <Eye />
-          View Stats
+          View stats
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Change Status</DropdownMenuSubTrigger>
+          <DropdownMenuSubTrigger>Change status</DropdownMenuSubTrigger>
           <DropdownMenuPortal>
             <DropdownMenuSubContent>
               <DropdownMenuLabel>Select a status</DropdownMenuLabel>

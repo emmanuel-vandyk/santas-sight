@@ -1,7 +1,8 @@
-/* import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Snowflake } from "lucide-react";
 import { fetchWeather } from "@/services/weather/weather";
+import SantaChristmasSpinner from "@/components/global/spinner";
 
 export const WeatherCard = () => {
   const { data, isLoading, isError } = useQuery({
@@ -11,7 +12,11 @@ export const WeatherCard = () => {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="grid place-items-center h-full">
+        <SantaChristmasSpinner />
+      </div>
+    );
   }
 
   if (isError) {
@@ -30,7 +35,7 @@ export const WeatherCard = () => {
       <section className="bg-zinc-950 h-full w-64 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100 relative z-10 shadow-2xl flex items-center">
         <section className="flex flex-col justify-center gap-2 p-2">
           <section className="gap-3 font-semibold flex text-white">
-            <h2 className="whitespace-nowrap text-white">North Pole Weather</h2>
+            <h2 className="whitespace-nowrap text-white">North pole weather</h2>
           </section>
           <section className="flex items-center gap-2 text-white">
             <h3 className="text-white flex items-center gap-1">
@@ -45,4 +50,3 @@ export const WeatherCard = () => {
     </Card>
   );
 };
- */
