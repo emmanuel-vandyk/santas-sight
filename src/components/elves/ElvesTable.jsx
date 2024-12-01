@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect} from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -40,34 +40,45 @@ import {
 } from "@/components/global/santaDataLoader";
 import ElvesAvatar from "@/components/elves/ElvesAvatar";
 import { useToast } from "@/hooks/useToast";
+import { debounce } from "@/services/elvescrud/debounce";
 
 export default function ElvesTable() {
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
   const [sortBy, setSortBy] = useState('id');
   const [sortOrder, setSortOrder] = useState('asc');
-  const [filter, setFilter] = useState({});
-  const { data: elvesData, isLoading, isError } = useElves(page, limit, sortBy, sortOrder, filter);
+  const [filterValue, setFilterValue] = useState("");
+  const [debouncedFilter, setDebouncedFilter] = useState({});
+  const { data: elvesData, isLoading, isError } = useElves(page, limit, sortBy, sortOrder, debouncedFilter);
   const addElveMutation = useAddElves();
   const updateElveMutation = useUpdateElves();
   const logicalDeleteMutation = useLogicalDeleteElves();
   const restoreMutation = useRestoreElves();
-
+  
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingElve, setEditingElve] = useState(null);
-
   const toast = useToast();
-
+  
+  useEffect(() => {
+    const debouncedSetFilter = debounce((value) => {
+      setDebouncedFilter(value ? { name: value } : {});
+    }, 300);
+    
+    debouncedSetFilter(filterValue);
+  }, [filterValue]);
+  
   const data = useMemo(() => elvesData?.data || [], [elvesData]);
   const pagination = elvesData?.pagination || {
     count: 0,
     current_page: 1,
     pages: 1,
   };
+
+  
 
   const columns = [
     {
@@ -118,7 +129,7 @@ export default function ElvesTable() {
         <Button
           variant="ghost"
           onClick={() => {
-            const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
+            const newSortOrder = column.getIsSorted() === "asc" ? "desc" : "asc";
             setSortBy("name");
             setSortOrder(newSortOrder);
           }}
@@ -353,10 +364,10 @@ export default function ElvesTable() {
     <div className="flex flex-col items-center gap-8 p-4 md:p-8">
       <div className="w-full max-w-7xl">
         <section className="mb-2 md:mb-4 flex flex-col-reverse gap-2 md:flex-row justify-between">
-          <Input
+        <Input
             placeholder="Filter names..."
-            value={filter.name || ""}
-            onChange={(event) => setFilter({ ...filter, name: event.target.value })}
+            value={filterValue}
+            onChange={(event) => setFilterValue(event.target.value)}
             className="max-w-sm"
           />
           <div className="flex flex-col items-center md:flex-row md:items-stretch gap-3 md:gap-2">
