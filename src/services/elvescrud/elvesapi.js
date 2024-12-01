@@ -19,6 +19,8 @@ export const useElves = (page = 1, limit = 10, sortBy = 'id', sortOrder = 'asc',
       const { data } = await axios.get(`${MOCKURL}/api/elfo?${params.toString()}`);
       return data;
     },
+    keepPreviousData: true,
+    staleTime: 5000,
   });
 };
 

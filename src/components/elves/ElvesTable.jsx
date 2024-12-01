@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect} from "react";
+import { useMemo, useState, useEffect, useCallback} from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -63,22 +63,22 @@ export default function ElvesTable() {
   const [editingElve, setEditingElve] = useState(null);
   const toast = useToast();
   
+  const debouncedSetFilter = useCallback(
+    (value) => {
+      debounce(() => {
+        setDebouncedFilter(value ? { name: value } : {});
+      }, 5000)();
+    },
+    []
+  );
+
   useEffect(() => {
-    const debouncedSetFilter = debounce((value) => {
-      setDebouncedFilter(value ? { name: value } : {});
-    }, 300);
-    
     debouncedSetFilter(filterValue);
-  }, [filterValue]);
+  }, [filterValue, debouncedSetFilter]);
   
   const data = useMemo(() => elvesData?.data || [], [elvesData]);
-  const pagination = elvesData?.pagination || {
-    count: 0,
-    current_page: 1,
-    pages: 1,
-  };
+  const pagination = elvesData?.pagination || { count: 0, current_page: 1, pages: 1 };
 
-  
 
   const columns = [
     {
@@ -129,7 +129,7 @@ export default function ElvesTable() {
         <Button
           variant="ghost"
           onClick={() => {
-            const newSortOrder = column.getIsSorted() === "asc" ? "desc" : "asc";
+            const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
             setSortBy("name");
             setSortOrder(newSortOrder);
           }}
