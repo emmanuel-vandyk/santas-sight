@@ -44,7 +44,10 @@ import { useToast } from "@/hooks/useToast";
 export default function ElvesTable() {
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
-  const { data: elvesData, isLoading, isError } = useElves(page, limit);
+  const [sortBy, setSortBy] = useState('id');
+  const [sortOrder, setSortOrder] = useState('asc');
+  const [filter, setFilter] = useState({});
+  const { data: elvesData, isLoading, isError } = useElves(page, limit, sortBy, sortOrder, filter);
   const addElveMutation = useAddElves();
   const updateElveMutation = useUpdateElves();
   const logicalDeleteMutation = useLogicalDeleteElves();
@@ -60,7 +63,11 @@ export default function ElvesTable() {
   const toast = useToast();
 
   const data = useMemo(() => elvesData?.data || [], [elvesData]);
-  const pagination = elvesData?.pagination || { count: 0, current_page: 1, pages: 1 };
+  const pagination = elvesData?.pagination || {
+    count: 0,
+    current_page: 1,
+    pages: 1,
+  };
 
   const columns = [
     {
@@ -110,7 +117,11 @@ export default function ElvesTable() {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => {
+            const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
+            setSortBy("name");
+            setSortOrder(newSortOrder);
+          }}
           className="w-full"
         >
           Name
@@ -125,9 +136,7 @@ export default function ElvesTable() {
       accessorKey: "height",
       header: ({ column }) => <p className="hidden md:block">Height</p>,
       cell: ({ row }) => (
-        <div className="hidden md:block capitalize">
-          {row.getValue("height")}
-        </div>
+        <div className="hidden md:block">{row.getValue("height")} m</div>
       ),
     },
     {
@@ -153,7 +162,11 @@ export default function ElvesTable() {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => {
+            const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
+            setSortBy("email");
+            setSortOrder(newSortOrder);
+          }}
           className="hidden md:flex w-full"
         >
           Email
@@ -171,7 +184,9 @@ export default function ElvesTable() {
         <div className="w-full">
           <Badge
             className={`hidden md:inline-flex text-center ${
-              row.getValue("isDeleted") ? "bg-red-600 text-white px-3" : "bg-green-700 text-white px-5"
+              row.getValue("isDeleted")
+                ? "bg-red-600 text-white px-3"
+                : "bg-green-700 text-white px-5"
             }`}
           >
             {row.getValue("isDeleted") ? "Unavailable" : "Available"}
@@ -340,10 +355,8 @@ export default function ElvesTable() {
         <section className="mb-2 md:mb-4 flex flex-col-reverse gap-2 md:flex-row justify-between">
           <Input
             placeholder="Filter names..."
-            value={table.getColumn("name")?.getFilterValue() ?? ""}
-            onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
-            }
+            value={filter.name || ""}
+            onChange={(event) => setFilter({ ...filter, name: event.target.value })}
             className="max-w-sm"
           />
           <div className="flex flex-col items-center md:flex-row md:items-stretch gap-3 md:gap-2">
@@ -469,7 +482,9 @@ export default function ElvesTable() {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setPage((prev) => Math.min(pagination.pages, prev + 1))}
+              onClick={() =>
+                setPage((prev) => Math.min(pagination.pages, prev + 1))
+              }
               disabled={page >= pagination.pages}
             >
               Next
@@ -489,4 +504,3 @@ export default function ElvesTable() {
     </div>
   );
 }
-

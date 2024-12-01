@@ -5,11 +5,18 @@ import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 const MOCKURL = import.meta.env.VITE_MOCK_API_URL;
 
 // fetch all elves
-export const useElves = (page = 1, limit = 10) => {
+export const useElves = (page = 1, limit = 10, sortBy = 'id', sortOrder = 'asc', filter = {}) => {
   return useQuery({
-    queryKey: ["elves", page, limit],
+    queryKey: ["elves", page, limit, sortBy, sortOrder, filter],
     queryFn: async () => {
-      const { data } = await axios.get(`${MOCKURL}/api/elfo?page=${page}&limit=${limit}`); // /api/elves
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: limit.toString(),
+        sortBy,
+        sortOrder,
+        ...filter
+      });
+      const { data } = await axios.get(`${MOCKURL}/api/elfo?${params.toString()}`);
       return data;
     },
   });
