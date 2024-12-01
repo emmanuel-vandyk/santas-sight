@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { cn } from "@/lib/utils";
 import { CookiesContext } from "@/pages/caloriesPage";
 import { ModalContext } from "@/components/calories/CookiesManager";
 import {
@@ -10,6 +11,7 @@ import { useToast } from "@/hooks/useToast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -166,11 +168,18 @@ export default function CookiesList({ generateCookiesToSend }) {
                       onCheckedChange={(checked) =>
                         toggleCheckedCookies(cookie.id, checked)
                       }
+                      className={cn({ hidden: cookie.quantity == 0 })}
                     />
                     <CardTitle className="flex items-center gap-1">
                       <Cookie size={18} className="text-amber-900" />
                       {cookie.name}
                     </CardTitle>
+                    <Badge
+                      variant="destructive"
+                      className={cn({ hidden: cookie.quantity > 0 })}
+                    >
+                      Consumed
+                    </Badge>
                   </div>
                   <div className="flex flex-col items-center justify-between lg:flex-row">
                     <CardDescription>
@@ -271,8 +280,8 @@ export default function CookiesList({ generateCookiesToSend }) {
           }}
           disabled={checkedCookies.length < 2}
         >
-          <Eye />
-          View
+          <PlusSquare />
+          Add
         </Button>
       </CardFooter>
     </Card>
