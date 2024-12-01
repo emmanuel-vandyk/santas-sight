@@ -34,14 +34,14 @@ export const RoutesPage = () => {
         const location = {
           display_name: data[0].display_name,
           lat: data[0].lat,
-          lon: data[0].lon,
+          lng: data[0].lng,
         };
         if (location) {
           routeMutation.mutate({
             start: NORTH_POLE,
             end: {
               lat: parseFloat(location.lat),
-              lng: parseFloat(location.lon),
+              lng: parseFloat(location.lng),
               name: location.display_name
             }
           });
@@ -94,7 +94,7 @@ export const RoutesPage = () => {
         saveMutation.mutate({
           display_name: variables.end.name,
           lat: variables.end.lat,
-          lon: variables.end.lng,
+          lng: variables.end.lng,
         });
         toast.success("Route found successfully!");
       } else {

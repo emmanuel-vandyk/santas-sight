@@ -21,17 +21,40 @@ export const getAutocompleteSuggestions = async (query) => {
 
 // Update the searchLocation function to include more parameters
 export const searchLocation = async ({ query }) => {
-  const response = await axios.get(`${GPS_API_URL}/search`, {
-    params: {
-      format: 'json',
-      q: query,
-      'accept-language': 'en,es',
-      limit: 1,
-      addressdetails: 1,
-      namedetails: 1,
-    },
-  });
-  return response.data;
+  try {
+    const response = await axios.get(`${GPS_API_URL}/search`, {
+      params: {
+        format: 'json',
+        q: query,
+        'accept-language': 'en,es',
+        limit: 1,
+        addressdetails: 1,
+        namedetails: 1,
+      },
+    });
+
+    console.log('Raw API response:', response.data);
+
+    if (response.data && Array.isArray(response.data) && response.data.length > 0) {
+      const location = response.data[0];
+      if (location.lat && location.lon) {
+        return [{
+          display_name: location.display_name,
+          lat: parseFloat(location.lat),
+          lng: parseFloat(location.lon),
+        }];
+      } else {
+        console.error('Invalid location data:', location);
+        throw new Error('Invalid location data received from the API');
+      }
+    } else {
+      console.log('No results found for query:', query);
+      return [];
+    }
+  } catch (error) {
+    console.error('Error searching location:', error);
+    throw new Error('Error searching location. Please try again.');
+  }
 };
 
 
@@ -56,8 +79,8 @@ export const saveLocation = async (location) => {
   try {
     const response = await axios.post(`${API_URL}/api/address`, {
       display_name: location.display_name,
-      lat: location.lat,
-      lng: location.lon,
+      lat: parseFloat(location.lat),
+      lng: parseFloat(location.lng),
     });
     return response.data;
   } catch (error) {
@@ -103,6 +126,4 @@ export const deleteLocation = async (locationToDelete) => {
     }
   }
 };
-
-
 
