@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/useToast";
 
-export default function AddressHistory({ locations, onRestore, onDelete }) {
+export default function AddressHistory({ locations, onRestore, onDelete, onDeleteAll }) {
   const [sortedLocations, setSortedLocations] = useState([]);
   const [locationToDelete, setLocationToDelete] = useState(null);
   const [visibleCount, setVisibleCount] = useState(5);
@@ -40,7 +40,7 @@ export default function AddressHistory({ locations, onRestore, onDelete }) {
   };
 
   const handleDeleteAll = () => {
-    sortedLocations.forEach((location) => onDelete(location));
+    onDeleteAll();
     toast.success("All locations deleted successfully");
   };
 
@@ -193,4 +193,6 @@ AddressHistory.propTypes = {
   locations: PropTypes.array.isRequired,
   onRestore: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+  onDeleteAll: PropTypes.func.isRequired,
 };
+

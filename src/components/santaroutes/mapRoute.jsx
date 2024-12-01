@@ -1,9 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { GiftIcon } from 'lucide-react';
 import PropTypes from 'prop-types';
+import SearchAddress from './searchAddress';
 
 // Custom Christmas tree icon
 const christmasIcon = new L.Icon({
@@ -29,24 +30,33 @@ ChangeView.propTypes = {
   bounds: PropTypes.instanceOf(L.LatLngBounds)
 };
 
-export default function MapRoute({ currentRoute, routeCoordinates, northPole }) {
+export default function MapRoute({ currentRoute, routeCoordinates, northPole, onSearch }) {
   const mapRef = useRef(null);
+  const [mapBounds, setMapBounds] = useState(null);
 
   useEffect(() => {
     if (mapRef.current) {
-      mapRef.current.setView([northPole.lat, northPole.lng], 5);
+      if (currentRoute && currentRoute.lat && currentRoute.lng) {
+        const bounds = L.latLngBounds(
+          [northPole.lat, northPole.lng],
+          [parseFloat(currentRoute.lat), parseFloat(currentRoute.lng)]
+        );
+        setMapBounds(bounds);
+      } else {
+        mapRef.current.setView([northPole.lat, northPole.lng], 3);
+        setMapBounds(null);
+      }
     }
-  }, [northPole]); 
-
-  const bounds = currentRoute 
-    ? L.latLngBounds([northPole, [parseFloat(currentRoute.lat), parseFloat(currentRoute.lng)]])
-    : null;
+  }, [currentRoute, northPole]);
 
   return (
-    <div className='shadow-lg shadow-zinc-500 rounded-xl overflow-hidden'>
+    <div className='shadow-lg shadow-zinc-500 rounded-xl overflow-hidden relative'>
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-[1000] w-full max-w-md">
+        <SearchAddress onSearch={onSearch} />
+      </div>
       <MapContainer
         center={[northPole.lat, northPole.lng]}
-        zoom={5}
+        zoom={3}
         style={{ height: '75vh', width: '100%', borderRadius: '10px' }}
         ref={mapRef}
         className="rounded-3xl"
@@ -58,7 +68,7 @@ export default function MapRoute({ currentRoute, routeCoordinates, northPole }) 
         <Marker position={[northPole.lat, northPole.lng]} icon={christmasIcon}>
           <Popup>{northPole.name} - Santa&apos;s Workshop</Popup>
         </Marker>
-        {currentRoute && (
+        {currentRoute && currentRoute.lat && currentRoute.lng && (
           <Marker position={[parseFloat(currentRoute.lat), parseFloat(currentRoute.lng)]} icon={christmasIcon}>
             <Popup>
               <div className="flex items-center">
@@ -68,7 +78,7 @@ export default function MapRoute({ currentRoute, routeCoordinates, northPole }) 
             </Popup>
           </Marker>
         )}
-        {routeCoordinates && (
+        {routeCoordinates && routeCoordinates.length > 0 && (
           <Polyline
             positions={routeCoordinates}
             color="red"
@@ -78,7 +88,7 @@ export default function MapRoute({ currentRoute, routeCoordinates, northPole }) 
             <Popup>Route from {northPole.name} to {currentRoute?.name}</Popup>
           </Polyline>
         )}
-        <ChangeView bounds={bounds} />
+        {mapBounds && <ChangeView bounds={mapBounds} />}
       </MapContainer>
     </div>
   );
@@ -95,5 +105,6 @@ MapRoute.propTypes = {
     lat: PropTypes.number,
     lng: PropTypes.number,
     name: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  onSearch: PropTypes.func.isRequired
 };

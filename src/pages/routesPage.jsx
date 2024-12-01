@@ -1,6 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import MapRoute from "@/components/santaroutes/mapRoute";
-import SearchAddress from "@/components/santaroutes/searchAddress";
 import AddressHistory from "@/components/santaroutes/addressHistory";
 import {
   searchLocation,
@@ -16,13 +15,13 @@ import {
   ErrorScreen,
 } from "@/components/global/santaDataLoader";
 
-const NORTH_POLE = { lat: 19.4326, lng: -99.1332, display_name: "Mexico City" };
+const NORTH_POLE = { lat: 25.7617, lng: -80.1918, display_name: "Miami, Florida" };
 
 export const RoutesPage = () => {
   const queryClient = useQueryClient();
   const toast = useToast();
 
-  const { data: searchHistoryData, isLoading: isHistoryLoading, isError: isHistoryError } = useQuery({
+  const { data: searchHistoryData, isLoading: isHistoryLoading, isError: isHistoryError, error: historyError } = useQuery({
     queryKey: ["searchHistory"],
     queryFn: getSearchHistory,
   });
@@ -38,7 +37,6 @@ export const RoutesPage = () => {
           lon: data[0].lon,
         };
         if (location) {
-          saveMutation.mutate(location);
           routeMutation.mutate({
             start: NORTH_POLE,
             end: {
@@ -49,11 +47,12 @@ export const RoutesPage = () => {
           });
         }
       } else {
-        toast.error("No location found.");
+        toast.error("No location found. Please try a more specific search.");
       }
     },
-    onError: () => {
-      toast.error("Error searching location.");
+    onError: (error) => {
+      console.error('Search error:', error);
+      toast.error(error.message || "Error searching location. Please try again.");
     },
   });
 
@@ -61,9 +60,11 @@ export const RoutesPage = () => {
     mutationFn: saveLocation,
     onSuccess: () => {
       queryClient.invalidateQueries("searchHistory");
+      toast.success("Location saved successfully!");
     },
-    onError: () => {
-      toast.error("Error saving location.");
+    onError: (error) => {
+      console.error('Save error:', error);
+      toast.error(error.message || "Error saving location.");
     },
   });
 
@@ -71,9 +72,11 @@ export const RoutesPage = () => {
     mutationFn: deleteLocation,
     onSuccess: () => {
       queryClient.invalidateQueries("searchHistory");
+      toast.success("Location deleted successfully!");
     },
-    onError: () => {
-      toast.error("Error deleting location.");
+    onError: (error) => {
+      console.error('Delete error:', error);
+      toast.error(error.message || "Error deleting location.");
     },
   });
 
@@ -87,13 +90,20 @@ export const RoutesPage = () => {
           start: variables.start,
           end: variables.end,
         });
+        // Only save the location if the route was successfully calculated
+        saveMutation.mutate({
+          display_name: variables.end.name,
+          lat: variables.end.lat,
+          lon: variables.end.lng,
+        });
         toast.success("Route found successfully!");
       } else {
-        toast.error("No route found.");
+        toast.error("No route found. The destination might be unreachable.");
       }
     },
-    onError: () => {
-      toast.error("Error getting route.");
+    onError: (error) => {
+      console.error("Route calculation error:", error);
+      toast.error(error.message || "Error calculating route. The destination might be unreachable or there's no valid path.");
     },
   });
 
@@ -117,6 +127,17 @@ export const RoutesPage = () => {
 
   const handleDelete = (location) => {
     deleteMutation.mutate(location);
+    resetCurrentRoute();
+  };
+
+  const resetCurrentRoute = () => {
+    queryClient.setQueryData(["currentRoute"], null);
+  };
+
+  const handleDeleteAll = () => {
+    searchHistory.forEach((location) => deleteMutation.mutate(location));
+    resetCurrentRoute();
+    toast.success("All locations deleted successfully");
   };
 
   function decodePolyline(encoded) {
@@ -163,14 +184,9 @@ export const RoutesPage = () => {
     return <LoadingScreen />;
   }
 
-  if (
-    searchMutation.isError ||
-    saveMutation.isError ||
-    deleteMutation.isError ||
-    routeMutation.isError ||
-    isHistoryError
-  ) {
-    return <ErrorScreen />;
+  if (isHistoryError) {
+    console.error('History error:', historyError);
+    return <ErrorScreen message={historyError.message || "Error loading search history"} />;
   }
 
   return (
@@ -180,9 +196,6 @@ export const RoutesPage = () => {
           <UnderlineTitle text="Santa's Routes" />
         </h1>
         <div className="flex flex-col space-y-4">
-          <div className="w-full md:w-1/2 self-start">
-            <SearchAddress onSearch={handleSearch} />
-          </div>
           <div className="flex flex-col lg:flex-row w-full gap-4">
             <div className="w-full lg:w-3/5">
               <MapRoute
@@ -190,6 +203,7 @@ export const RoutesPage = () => {
                 routeCoordinates={currentRoute?.coordinates}
                 northPole={NORTH_POLE}
                 searchHistory={searchHistory}
+                onSearch={handleSearch}
               />
             </div>
             <div className="w-full lg:w-2/5">
@@ -197,6 +211,7 @@ export const RoutesPage = () => {
                 locations={searchHistory}
                 onRestore={handleRestore}
                 onDelete={handleDelete}
+                onDeleteAll={handleDeleteAll}
               />
             </div>
           </div>
