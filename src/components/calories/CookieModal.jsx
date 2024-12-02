@@ -53,7 +53,9 @@ export default function CookieModal({
       calories: Number(data.calories),
       quantity: cookieData ? cookieData.quantity : Number(data.quantity),
       consumed: cookieData ? cookieData.consumed : 0,
-      totalCalories: cookieData ? cookieData.totalCalories : 0,
+      totalCalories: cookieData
+        ? cookieData.consumed * data.calories // This is just for simulation. This section should not perform calculations once the backend has processed the calculations (with backend: cookieData.consumed)
+        : 0,
     });
     isClose();
     reset();
@@ -126,34 +128,34 @@ export default function CookieModal({
               )}
             </div>
           </div>
-          <div
-            className={cn({
-              hidden: cookieData,
-              "flex items-center justify-center gap-4": !cookieData,
-            })}
-          >
-            <Label
-              htmlFor="quantity"
-              className="text-center text-zinc-500 col-span-1 w-1/4"
-            >
-              Quantity
-            </Label>
-            <div className="col-span-1 w-full">
-              <Input
-                {...register("quantity", {
-                  required: "Quantity is required",
-                })}
-                className="w-full border border-red-400 rounded-md px-3 py-2"
-                type="number"
-                min={`${cookieData ? cookieData.consumed : 1}`}
-              />
-              {errors.quantity && (
-                <p role="alert" className="text-xs font-bold text-red-500 mt-1">
-                  {errors.quantity.message}
-                </p>
-              )}
+          {!cookieData && (
+            <div className="flex items-center justify-center gap-4">
+              <Label
+                htmlFor="quantity"
+                className="text-center text-zinc-500 col-span-1 w-1/4"
+              >
+                Quantity
+              </Label>
+              <div className="col-span-1 w-full">
+                <Input
+                  {...register("quantity", {
+                    required: "Quantity is required",
+                  })}
+                  className="w-full border border-red-400 rounded-md px-3 py-2"
+                  type="number"
+                  min={`${cookieData ? cookieData.consumed : 1}`}
+                />
+                {errors.quantity && (
+                  <p
+                    role="alert"
+                    className="text-xs font-bold text-red-500 mt-1"
+                  >
+                    {errors.quantity.message}
+                  </p>
+                )}
+              </div>
             </div>
-          </div>
+          )}
           <DialogFooter>
             <Button
               type="submit"

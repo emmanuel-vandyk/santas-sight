@@ -377,47 +377,47 @@
     }
   ],
   "santaCalories": {
-    "totalCookies": 1441,
-    "totalConsumed": 166,
-    "totalCalories": 32980
+    "totalCookies": 1439,
+    "totalConsumed": 118,
+    "totalCalories": 13192
   },
   "cookiesForSanta": [
     {
       "id": "1",
       "name": "Chocolate Cookie",
-      "calories": 200,
+      "calories": 100,
       "quantity": 0,
-      "consumed": 150,
-      "totalCalories": 30000
+      "consumed": 100,
+      "totalCalories": 10000
     },
     {
       "id": "3",
       "name": "Oatmeal Raisin Cookie",
-      "calories": 180,
-      "quantity": 9,
-      "consumed": 11,
-      "totalCalories": 1980
+      "calories": 120,
+      "quantity": 100,
+      "consumed": 0,
+      "totalCalories": 0
     },
     {
       "id": "5",
       "name": "Snickerdoodle",
-      "calories": 170,
-      "quantity": 98,
-      "consumed": 2,
-      "totalCalories": 340
+      "calories": 10,
+      "quantity": 97,
+      "consumed": 0,
+      "totalCalories": 0
     },
     {
       "id": "6",
       "name": "Macadamia Nut Cookie",
-      "calories": 220,
+      "calories": 100,
       "quantity": 97,
-      "consumed": 3,
-      "totalCalories": 660
+      "consumed": 0,
+      "totalCalories": 0
     },
     {
       "id": "7",
       "name": "Double Chocolate Chip Cookie",
-      "calories": 240,
+      "calories": 100,
       "quantity": 123,
       "consumed": 0,
       "totalCalories": 0
