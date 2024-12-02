@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useCallback } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -46,9 +46,20 @@ import {
 } from "@/components/global/santaDataLoader";
 import ElvesAvatar from "@/components/elves/ElvesAvatar";
 import { useToast } from "@/hooks/useToast";
+import { debounce } from "@/services/elvescrud/debounce";
 
-export default function Component() {
-  const { data: elves, isLoading, isError } = useElves();
+export default function ElvesTable() {
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+  const [sortBy, setSortBy] = useState("id");
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [filterValue, setFilterValue] = useState("");
+  const [debouncedFilter, setDebouncedFilter] = useState({});
+  const {
+    data: elvesData,
+    isLoading,
+    isError,
+  } = useElves(page, limit, sortBy, sortOrder, debouncedFilter);
   const addElveMutation = useAddElves();
   const updateElveMutation = useUpdateElves();
   const logicalDeleteMutation = useLogicalDeleteElves();
@@ -60,10 +71,31 @@ export default function Component() {
   const [rowSelection, setRowSelection] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingElve, setEditingElve] = useState(null);
-
   const toast = useToast();
 
-  const data = useMemo(() => elves || [], [elves]);
+  const debouncedSetFilter = useCallback(
+    debounce((value) => {
+      setDebouncedFilter(value ? { name: value } : {});
+    }, 500),
+    []
+  );
+  
+
+  const debouncedFilterRef = useRef(debouncedSetFilter);
+  debouncedFilterRef.current = debouncedSetFilter;
+
+  const handleFilterChange = useCallback((event) => {
+    const value = event.target.value;
+    setFilterValue(value);
+    debouncedFilterRef.current(value);
+  }, []);
+
+  const data = useMemo(() => elvesData?.data || [], [elvesData]);
+  const pagination = elvesData?.pagination || {
+    count: 0,
+    current_page: 1,
+    pages: 1,
+  };
 
   const columns = [
     {
@@ -113,7 +145,11 @@ export default function Component() {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => {
+            const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
+            setSortBy("name");
+            setSortOrder(newSortOrder);
+          }}
           className="w-full"
         >
           Name
@@ -128,9 +164,7 @@ export default function Component() {
       accessorKey: "height",
       header: ({ column }) => <p className="hidden md:block">Height</p>,
       cell: ({ row }) => (
-        <div className="hidden md:block capitalize">
-          {row.getValue("height")}
-        </div>
+        <div className="hidden md:block">{row.getValue("height")} m</div>
       ),
     },
     {
@@ -152,33 +186,40 @@ export default function Component() {
       ),
     },
     {
-      accessorKey: "mail",
+      accessorKey: "email",
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => {
+            const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
+            setSortBy("email");
+            setSortOrder(newSortOrder);
+          }}
           className="hidden md:flex w-full"
         >
-          Mail
+          Email
           <ArrowUpDown className="hidden md:flex items-center size-4" />
         </Button>
       ),
       cell: ({ row }) => (
-        <div className="lowercase hidden md:block">{row.getValue("mail")}</div>
+        <div className="lowercase hidden md:block">{row.getValue("email")}</div>
       ),
     },
     {
-      accessorKey: "status",
+      accessorKey: "isDeleted",
       header: ({ column }) => <p className="hidden md:block">Status</p>,
       cell: ({ row }) => (
-        <Badge
-          variant={row.original.isDeleted ? "destructive" : "outline"}
-          className={`hidden md:inline-flex ${
-            !row.original.isDeleted && "bg-green-300"
-          }`}
-        >
-          {row.original.isDeleted ? "Not Available" : "Available"}
-        </Badge>
+        <div className="w-full">
+          <Badge
+            className={`hidden md:inline-flex text-center ${
+              row.getValue("isDeleted")
+                ? "bg-red-600 text-white px-3"
+                : "bg-green-700 text-white px-5"
+            }`}
+          >
+            {row.getValue("isDeleted") ? "Unavailable" : "Available"}
+          </Badge>
+        </div>
       ),
     },
     {
@@ -248,8 +289,8 @@ export default function Component() {
     try {
       await addElveMutation.mutateAsync(newElve);
       toast.success("Elve added successfully");
-    } catch {
-      toast.error("Error adding elve");
+    } catch (error) {
+      toast.error("Error adding elve: " + error.message);
     }
   };
 
@@ -257,8 +298,8 @@ export default function Component() {
     try {
       await updateElveMutation.mutateAsync(elveUpdated);
       toast.success("Elve updated successfully");
-    } catch {
-      toast.error("Error updating elve");
+    } catch (error) {
+      toast.error("Error updating elve: " + error.message);
     }
   };
 
@@ -277,8 +318,8 @@ export default function Component() {
         } deleted successfully`
       );
       setRowSelection({});
-    } catch {
-      toast.error("Error deleting elves");
+    } catch (error) {
+      toast.error("Error deleting elves: " + error.message);
     }
   };
 
@@ -286,8 +327,8 @@ export default function Component() {
     try {
       await logicalDeleteMutation.mutateAsync(elve.id);
       toast.success(`Elve ${elve.name} deleted successfully`);
-    } catch {
-      toast.error(`Error deleting elve ${elve.name}`);
+    } catch (error) {
+      toast.error(`Error deleting elve ${elve.name}: ${error.message}`);
     }
   };
 
@@ -295,8 +336,8 @@ export default function Component() {
     try {
       await restoreMutation.mutateAsync(elve.id);
       toast.success("Elve restored successfully");
-    } catch {
-      toast.error("Error restoring elve");
+    } catch (error) {
+      toast.error("Error restoring elve: " + error.message);
     }
   };
 
@@ -315,8 +356,8 @@ export default function Component() {
         } restored successfully`
       );
       setRowSelection({});
-    } catch {
-      toast.error("Error restoring elves");
+    } catch (error) {
+      toast.error("Error restoring elves: " + error.message);
     }
   };
 
@@ -342,10 +383,8 @@ export default function Component() {
         <section className="mb-2 md:mb-4 flex flex-col-reverse gap-2 md:flex-row justify-between">
           <Input
             placeholder="Filter names..."
-            value={table.getColumn("name")?.getFilterValue() ?? ""}
-            onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
-            }
+            value={filterValue}
+            onChange={handleFilterChange}
             className="max-w-sm"
           />
           <div className="flex flex-col items-center md:flex-row md:items-stretch gap-3 md:gap-2">
@@ -454,23 +493,27 @@ export default function Component() {
         </div>
         <div className="mt-4 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="text-sm text-muted-foreground">
-            {selectedRows.length} of {table.getFilteredRowModel().rows.length}{" "}
-            row(s) selected.
+            {selectedRows.length} of {pagination.count} row(s) selected.
           </div>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             <Button
               variant="outline"
               size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
+              onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+              disabled={page === 1}
             >
               Previous
             </Button>
+            <span className="text-sm">
+              Page {pagination.current_page} of {pagination.pages}
+            </span>
             <Button
               variant="outline"
               size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
+              onClick={() =>
+                setPage((prev) => Math.min(pagination.pages, prev + 1))
+              }
+              disabled={page >= pagination.pages}
             >
               Next
             </Button>

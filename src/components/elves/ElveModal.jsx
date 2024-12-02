@@ -26,7 +26,7 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
       height: "",
       age: "",
       address: "",
-      mail: "",
+      email: "",
     },
   })
 
@@ -39,16 +39,14 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
         height: "",
         age: "",
         address: "",
-        mail: "",
+        email: "",
       })
     }
   }, [initialData, reset])
 
   const onSubmitForm = (data) => {
     onSubmit({
-      id: initialData ? initialData.id : Math.round(Math.random() * 100).toString(),
       ...data,
-      isDeleted: false,
     })
     isClose()
     reset()
@@ -169,7 +167,7 @@ export default function ElveModal({ isOpen, isClose, onSubmit, initialData }) {
             </Label>
             <Input
               id="email"
-              {...register("mail", {
+              {...register("email", {
                 required: "Email is required",
                 pattern: {
                   value: /\S+@\S+\.\S+/,

@@ -28,7 +28,7 @@ import PropTypes from 'prop-types';
   }
 
   ElvesAvatar.propTypes = {
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     initials: PropTypes.string.isRequired,
 
   };

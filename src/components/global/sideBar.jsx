@@ -1,5 +1,3 @@
-"use client";
-
 import { AlignCenter, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
@@ -12,6 +10,8 @@ import {
   ChristmasElf,
   ChristmasSnowflake,
   ChristmasLogout,
+  Letters,
+  Route,
 } from "@/components/global/iconsChristmas";
 import { SnowDecoration } from "@/components/global/snowDecoration";
 import useMediaQuery from "@/hooks/useMediaQuery";
@@ -23,6 +23,11 @@ const items = [
     title: "Dashboard",
     url: "/dashboard",
     icon: ChristmasTree,
+  },
+  {
+    title: "Santa's Routes",
+    url: "/santaroutes",
+    icon: Route,
   },
   {
     title: "Reindeer Setup",
@@ -40,8 +45,18 @@ const items = [
     icon: Cookie,
   },
   {
-    title: "Settings",
-    url: "#",
+    title: "Santa's Calories Counter",
+    url: "/calories",
+    icon: Cookie,
+  },
+  {
+    title: "Letters",
+    url: "/navcards",
+    icon: Letters,
+  },
+  {
+    title: "Chill Zone",
+    url: "/chillzone",
     icon: ChristmasSnowflake,
   },
 ];
@@ -74,7 +89,7 @@ export default function SideBar() {
           {!isMobile && (
             <button
               onClick={toggleSidebar}
-              className={`transition-all duration-300 ease-in-out text-white hover:scale-110 hover:text-green-500 font-bold rounded-full ${
+              className={`transition-all duration-300 ease-in-out text-white hover:scale-110 hover:text-green-600 font-bold rounded-full ${
                 isCollapsed ? "absolute top-6 mr-2" : "absolute top-3 right-6"
               }`}
               aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
@@ -89,9 +104,9 @@ export default function SideBar() {
               <li key={item.title} className="group">
                 <Link
                   to={item.url}
-                  className={`flex items-center px-4 py-3 w-full hover:bg-green-500 hover:text-zinc-800 text-white font-bold transition-all duration-300 rounded-lg overflow-hidden ${
+                  className={`flex items-center px-4 py-3 w-full hover:bg-green-600 hover:scale-105 text-white font-bold transition-all duration-300 rounded-lg overflow-hidden ${
                     location.pathname === item.url
-                      ? "bg-green-500 text-zinc-800"
+                      ? "bg-green-700 text-white"
                       : ""
                   }`}
                 >

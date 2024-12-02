@@ -518,5 +518,153 @@
       "consumed": 0,
       "totalCalories": 0
     }
+  ],
+  "santaroutes": [
+    {
+      "locations": [],
+      "id": "f221"
+    }
+  ],
+  "navcards": [
+    {
+      "id": "1",
+      "content": "Dear Santa, I've been very good this year. I would like a new bike for Christmas. Love, Emma",
+      "create_at": "2023-12-01T10:00:00Z",
+      "children_id": "Emma",
+      "read": true
+    },
+    {
+      "id": "2",
+      "content": "Hello Santa! I hope you're doing well. I'd love to have a new set of paints this year. Thank you! Best wishes, Liam",
+      "create_at": "2023-12-02T11:30:00Z",
+      "children_id": "Liam",
+      "read": true
+    },
+    {
+      "id": "3",
+      "content": "Dear Santa Claus, I've tried to be good all year. Could I please have a puppy? I promise to take care of it. Love, Sophia",
+      "create_at": "2023-12-03T09:15:00Z",
+      "children_id": "Sophia",
+      "read": true
+    },
+    {
+      "id": "4",
+      "content": "Hi Santa! I really want a new video game console this year. I've been helping my parents a lot. Thanks! From, Noah",
+      "create_at": "2023-12-04T14:45:00Z",
+      "children_id": "Noah",
+      "read": true
+    },
+    {
+      "id": "5",
+      "content": "Dear Santa, I would be so happy if you could bring me a telescope. I love looking at the stars! Hugs, Ava",
+      "create_at": "2023-12-05T16:20:00Z",
+      "children_id": "Ava",
+      "read": true
+    },
+    {
+      "id": "6",
+      "content": "Santa, I've been trying my best to be good. Could I please have a new skateboard? Thank you! From, Ethan",
+      "create_at": "2023-12-06T08:50:00Z",
+      "children_id": "Ethan",
+      "read": true
+    },
+    {
+      "id": "7",
+      "content": "Dear Santa Claus, I would love to have a chemistry set this Christmas. I want to do experiments! Love, Mia",
+      "create_at": "2023-12-07T13:10:00Z",
+      "children_id": "Mia",
+      "read": true
+    },
+    {
+      "id": "8",
+      "content": "Hello Santa! I hope you're not too busy. I'd really like a new guitar this year. Rock on! Best wishes, Oliver",
+      "create_at": "2023-12-08T11:55:00Z",
+      "children_id": "Oliver",
+      "read": false
+    },
+    {
+      "id": "9",
+      "content": "Dear Santa, I've been very good this year. Could I please have a dollhouse? I promise to take good care of it. Love, Isabella",
+      "create_at": "2023-12-09T15:30:00Z",
+      "children_id": "Isabella",
+      "read": false
+    },
+    {
+      "id": "10",
+      "content": "Hi Santa! I would really appreciate a new soccer ball this Christmas. I've been practicing a lot! Thanks, William",
+      "create_at": "2023-12-10T10:40:00Z",
+      "children_id": "William",
+      "read": true
+    },
+    {
+      "id": "11",
+      "content": "Dear Santa Claus, I've been helping my little sister all year. Could I please have a magic kit? I want to do tricks! Love, Charlotte",
+      "create_at": "2023-12-11T09:20:00Z",
+      "children_id": "Charlotte",
+      "read": false
+    },
+    {
+      "id": "12",
+      "content": "Santa, I hope you're doing great! I would love to have a remote control car this year. Zoom zoom! From, James",
+      "create_at": "2023-12-12T14:15:00Z",
+      "children_id": "James",
+      "read": false
+    },
+    {
+      "id": "13",
+      "content": "Dear Santa, I've been trying to read more books this year. Could I please have a Kindle? Thank you so much! Hugs, Amelia",
+      "create_at": "2023-12-13T16:50:00Z",
+      "children_id": "Amelia",
+      "read": true
+    },
+    {
+      "id": "14",
+      "content": "Hello Santa! I've been helping in the garden all summer. I'd love to have my own set of gardening tools. Best wishes, Benjamin",
+      "create_at": "2023-12-14T11:25:00Z",
+      "children_id": "Benjamin",
+      "read": false
+    },
+    {
+      "id": "15",
+      "content": "Dear Santa Claus, I've been practicing drawing a lot. Could I please have a professional art set? I promise to create beautiful pictures! Love, Evelyn",
+      "create_at": "2023-12-15T13:40:00Z",
+      "children_id": "Evelyn",
+      "read": true
+    },
+    {
+      "id": "16",
+      "content": "Hi Santa! I've been learning to code this year. I would really appreciate a Raspberry Pi kit. Thanks! From, Lucas",
+      "create_at": "2023-12-16T10:10:00Z",
+      "children_id": "Lucas",
+      "read": false
+    },
+    {
+      "id": "17",
+      "content": "Dear Santa, I love baking with my mom. Could I please have my own baking set this Christmas? I promise to make you cookies! Love, Harper",
+      "create_at": "2023-12-17T15:05:00Z",
+      "children_id": "Harper",
+      "read": false
+    },
+    {
+      "id": "18",
+      "content": "Santa, I hope you're not too cold up there! I would love to have a telescope this year. I want to explore the night sky! Best wishes, Henry",
+      "create_at": "2023-12-18T12:30:00Z",
+      "children_id": "Henry",
+      "read": true
+    },
+    {
+      "id": "19",
+      "content": "Dear Santa Claus, I've been trying to learn a new language this year. Could I please have some language learning books and CDs? Thank you! Love, Scarlett",
+      "create_at": "2023-12-19T09:55:00Z",
+      "children_id": "Scarlett",
+      "read": false
+    },
+    {
+      "id": "20",
+      "content": "Hello Santa! I've been helping my dad fix things around the house. I'd really like my own toolset this Christmas. Thanks a lot! From, Theodore",
+      "create_at": "2023-12-20T14:20:00Z",
+      "children_id": "Theodore",
+      "read": false
+    }
   ]
 }
