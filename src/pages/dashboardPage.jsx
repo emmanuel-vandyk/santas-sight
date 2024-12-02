@@ -1,41 +1,126 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { FaHardHat, FaTools } from "react-icons/fa";
+import { MapPin, Gift, Users } from 'lucide-react';
+import { StatCard } from "@/components/dashboard/statCard";
+import { ReindeerChart } from "@/components/dashboard/reindeerChart";
+import { ChildrenChart } from "@/components/dashboard/childrenChart";
+import { ElvesChart } from "@/components/dashboard/elvesChart";
+import { OrganizationChart } from "@/components/dashboard/organizationChart";
+import { Countdown } from "@/components/dashboard/countDown";
+import { UnderlineTitle } from "@/components/global/UnderlineTitle";
+import { ChartContainer } from "@/components/ui/chart";
+
+// Mock data (replace with actual TanStack Query hooks in production)
+const mockData = {
+  searches: 1234,
+  reindeerStats: { master: 5, junior: 8, trainee: 3 },
+  organizations: 12,
+  selectedOrganization: "North Pole HQ",
+  children: 1000000,
+  letters: 500000,
+  elves: 10000,
+  elvesAvailable: 9500,
+  behaviorData: [
+    { month: "Jan", good: 80, naughty: 20 },
+    { month: "Feb", good: 82, naughty: 18 },
+    { month: "Mar", good: 85, naughty: 15 },
+    { month: "Apr", good: 87, naughty: 13 },
+    { month: "May", good: 85, naughty: 15 },
+    { month: "Jun", good: 88, naughty: 12 },
+  ],
+};
 
 export const DashboardPage = () => {
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <Card className="w-full max-w-md border-none shadow-none">
-        <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold flex items-center justify-center gap-2">
-            <FaHardHat className="text-yellow-500" />
-            Page under construction
-          </CardTitle>
-          <CardDescription>
-            We&apos;re working hard to bring you something amazing!
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="flex justify-center">
-            <FaTools className="text-6xl text-primary animate-pulse" />
-          </div>
-          <p className="text-center text-muted-foreground">
-            Our team is currently building this page. Please check back soon for
-            updates!
-          </p>
-          <div className="flex justify-center">
-            <Button variant="default" className="mt-4">
-              Return home
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+    <div className="container mx-auto p-4">
+      <h1 className="text-4xl text-center font-bold text-red-600 mb-8">
+        <UnderlineTitle text="Santa's Dashboard" />
+      </h1>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <StatCard
+          icon={<MapPin className="h-4 w-4" />}
+          title="Searches"
+          value={mockData.searches}
+        />
+        <StatCard
+          icon={<Gift className="h-4 w-4" />}
+          title="Letters"
+          value={mockData.letters}
+        />
+        <StatCard
+          icon={<Users className="h-4 w-4" />}
+          title="Children"
+          value={mockData.children}
+        />
+        <Countdown />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
+        <ChartContainer
+          config={{
+            master: { label: "Master", color: "#D32F2F" },
+            junior: { label: "Junior", color: "#4d7c0f" },
+            trainee: { label: "Trainee", color: "#ffc658" },
+          }}
+        >
+          <ReindeerChart
+            data={[
+              {
+                name: "Master",
+                value: mockData.reindeerStats.master,
+                color: "#D32F2F",
+              },
+              {
+                name: "Junior",
+                value: mockData.reindeerStats.junior,
+                color: "#4d7c0f",
+              },
+              {
+                name: "Trainee",
+                value: mockData.reindeerStats.trainee,
+                color: "#ffc658",
+              },
+            ]}
+          />
+        </ChartContainer>
+        <ChartContainer
+          config={{
+            good: { label: "Good", color: "#D32F2F" },
+            naughty: { label: "Naughty", color: "#4d7c0f" },
+          }}
+        >
+          <ChildrenChart data={mockData.behaviorData} />
+        </ChartContainer>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
+        <div className="lg:col-span-2">
+          <ChartContainer
+            config={{
+              totalElves: { label: "Total Elves", color: "#D32F2F" },
+              availableElves: { label: "Available Elves", color: "#4d7c0f" },
+            }}
+          >
+            <ElvesChart
+              data={[
+                { name: "Total Elves", value: mockData.elves, color: "#D32F2F" },
+                { name: "Available Elves", value: mockData.elvesAvailable, color: "#4d7c0f" },
+              ]}
+            />
+          </ChartContainer>
+        </div>
+        <ChartContainer
+          config={{
+            selected: { label: "Selected", color: "#4d7c0f" },
+            others: { label: "Others", color: "#CCCCCC" },
+          }}
+        >
+          <OrganizationChart
+            organizations={mockData.organizations}
+            selectedOrganization={mockData.selectedOrganization}
+          />
+        </ChartContainer>
+      </div>
     </div>
   );
 };
+
