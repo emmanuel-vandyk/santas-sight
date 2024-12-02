@@ -1,9 +1,9 @@
 import { AlignCenter, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
-import { Cookie } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Cookie } from "lucide-react";
 import {
   ChristmasTree,
   Reindeer,
@@ -35,19 +35,14 @@ const items = [
     icon: Reindeer,
   },
   {
+    title: "Santa's Calories Counter",
+    url: "/calories",
+    icon: Cookie,
+  },
+  {
     title: "Elve Management",
     url: "/elves",
     icon: ChristmasElf,
-  },
-  {
-    title: "Santa's Calories Counter",
-    url: "/calories",
-    icon: Cookie,
-  },
-  {
-    title: "Santa's Calories Counter",
-    url: "/calories",
-    icon: Cookie,
   },
   {
     title: "Letters",
