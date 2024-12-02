@@ -1,4 +1,4 @@
-import { AlignCenter, X } from "lucide-react";
+import { AlignCenter, Baby, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -16,6 +16,7 @@ import {
 import { SnowDecoration } from "@/components/global/snowDecoration";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import logo from "@/assets/sslogo2.webp";
+import { ChildrenIcon } from "./iconsChristmas";
 
 // Menu items.
 const items = [
@@ -35,7 +36,7 @@ const items = [
     icon: Reindeer,
   },
   {
-    title: "Santa's Calories Counter",
+    title: "Santa's Calories",
     url: "/calories",
     icon: Cookie,
   },
