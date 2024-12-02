@@ -15,6 +15,7 @@ import { DashboardPage } from "@/pages/dashboardPage";
 import { RoutesPage } from "@/pages/routesPage";
 import { ChillZone } from "@/pages/chillZone";
 import { Letters } from "@/pages/letters";
+import ChildrenPage from "@/pages/childrenPage.jsx";
 import App from "./App.jsx";
 
 const queryClient = new QueryClient();
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
         path: "/chillzone",
         element: <ChillZone />,
       },
+      {
+        path: "/children",
+        element: <ChildrenPage /> ,
+      }
     ],
   },
 ]);
