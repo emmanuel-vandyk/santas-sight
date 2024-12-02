@@ -1,4 +1,6 @@
-export const ChristmasTree = () => (
+import { Baby } from "lucide-react";
+
+export const ChristmasTree = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -190,3 +192,7 @@ export const Route = () => (
     <circle cx="18" cy="5" r="3" />
   </svg>
 );
+
+export const ChildrenIcon = (props) => {
+  return <Baby />;
+}
