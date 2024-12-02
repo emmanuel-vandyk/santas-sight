@@ -20,16 +20,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  PlusSquare,
-  Pencil,
-  Trash2,
-  Eye,
-  Cookie,
-  ArrowDownUp,
-  ArrowUp,
-  ArrowDown,
-} from "lucide-react";
+import { PlusSquare, Pencil, Trash2, Eye, Cookie } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -43,14 +34,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import SelectAll from "@/components/global/selectAll";
 
 export default function CookiesList({ generateCookiesToSend }) {
@@ -110,7 +93,7 @@ export default function CookiesList({ generateCookiesToSend }) {
       <CardContent className="flex flex-col gap-2">
         <div className="grid grid-cols-4 gap-2">
           <Input
-            className="col-span-3"
+            className="col-span-4"
             type="text"
             placeholder="Filter cookies names..."
             value={filter}
@@ -118,25 +101,6 @@ export default function CookiesList({ generateCookiesToSend }) {
               setFilter(e.target.value);
             }}
           />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                <ArrowDownUp />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Options</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <ArrowUp />
-                Asc
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <ArrowDown />
-                Desc
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
           <SelectAll
             className="col-span-2"
             items={cookiesData}

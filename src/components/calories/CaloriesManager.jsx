@@ -15,7 +15,12 @@ import {
   RemainingCookiesPanel,
 } from "@/components/calories/CaloriesDetails";
 
-export default function CaloriesManager({ data: cookiesData }) {
+export default function CaloriesManager({
+  data: cookiesData,
+  generateQuantity,
+  genterateCalories,
+  generateCookiesToSend,
+}) {
   // State to track updates to the calories data
   const [calories, setCalories] = React.useState([]);
 
@@ -55,7 +60,9 @@ export default function CaloriesManager({ data: cookiesData }) {
           variant="outline"
           className=" bg-green-600 text-white w-full hover:bg-green-700 hover:text-white"
           onClick={() => {
-            console.log("Save calories: ", calories);
+            //console.log("Save calories: ", calories);
+            genterateCalories(calories);
+            generateCookiesToSend([]);
           }}
         >
           <Check /> Save
@@ -65,7 +72,13 @@ export default function CaloriesManager({ data: cookiesData }) {
   ) : (
     <Card className="flex flex-col gap-2 box-border">
       {cookiesData[0].quantity == 0 ? (
-        <CookiesConsumedPanel data={cookiesData[0]} />
+        <CookiesConsumedPanel
+          data={cookiesData[0]}
+          addNewQuantity={(cookieData) => {
+            generateQuantity(cookieData);
+            generateCookiesToSend([]);
+          }}
+        />
       ) : (
         <>
           <RemainingCookiesPanel
@@ -77,7 +90,9 @@ export default function CaloriesManager({ data: cookiesData }) {
               variant="outline"
               className=" bg-green-600 text-white w-full hover:bg-green-700 hover:text-white"
               onClick={() => {
-                console.log("Save calories: ", calories);
+                //console.log("Save calories: ", calories);
+                genterateCalories(calories);
+                generateCookiesToSend([]);
               }}
             >
               <Check /> Save

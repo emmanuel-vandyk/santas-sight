@@ -38,6 +38,23 @@ export const useAddCookiesForSanta = () => {
   });
 };
 
+/** ¡INFO!
+ *
+ * Update calories info:
+ * This is just for the mock. This section will not be used once calculations are handled by the backend.
+ *
+ */
+export const useUpdateCaloriesForSanta = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (updatedCaloriesForSanta) =>
+      axios.put(`${MOCKURL}/santaCalories`, updatedCaloriesForSanta),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["calories"] });
+    },
+  });
+};
+
 // update cookie
 export const useUpdateCookiesForSanta = () => {
   const queryClient = useQueryClient();

@@ -13,11 +13,15 @@ import {
 } from "@/components/ui/card";
 import { Cookie, BadgeInfo } from "lucide-react";
 
-export function CookiesConsumedPanel({ data: cookieData }) {
+export function CookiesConsumedPanel({
+  data: cookieData,
+  addNewQuantity = () => {},
+}) {
   const [newQuantity, setNewQuantity] = React.useState(0);
 
   const handleQuantityChange = () => {
-    console.log("Save :", { ...cookieData, quantity: newQuantity });
+    //console.log("Save :", { ...cookieData, quantity: newQuantity });
+    addNewQuantity({ ...cookieData, quantity: newQuantity });
   };
 
   return (
@@ -101,7 +105,14 @@ export function RemainingCookiesPanel({ data: cookieData, setCalories }) {
       // Update consumed count by adding the new cookies
       return prevState.map((cookie) =>
         cookie.id === cookieData.id
-          ? { ...cookie, consumed: cookieData.consumed + newConsumed }
+          ? {
+              ...cookie,
+              quantity:
+                cookieData.quantity > 0 ? cookieData.quantity - newConsumed : 0,
+              consumed: cookieData.consumed + newConsumed,
+              totalCalories:
+                (cookieData.consumed + newConsumed) * cookieData.calories,
+            }
           : cookie
       );
     });
