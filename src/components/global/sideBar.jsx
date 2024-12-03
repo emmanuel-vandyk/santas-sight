@@ -1,4 +1,4 @@
-import { AlignCenter, Baby, X } from "lucide-react";
+import { AlignCenter, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -39,6 +39,11 @@ const items = [
     title: "Santa's Calories",
     url: "/calories",
     icon: Cookie,
+      },
+    {
+    title: "Children",
+    url: "/children",
+    icon: ChildrenIcon,
   },
   {
     title: "Elve Management",
