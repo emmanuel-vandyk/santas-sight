@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Cookie } from "lucide-react";
 import {
   ChristmasTree,
   Reindeer,
@@ -35,6 +36,11 @@ const items = [
     icon: Reindeer,
   },
   {
+    title: "Santa's Calories",
+    url: "/calories",
+    icon: Cookie,
+      },
+    {
     title: "Children",
     url: "/children",
     icon: ChildrenIcon,

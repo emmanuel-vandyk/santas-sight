@@ -11,6 +11,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ErrorPage } from "@/pages/errorPage.jsx";
 import { ElvesPage } from "@/pages/elvesPage.jsx";
 import { ReindeerPage } from "@/pages/reindeerPage.jsx";
+import { CaloriesPage } from "@/pages/caloriesPage.jsx";
 import { DashboardPage } from "@/pages/dashboardPage";
 import { RoutesPage } from "@/pages/routesPage";
 import { ChillZone } from "@/pages/chillZone";
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
         element: <ReindeerPage />,
       },
       {
+        path: "/calories",
+        element: <CaloriesPage />,
+      },
+      {
         path: "/navcards",
         element: <Letters />,
       },
@@ -61,8 +66,6 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-
-
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

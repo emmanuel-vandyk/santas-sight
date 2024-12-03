@@ -3,9 +3,9 @@ import {
   useDeleteReindeersOrganization,
   useDeleteCheckedReindeerOrganizations,
 } from "@/services/reindeer/organizationapi";
+import SelectAll from "@/components/global/selectAll";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
@@ -85,31 +85,18 @@ export default function OrganizationList({
             value={filter}
             onChange={(e) => {
               setFilter(e.target.value);
-              setCurrentPage(1);
             }}
           />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-            <Card
-              className="flex items-center p-2 gap-3 rounded-sml lg:w-4/5"
-              variant="outline"
-            >
-              <Checkbox
-                checked={
-                  checkedOrganization.length === organizationsData.length &&
-                  organizationsData.length > 0
-                }
-                onCheckedChange={(checked) =>
-                  setCheckedOrganization(
-                    checked
-                      ? organizationsData.map((organization) => organization.id)
-                      : []
-                  )
-                }
-                disabled={organizationsData.length <= 1}
-              />
-              <Label>Select all</Label>
-            </Card>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap 2">
+            <SelectAll
+              className="lg:w-4/5"
+              items={organizationsData}
+              selectedItems={checkedOrganization}
+              onSelectionChange={(newSelection) =>
+                setCheckedOrganization(newSelection)
+              }
+            />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button

@@ -136,9 +136,9 @@ export default function OrganizationModal({
         reindeer: "",
       }))
     );
-    toast.success("Organization saved");
     isClose();
     reset();
+    toast.success("Organization saved");
   });
 
   const listReindeers = reindeersData

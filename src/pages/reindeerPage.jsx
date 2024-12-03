@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   useReindeers,
@@ -121,7 +122,10 @@ export const ReindeerPage = () => {
       <OrganizationModal
         isOpen={modalState.isOpen}
         isClose={() => {
-          setModalState({ isOpen: false, organizationData: null });
+          setModalState({
+            isOpen: false,
+            organizationData: null,
+          });
         }}
         onSubmit={(data) =>
           hadleMutation(
