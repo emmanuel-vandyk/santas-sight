@@ -7,6 +7,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import SantaChristmasSpinner from "@/components/global/spinner";
 import ChildModal from '@/components/children/ChildModal';
 import { useChildren, useUpdateChild } from '@/services/children/childrenapi';
+import { UnderlineTitle } from '@/components/global/underlineTitle';
 
 export const ChildrenList = () => {
   const { data: children, isLoading, isError } = useChildren();
@@ -50,9 +51,9 @@ export const ChildrenList = () => {
     <>
       <div className='max-2-xl mx-auto p-4 md:p-6'>
         {/* Header */}
-        <div className="flex items-center gap-2 mb-6">
-          <h1 className='text-4xl font-bold text-red-600 text-center w-full mb-8'>Children sorter</h1>
-        </div>
+        <h1 className="text-4xl text-center font-bold text-red-600 mb-8">
+        <UnderlineTitle text="Children Sorter" />
+      </h1>
         {/* Search */}
         <div className="relative mb-4">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -107,5 +108,3 @@ export const ChildrenList = () => {
     </>
   )
 }
-
-export default ChildrenList;

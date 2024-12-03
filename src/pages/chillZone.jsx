@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchChristmasSongs, fetchAllMembers } from "@/services/chillzone/chillzone";
 import { NowPlaying } from "@/components/chillzone/nowPlaying";
-import { Playlist } from "@/components/chillzone/playlist";
+import { Playlist } from "@/components/chillzone/playList";
 import { VolumeControl } from "@/components/chillzone/volumeControl";
 import { UnderlineTitle } from "@/components/global/underlineTitle";
 import { Wishes } from "@/components/chillzone/wishesZone";
