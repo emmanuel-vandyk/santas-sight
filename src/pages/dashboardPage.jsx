@@ -1,11 +1,11 @@
-import { MapPin, Gift, Users } from 'lucide-react';
+import { MapPin, Gift, Users, Cookie } from 'lucide-react';
 import { StatCard } from "@/components/dashboard/statCard";
 import { ReindeerChart } from "@/components/dashboard/reindeerChart";
 import { ChildrenChart } from "@/components/dashboard/childrenChart";
 import { ElvesChart } from "@/components/dashboard/elvesChart";
 import { OrganizationChart } from "@/components/dashboard/organizationChart";
 import { Countdown } from "@/components/dashboard/countDown";
-import { UnderlineTitle } from "@/components/global/UnderlineTitle";
+import { UnderlineTitle } from "@/components/global/underlineTitle";
 import { ChartContainer } from "@/components/ui/chart";
 
 // Mock data (replace with actual TanStack Query hooks in production)
@@ -26,6 +26,11 @@ const mockData = {
     { month: "May", good: 85, naughty: 15 },
     { month: "Jun", good: 88, naughty: 12 },
   ],
+  calories: {
+    totalCookies: 1431,
+    consumedCookies: 200,
+    totalCalories: 22000
+  }
 };
 
 export const DashboardPage = () => {
@@ -34,6 +39,12 @@ export const DashboardPage = () => {
       <h1 className="text-4xl text-center font-bold text-red-600 mb-8">
         <UnderlineTitle text="Santa's Dashboard" />
       </h1>
+
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
+        <div className="col-span-1 lg:col-start-2 lg:col-span-2 flex justify-center items-center">
+          <Countdown />
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <StatCard
@@ -51,7 +62,12 @@ export const DashboardPage = () => {
           title="Children"
           value={mockData.children}
         />
-        <Countdown />
+        <StatCard
+          icon={<Cookie className="h-4 w-4" />}
+          title="Calories Consumed"
+          value={mockData.calories.totalCalories}
+          subtitle={`${mockData.calories.consumedCookies} of ${mockData.calories.totalCookies} cookies`}
+        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
@@ -122,5 +138,4 @@ export const DashboardPage = () => {
       </div>
     </div>
   );
-};
-
+}
