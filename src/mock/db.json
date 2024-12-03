@@ -377,9 +377,9 @@
     }
   ],
   "santaCalories": {
-    "totalCookies": 1531,
-    "totalConsumed": 100,
-    "totalCalories": 10000
+    "totalCookies": 1431,
+    "totalConsumed": 200,
+    "totalCalories": 22000
   },
   "cookiesForSanta": [
     {
@@ -394,9 +394,9 @@
       "id": "3",
       "name": "Oatmeal Raisin Cookie",
       "calories": 120,
-      "quantity": 100,
-      "consumed": 0,
-      "totalCalories": 0
+      "quantity": 0,
+      "consumed": 100,
+      "totalCalories": 12000
     },
     {
       "id": "5",
