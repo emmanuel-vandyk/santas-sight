@@ -4,50 +4,72 @@ import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 // const URL = import.meta.env.VITE_API_URL;
 const MOCKURL = import.meta.env.VITE_MOCK_API_URL;
 
-// fetch all reindeers
 export const useReindeers = () => {
   return useQuery({
     queryKey: ["reindeers"],
     queryFn: async () => {
-      const { data } = await axios.get(`${MOCKURL}/reindeers`);
-      return data;
+      const { data } = await axios.get(`${MOCKURL}/api/reindeer`);
+      return data.data;
     },
   });
 };
 
-// add new reindeer
 export const useAddReindeer = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (newReindeer) =>
-      axios.post(`${MOCKURL}/reindeers`, newReindeer),
+    mutationFn: (newReindeer) => {
+      const formattedData = {
+        ...newReindeer,
+        skills: newReindeer.skills.map(s => ({
+          ...s,
+          value: Number(s.value)
+        }))
+      };
+      return axios.post(`${MOCKURL}/api/reindeer`, formattedData);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reindeers"] });
     },
   });
 };
 
-// update reindeer
 export const useUpdateReindeer = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (updatedreindeer) =>
-      axios.put(`${MOCKURL}/reindeers/${updatedreindeer.id}`, updatedreindeer),
+    mutationFn: (updatedReindeer) => {
+      const { id, skills, ...reindeerData } = updatedReindeer;
+      const formattedData = {
+        ...reindeerData,
+        id: Number(id),
+        skills: skills.map(s => ({
+          skill: s.skill,
+          value: Number(s.value)
+        }))
+      };
+      return axios.put(`${MOCKURL}/api/reindeer/${formattedData.id}`, formattedData);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reindeers"] });
     },
   });
 };
 
-// update checked reindeers
 export const useUpdateCheckedReindeers = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (updatedCheckedReindeers) =>
       axios.all(
-        updatedCheckedReindeers.map((reindeer) =>
-          axios.put(`${MOCKURL}/reindeers/${reindeer.id}`, reindeer)
-        )
+        updatedCheckedReindeers.map((reindeer) => {
+          const formattedData = {
+            ...reindeer,
+            id: Number(reindeer.id),
+            skills: reindeer.skills.map(s => ({
+              ...s,
+              value: Number(s.value)
+            }))
+          };
+          return axios.put(`${MOCKURL}/api/reindeer/${formattedData.id}`, formattedData);
+        })
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reindeers"] });
@@ -55,29 +77,24 @@ export const useUpdateCheckedReindeers = () => {
   });
 };
 
-// delete reindeer
 export const useDeleteReindeer = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (deletedReindeer) =>
-      axios.delete(
-        `${MOCKURL}/reindeers/${deletedReindeer.id}`,
-        deletedReindeer
-      ),
+      axios.delete(`${MOCKURL}/api/reindeer/${Number(deletedReindeer.id)}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reindeers"] });
     },
   });
 };
 
-// delete checked reindeers
 export const useDeleteCheckedReindeer = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (deletedCheckedReindeer) =>
       axios.all(
         deletedCheckedReindeer.map((reindeer) =>
-          axios.delete(`${MOCKURL}/reindeers/${reindeer.id}`, reindeer)
+          axios.delete(`${MOCKURL}/api/reindeer/${Number(reindeer.id)}`)
         )
       ),
     onSuccess: () => {

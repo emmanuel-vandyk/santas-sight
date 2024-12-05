@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
-import dev from "@/assets/background_dev.jpeg"
+import dev from "@/assets/background_dev.webp"
 import propTypes from "prop-types"
 import { MemberModal } from "@/components/chillzone/memberModal"
 

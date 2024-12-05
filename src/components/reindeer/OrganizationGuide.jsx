@@ -1,16 +1,16 @@
 import * as React from "react";
 
-import { ModalContext } from "@/components/reindeer/OrganizationManager";
+import { ModalContext } from "./OrganizationManager";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from "@/components/ui/card";
-import { PlusSquare } from "lucide-react";
+import { PlusSquare } from 'lucide-react';
 import { ChristmasSantaSleight } from "@/components/global/iconsChristmas";
 
 export default function OrganizationGuide() {
@@ -51,3 +51,4 @@ export default function OrganizationGuide() {
     </Card>
   );
 }
+

@@ -14,7 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import santahat from "@/assets/santahat.svg";
+import santahat from "@/assets/santahat.webp";
 export default function CookieModal({
   isOpen,
   isClose,
