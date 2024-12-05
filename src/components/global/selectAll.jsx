@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import CustomCheckbox from "@/components/global/customCheckbox";
 
 export default function SelectAll({
   className = "",
@@ -21,7 +21,7 @@ export default function SelectAll({
 
   return (
     <Card className={`flex items-center p-2 gap-3 rounded-sm ${className}`}>
-      <Checkbox
+      <CustomCheckbox
         checked={isAllSelected}
         onCheckedChange={handleSelectionChange}
       />

@@ -69,3 +69,19 @@ export const useDeleteReindeer = () => {
     },
   });
 };
+
+// delete checked reindeers
+export const useDeleteCheckedReindeer = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (deletedCheckedReindeer) =>
+      axios.all(
+        deletedCheckedReindeer.map((reindeer) =>
+          axios.delete(`${MOCKURL}/reindeers/${reindeer.id}`, reindeer)
+        )
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["reindeers"] });
+    },
+  });
+};
