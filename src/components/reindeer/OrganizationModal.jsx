@@ -25,7 +25,6 @@ import {
 } from "@/components/ui/card";
 import { BadgeInfo, Check } from "lucide-react";
 import santahat from "@/assets/santahat.svg";
-import { useToast } from "@/hooks/useToast";
 import { ChristmasSanta } from "@/components/global/iconsChristmas";
 
 export default function OrganizationModal({
@@ -33,9 +32,8 @@ export default function OrganizationModal({
   isClose,
   onSubmit,
   data: { organizationData, reindeersData },
-  setOrganizationView,
+  generateOrganizationToView = () => {},
 }) {
-  const { toast } = useToast();
   const [addBestReindeer, setAddBestReindeer] = useState(false);
   const [bestReindeers, setBestReindeers] = useState(null);
   const [initialPositions, setInitialPositions] = useState([]);
@@ -129,7 +127,7 @@ export default function OrganizationModal({
         ? allPositionsHaveReindeer
         : allPositionsHaveReindeer,
     });
-    setOrganizationView(allPositionsHaveReindeer ? data : null);
+    generateOrganizationToView(allPositionsHaveReindeer ? data : null);
     setReindeersSelected(
       Array.from({ length: 6 }, (_, index) => ({
         position: index + 1,
@@ -138,16 +136,13 @@ export default function OrganizationModal({
     );
     isClose();
     reset();
-    toast.success("Organization saved");
   });
 
-  const listReindeers = reindeersData
-    .filter((reindeer) => reindeer.available)
-    .map((reindeer) => ({
-      id: reindeer.id,
-      name: reindeer.name,
-      position: reindeer.position,
-    }));
+  const listReindeers = reindeersData.map((reindeer) => ({
+    id: reindeer.id,
+    name: reindeer.name,
+    position: reindeer.position,
+  }));
 
   useEffect(() => {
     const filteredReindeerIDs = reindeersSelected

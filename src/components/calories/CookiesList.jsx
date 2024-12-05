@@ -10,7 +10,7 @@ import {
 import { useToast } from "@/hooks/useToast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+import CustomCheckbox from "@/components/global/customCheckbox";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -127,7 +127,7 @@ export default function CookiesList({ generateCookiesToSend }) {
               <div key={cookie.id}>
                 <Card className="grid grid-cols-1 gap-5 items-center p-3">
                   <div className="flex flex-col gap-3 items-center justify-center lg:justify-normal sm:flex-row">
-                    <Checkbox
+                    <CustomCheckbox
                       checked={checkedCookies.includes(cookie.id)}
                       onCheckedChange={(checked) =>
                         toggleCheckedCookies(cookie.id, checked)

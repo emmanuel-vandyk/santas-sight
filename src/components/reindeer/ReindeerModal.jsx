@@ -29,7 +29,7 @@ export default function ReindeerModal({
   isOpen,
   isClose,
   onSubmit,
-  initialData,
+  data: initialData,
 }) {
   const toast = useToast();
   const defaultValues = initialData || {
@@ -72,9 +72,7 @@ export default function ReindeerModal({
         ? initialData.id
         : Math.round(Math.random() * 100).toString(),
       ...data,
-      available: initialData ? initialData.available : true,
     });
-    toast.success("Reindeer saved successfully");
     isClose();
     reset();
   });
@@ -213,6 +211,5 @@ ReindeerModal.propTypes = {
         value: PropTypes.number,
       })
     ),
-    available: PropTypes.bool,
   }),
 };

@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { Check, SquarePlus } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -16,6 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { ReindeerIcon } from "@/components/global/iconsChristmas";
 
 export default function ReindeerComboBox({ data, value, onChange = () => {} }) {
   const [open, setOpen] = React.useState(false);
@@ -34,7 +36,7 @@ export default function ReindeerComboBox({ data, value, onChange = () => {} }) {
           aria-expanded={open}
           className="justify-between bg-transparent"
         >
-          🦌
+          <ReindeerIcon width="18px" height="18px" />
           {value ? (
             data.find((reindeer) => reindeer.id === value)?.name || (
               <SquarePlus className="text-amber-900" />

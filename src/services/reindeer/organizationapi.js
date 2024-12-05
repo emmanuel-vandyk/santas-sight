@@ -42,13 +42,13 @@ export const useUpdateReindeersOrganization = () => {
   });
 };
 
-// update checked reindeer organizations
-export const useUpdateCheckedReindeerOrganizations = () => {
+// update reindeer organizations
+export const useUpdateReindeerOrganizations = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (updatedCheckedReindeerOrganization) =>
+    mutationFn: (updatedReindeerOrganizations) =>
       axios.all(
-        updatedCheckedReindeerOrganization.map((organization) =>
+        updatedReindeerOrganizations.map((organization) =>
           axios.put(
             `${MOCKURL}/reindeerOrganizations/${organization.id}`,
             organization
