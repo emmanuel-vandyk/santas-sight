@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import * as React from "react";
+
 import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
 import { toast as customToast } from "react-toastify";
@@ -25,7 +26,6 @@ import {
 } from "@/components/ui/card";
 import { BadgeInfo, Check } from "lucide-react";
 import santahat from "@/assets/santahat.svg";
-import { useToast } from "@/hooks/useToast";
 import { ChristmasSanta } from "@/components/global/iconsChristmas";
 
 export default function OrganizationModal({
@@ -33,13 +33,12 @@ export default function OrganizationModal({
   isClose,
   onSubmit,
   data: { organizationData, reindeersData },
-  setOrganizationView,
+  generateOrganizationToView = () => {},
 }) {
-  const { toast } = useToast();
-  const [addBestReindeer, setAddBestReindeer] = useState(false);
-  const [bestReindeers, setBestReindeers] = useState(null);
-  const [initialPositions, setInitialPositions] = useState([]);
-  const [reindeersSelected, setReindeersSelected] = useState(
+  const [addBestReindeer, setAddBestReindeer] = React.useState(false);
+  const [bestReindeers, setBestReindeers] = React.useState(null);
+  const [initialPositions, setInitialPositions] = React.useState([]);
+  const [reindeersSelected, setReindeersSelected] = React.useState(
     Array.from({ length: 6 }, (_, index) => ({
       position: index + 1,
       reindeer: "",
@@ -73,7 +72,7 @@ export default function OrganizationModal({
 
   const positions = watch("positions");
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (organizationData) {
       reset(organizationData);
       setInitialPositions(organizationData.positions);
@@ -83,7 +82,7 @@ export default function OrganizationModal({
     }
   }, [organizationData, reset]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const sortedReindeers = [...reindeersData].sort((a, b) => {
       const aScore =
         a.skills.find((s) => s.skill === "Night vision").value +
@@ -96,7 +95,7 @@ export default function OrganizationModal({
     setBestReindeers(sortedReindeers.slice(0, 6));
   }, [reindeersData]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (addBestReindeer) {
       bestReindeers.forEach((reindeer, index) => {
         if (index < 6) {
@@ -129,7 +128,7 @@ export default function OrganizationModal({
         ? allPositionsHaveReindeer
         : allPositionsHaveReindeer,
     });
-    setOrganizationView(allPositionsHaveReindeer ? data : null);
+    generateOrganizationToView(allPositionsHaveReindeer ? data : null);
     setReindeersSelected(
       Array.from({ length: 6 }, (_, index) => ({
         position: index + 1,
@@ -138,18 +137,15 @@ export default function OrganizationModal({
     );
     isClose();
     reset();
-    toast.success("Organization saved");
   });
 
-  const listReindeers = reindeersData
-    .filter((reindeer) => reindeer.available)
-    .map((reindeer) => ({
-      id: reindeer.id,
-      name: reindeer.name,
-      position: reindeer.position,
-    }));
+  const listReindeers = reindeersData.map((reindeer) => ({
+    id: reindeer.id,
+    name: reindeer.name,
+    position: reindeer.position,
+  }));
 
-  useEffect(() => {
+  React.useEffect(() => {
     const filteredReindeerIDs = reindeersSelected
       .map(({ reindeer }) => reindeer)
       .filter((reindeerID) => reindeerID !== "");

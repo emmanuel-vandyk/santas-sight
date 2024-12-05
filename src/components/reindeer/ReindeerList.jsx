@@ -1,30 +1,18 @@
-import React, { useState } from "react";
+import * as React from "react";
+
+import { ModalContext } from "@/components/reindeer/OrganizationManager";
 import {
-  useUpdateCheckedReindeers,
   useDeleteReindeer,
+  useDeleteCheckedReindeer,
 } from "@/services/reindeer/reindeerapi";
-import SelectAll from "@/components/global/selectAll";
-import { ReindeerModalInfo } from "@/components/reindeer/ReindeerModalInfo";
-import ReindeerModal from "@/components/reindeer/ReindeerModal";
-import ReindeerSettings from "@/components/reindeer/ReindeerSettings";
+import { useUpdateReindeerOrganizations } from "@/services/reindeer/organizationapi";
+import { useToast } from "@/hooks/useToast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
+import CustomCheckbox from "@/components/global/customCheckbox";
 import { Badge } from "@/components/ui/badge";
-import { Pencil, Trash2, CirclePlus } from "lucide-react";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,29 +24,30 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useToast } from "@/hooks/useToast";
+import { Pencil, Trash2, PlusSquare, Eye } from "lucide-react";
+import { ReindeerIcon } from "@/components/global/iconsChristmas";
+import SelectAll from "@/components/global/selectAll";
 
 export default function ReindeerList({
-  data: { organizationsData, reindeersData: reindeers },
-  addNewReindeer,
-  updateReindeer,
-  updateCheckedOrganization,
-  setOrganizationView,
+  data: { organizationsData, reindeersData },
+  generateOrganizationToView = () => {},
 }) {
+  // Use the context to access the state and its updater function
+  const { setModalState } = React.useContext(ModalContext);
+
   const toast = useToast();
 
-  const [editingReindeer, setEditingReindeer] = React.useState(null);
-  const [selectedReindeer, setSelectedReindeer] = React.useState(null);
   const [checkedReindeer, setChecketReindeer] = React.useState([]);
-  const [isModalOpen, setIsModalOpen] = React.useState({
-    ReindeerModal: false,
-    ReindeerModalInfo: false,
-  });
-  const [filter, setFilter] = useState("");
-  const updateCheckedReindeersMutation = useUpdateCheckedReindeers();
-  const deleteReindeerMutation = useDeleteReindeer();
+  const [filter, setFilter] = React.useState("");
 
-  const deleteReindeer = async (reindeerDeleted) => {
+  // Mutations for deleting reindeer data.
+  const deleteReindeerMutation = useDeleteReindeer();
+  const deleteCheckedReindeer = useDeleteCheckedReindeer();
+  // Mutations for managing organization data.
+  const updateOrganizationsMutation = useUpdateReindeerOrganizations();
+
+  // Function to handle deleting a reindeer
+  const handleDeleteReindeer = async (reindeerDeleted) => {
     try {
       await deleteReindeerMutation.mutateAsync(reindeerDeleted);
       toast.success(`${reindeerDeleted.name} has been deleted.`);
@@ -67,140 +56,99 @@ export default function ReindeerList({
     }
   };
 
-  const handleCheckedReindeers = async (action) => {
-    const reindeersChecked = checkedReindeer.map((reindeerId) =>
-      reindeers.find(({ id }) => id === reindeerId)
+  // Function to handle deleting a reindeers
+  const handleDeleteCheckedReindeers = async () => {
+    const reindeersToDelete = checkedReindeer.map((id) =>
+      reindeersData.find((reindeer) => reindeer.id === id)
     );
-
-    const reindeersToUpdate = reindeersChecked.map((reindeer) => {
-      if (action === "activate") {
-        return {
-          ...reindeer,
-          available: true,
-        };
-      } else if (action === "deactivate") {
-        return {
-          ...reindeer,
-          available: false,
-        };
-      } else {
-        return reindeer;
-      }
-    });
-
-    setChecketReindeer([]);
     try {
-      await updateCheckedReindeersMutation.mutateAsync(reindeersToUpdate);
-      toast.success(
-        `${action === "activate" ? "Activated" : "Deactivated"} ${
-          reindeersChecked.length
-        } reindeers.`
-      );
+      await deleteCheckedReindeer.mutateAsync(reindeersToDelete);
+      toast.success("Reindeers deleted successfully");
+      setChecketReindeer([]);
     } catch {
-      toast.error(
-        `Failed to ${
-          action === "activate" ? "activate" : "deactivate"
-        } reindeers.`
-      );
+      toast.error("Failed to delete selected reindeers");
     }
   };
 
-  const findOrganizationsWithReindeer = (reindeerId) => {
-    return organizationsData.filter((organization) => {
-      // Check if the organization contains the reindeer
-      const containsReindeer = organization.positions.some(
-        (position) => position.reindeer === reindeerId
-      );
+  // Function to handle deleting a reindeers in some organization.
+  const hadleUpdateOrganizations = (reindeer) => {
+    // Find organizations with this reindeer
+    const organizationsWithReindeer = organizationsData.filter(
+      (organization) => {
+        // Check if the organization contains the reindeer
+        const containsReindeer = organization.positions.some(
+          (position) => position.reindeer === reindeer.id
+        );
 
-      // If it contains the reindeer, set isAvailable to false and isSelected to false
-      if (containsReindeer) {
-        organization.isAvailable = false;
-        organization.isSelected = false;
+        // If it contains the reindeer, set isAvailable to false and isSelected to false
+        if (containsReindeer) {
+          organization.isAvailable = false;
+          organization.isSelected = false;
+        }
+
+        // Return only the organizations that contain the reindeer
+        return containsReindeer;
       }
+    );
 
-      // Return only the organizations that contain the reindeer
-      return containsReindeer;
-    });
+    // Update the "isAvailable" property in organizations associated with the reindeer.
+    if (organizationsWithReindeer.length > 0) {
+      updateOrganizationsMutation.mutateAsync(organizationsWithReindeer);
+      generateOrganizationToView(null);
+    }
   };
 
   return (
-    <>
-      <Card className="h-full flex flex-col justify-evenly">
-        <CardHeader>
-          <CardTitle>Reindeer management</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-2">
-          <div className="flex flex-col gap-2">
-            <Input
-              type="text"
-              placeholder="Filter reindeer names..."
-              value={filter}
-              onChange={(e) => {
-                setFilter(e.target.value);
-              }}
-            />
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-              <SelectAll
-                className="lg:w-4/5"
-                items={reindeers}
-                selectedItems={checkedReindeer}
-                onSelectionChange={(newSelection) =>
-                  setChecketReindeer(newSelection)
-                }
-              />
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-                <Select
-                  disabled={checkedReindeer.length < 2}
-                  value={""}
-                  onValueChange={(selectedValue) =>
-                    handleCheckedReindeers(selectedValue)
-                  }
-                >
-                  <SelectTrigger className="font-semibold">
-                    <SelectValue placeholder="Settings" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Status</SelectLabel>
-                      <SelectItem
-                        value="deactivate"
-                        className="text-red-600 cursor-pointer"
-                      >
-                        Deactivate
-                      </SelectItem>
-                      <SelectItem
-                        value="activate"
-                        className="text-green-600 cursor-pointer"
-                      >
-                        Activate
-                      </SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-                <Button
-                  variant="outline"
-                  onClick={() =>
-                    setIsModalOpen((state) => ({
-                      ...state,
-                      ReindeerModal: true,
-                    }))
-                  }
-                >
-                  <CirclePlus /> New
-                </Button>
-              </div>
-            </div>
-          </div>
-          <ScrollArea className="h-72 rounded-md border p-1 box-border">
-            {reindeers
+    <Card className="h-full flex flex-col justify-evenly">
+      <CardHeader>
+        <CardTitle>Reindeer list</CardTitle>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-2">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-6">
+          <SelectAll
+            className="sm:col-span-2"
+            items={reindeersData}
+            selectedItems={checkedReindeer}
+            onSelectionChange={(newSelection) =>
+              setChecketReindeer(newSelection)
+            }
+          />
+          <Input
+            className="sm:col-span-3"
+            type="text"
+            placeholder="Filter reindeer names..."
+            value={filter}
+            onChange={(e) => {
+              setFilter(e.target.value);
+            }}
+          />
+          <Button
+            variant="outline"
+            onClick={() =>
+              setModalState((prevState) => ({
+                ...prevState,
+                ReindeerModal: {
+                  isOpen: true,
+                  data: null,
+                },
+              }))
+            }
+          >
+            <PlusSquare /> New
+          </Button>
+        </div>
+        <ScrollArea className="h-72 rounded-md border p-2 box-border">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {reindeersData
               .filter((reindeer) =>
                 reindeer.name.toLowerCase().includes(filter.toLowerCase())
               )
               .map((reindeer) => (
                 <div key={reindeer.id}>
-                  <Card className="grid grid-cols-1 gap-3 items-center p-3 lg:grid-cols-3">
-                    <div className="flex gap-3 items-center justify-center lg:justify-normal">
-                      <Checkbox
+                  <Card className="grid grid-cols-1 gap-5 items-center p-3 bg-gradient-to-r from-red-100 to-green-100">
+                    <div className="flex flex-col gap-3 items-center justify-center lg:justify-normal sm:flex-row">
+                      <CustomCheckbox
+                        className="data-[state=checked]:bg-green-400"
                         checked={checkedReindeer.includes(reindeer.id)}
                         onCheckedChange={(checked) =>
                           setChecketReindeer((prev) =>
@@ -210,129 +158,125 @@ export default function ReindeerList({
                           )
                         }
                       />
-                      <CardTitle>{reindeer.name}</CardTitle>
+                      <CardTitle className="flex items-center gap-1">
+                        <ReindeerIcon width="18px" height="18px" />
+                        {reindeer.name}
+                      </CardTitle>
                     </div>
-                    <div className=" flex justify-center capitalize">
-                      {reindeer.available ? (
-                        <>
-                          <Badge variant="outline" className="bg-green-300">
-                            Available
+                    <div className="flex flex-col items-center justify-between lg:flex-row">
+                      {(reindeer.type === "master" && (
+                        <Badge variant="outline" className="bg-purple-300">
+                          Master
+                        </Badge>
+                      )) ||
+                        (reindeer.type === "trainee" && (
+                          <Badge variant="outline" className="bg-yellow-300">
+                            Trainee
                           </Badge>
-                          {(reindeer.type === "master" && (
-                            <Badge variant="outline" className="bg-purple-300">
-                              Master
-                            </Badge>
-                          )) ||
-                            (reindeer.type === "trainee" && (
-                              <Badge
-                                variant="outline"
-                                className="bg-yellow-300"
+                        )) ||
+                        (reindeer.type === "junior" && (
+                          <Badge variant="outline" className="bg-orange-300">
+                            Junior
+                          </Badge>
+                        ))}
+                      <div className="flex justify-center">
+                        <Button
+                          onClick={() =>
+                            setModalState((prevState) => ({
+                              ...prevState,
+                              ReindeerModalInfo: {
+                                isOpen: true,
+                                data: reindeer,
+                              },
+                            }))
+                          }
+                          variant="ghost"
+                          size="icon"
+                        >
+                          <Eye />
+                        </Button>
+                        <Button
+                          onClick={() =>
+                            setModalState((prevState) => ({
+                              ...prevState,
+                              ReindeerModal: {
+                                isOpen: true,
+                                data: reindeer,
+                              },
+                            }))
+                          }
+                          variant="ghost"
+                          size="icon"
+                        >
+                          <Pencil />
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <Trash2 />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                Are you absolutely sure you want to delete{" "}
+                                {reindeer.name}?
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This action cannot be undone. This will
+                                permanently delete {reindeer.name} and remove it
+                                from Santa&apos;s workshop.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                className="bg-red-600 hover:bg-red-700"
+                                onClick={() => {
+                                  hadleUpdateOrganizations(reindeer);
+                                  handleDeleteReindeer(reindeer);
+                                }}
                               >
-                                Trainee
-                              </Badge>
-                            )) ||
-                            (reindeer.type === "junior" && (
-                              <Badge
-                                variant="outline"
-                                className="bg-orange-300"
-                              >
-                                Junior
-                              </Badge>
-                            ))}
-                        </>
-                      ) : (
-                        <Badge variant="destructive">Not available</Badge>
-                      )}
-                    </div>
-                    <div className="flex justify-center">
-                      <ReindeerSettings
-                        data={reindeer}
-                        setSelectedReindeer={setSelectedReindeer}
-                        setIsModalOpen={setIsModalOpen}
-                        updateReindeer={updateReindeer}
-                      />
-                      <Button
-                        onClick={() => {
-                          setEditingReindeer(reindeer);
-                          setIsModalOpen((state) => ({
-                            ...state,
-                            ReindeerModal: true,
-                          }));
-                        }}
-                        variant="ghost"
-                        size="icon"
-                      >
-                        <Pencil />
-                      </Button>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            disabled={reindeer.available}
-                          >
-                            <Trash2 />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>
-                              Are you absolutely sure you want to delete{" "}
-                              {reindeer.name}?
-                            </AlertDialogTitle>
-                            <AlertDialogDescription>
-                              This action cannot be undone. This will
-                              permanently delete {reindeer.name} and remove it
-                              from Santa&apos;s workshop.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction
-                              className="bg-red-600 hover:bg-red-700"
-                              onClick={() => {
-                                updateCheckedOrganization(
-                                  findOrganizationsWithReindeer(reindeer.id)
-                                );
-                                setOrganizationView(null);
-                                deleteReindeer(reindeer);
-                              }}
-                            >
-                              Continue
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                                Continue
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
                     </div>
                   </Card>
-                  <Separator className="my-3" />
                 </div>
               ))}
-          </ScrollArea>
-        </CardContent>
-      </Card>
-      <ReindeerModalInfo
-        reindeer={selectedReindeer}
-        isOpen={isModalOpen.ReindeerModalInfo}
-        onClose={() =>
-          setIsModalOpen((state) => ({
-            ...state,
-            ReindeerModalInfo: false,
-          }))
-        }
-      />
-      <ReindeerModal
-        isOpen={isModalOpen.ReindeerModal}
-        isClose={() => {
-          setIsModalOpen((state) => ({
-            ...state,
-            ReindeerModal: false,
-          }));
-          setEditingReindeer(null);
-        }}
-        onSubmit={editingReindeer ? updateReindeer : addNewReindeer}
-        initialData={editingReindeer}
-      />
-    </>
+          </div>
+        </ScrollArea>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="outline" disabled={checkedReindeer.length < 2}>
+              <Trash2 /> Delete
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                Are you absolutely sure you want to delete these reindeers?
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete these
+                reindeers and remove them from Santa&apos;s workshop
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-red-600 hover:bg-red-700"
+                onClick={handleDeleteCheckedReindeers}
+              >
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </CardContent>
+    </Card>
   );
 }

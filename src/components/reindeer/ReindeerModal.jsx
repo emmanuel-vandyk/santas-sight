@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import * as React from "react";
+
 import PropTypes from "prop-types";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -24,14 +25,13 @@ import {
   SelectLabel,
   SelectItem,
 } from "@/components/ui/select";
-import { useToast } from "@/hooks/useToast";
+
 export default function ReindeerModal({
   isOpen,
   isClose,
   onSubmit,
-  initialData,
+  data: initialData,
 }) {
-  const toast = useToast();
   const defaultValues = initialData || {
     name: "",
     type: "",
@@ -58,7 +58,7 @@ export default function ReindeerModal({
     defaultValues,
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (initialData) {
       reset(initialData);
     } else {
@@ -72,9 +72,7 @@ export default function ReindeerModal({
         ? initialData.id
         : Math.round(Math.random() * 100).toString(),
       ...data,
-      available: initialData ? initialData.available : true,
     });
-    toast.success("Reindeer saved successfully");
     isClose();
     reset();
   });
@@ -213,6 +211,5 @@ ReindeerModal.propTypes = {
         value: PropTypes.number,
       })
     ),
-    available: PropTypes.bool,
   }),
 };

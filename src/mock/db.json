@@ -104,6 +104,7 @@
     {
       "id": "2",
       "name": "Dasher",
+      "type": "trainee",
       "skills": [
         {
           "skill": "Speed",
@@ -137,13 +138,12 @@
           "skill": "Navigation intelligence",
           "value": 5
         }
-      ],
-      "type": "trainee",
-      "available": true
+      ]
     },
     {
       "id": "6",
       "name": "Cupid",
+      "type": "junior",
       "skills": [
         {
           "skill": "Speed",
@@ -177,9 +177,7 @@
           "skill": "Navigation intelligence",
           "value": 6
         }
-      ],
-      "type": "junior",
-      "available": true
+      ]
     },
     {
       "id": "64",
@@ -218,8 +216,7 @@
           "skill": "Navigation intelligence",
           "value": 10
         }
-      ],
-      "available": true
+      ]
     },
     {
       "id": "84",
@@ -258,8 +255,7 @@
           "skill": "Navigation intelligence",
           "value": 10
         }
-      ],
-      "available": true
+      ]
     },
     {
       "id": "76",
@@ -298,8 +294,7 @@
           "skill": "Navigation intelligence",
           "value": 10
         }
-      ],
-      "available": true
+      ]
     },
     {
       "id": "75",
@@ -338,8 +333,7 @@
           "skill": "Navigation intelligence",
           "value": 4
         }
-      ],
-      "available": true
+      ]
     }
   ],
   "reindeerOrganizations": [
@@ -353,7 +347,7 @@
         },
         {
           "position": 2,
-          "reindeer": "2"
+          "reindeer": "75"
         },
         {
           "position": 3,
@@ -365,7 +359,7 @@
         },
         {
           "position": 5,
-          "reindeer": "75"
+          "reindeer": "84"
         },
         {
           "position": 6,
@@ -373,6 +367,38 @@
         }
       ],
       "isSelected": false,
+      "isAvailable": true
+    },
+    {
+      "id": "51",
+      "name": "Team 2",
+      "positions": [
+        {
+          "position": 1,
+          "reindeer": "84"
+        },
+        {
+          "position": 2,
+          "reindeer": "64"
+        },
+        {
+          "position": 3,
+          "reindeer": "75"
+        },
+        {
+          "position": 4,
+          "reindeer": "76"
+        },
+        {
+          "position": 5,
+          "reindeer": "76"
+        },
+        {
+          "position": 6,
+          "reindeer": "2"
+        }
+      ],
+      "isSelected": true,
       "isAvailable": true
     }
   ],
