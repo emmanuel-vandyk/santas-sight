@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/dialog";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import reno from "@/assets/reno.png";
-import reindeerbackg from "@/assets/reindeerbackg.jpeg";
+import reno from "@/assets/reno.webp";
+import reindeerbackg from "@/assets/reindeerbackg.webp";
 import { SnowDecoration } from "@/components/global/snowDecoration";
 
 export default function ReindeerModalInfo({ data: reindeer, isOpen, onClose }) {

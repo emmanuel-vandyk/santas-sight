@@ -1,5 +1,4 @@
-import * as React from "react";
-
+import { createContext, useState } from "react";
 import {
   useAddReindeer,
   useUpdateReindeer,
@@ -18,24 +17,19 @@ import OrganizationOverview from "@/components/reindeer/OrganizationOverview";
 import OrganizationGuide from "@/components/reindeer/OrganizationGuide";
 import OrganizationList from "@/components/reindeer/OrganizationList";
 
-// Create a context to store and provide the modal state
-export const ModalContext = React.createContext();
+export const ModalContext = createContext();
 
-export default function OrganizationManager({
-  data: { reindeersData, organizationsData },
-}) {
+export default function OrganizationManager({ data }) {
+  const { reindeersData, organizationsData } = data;
   const toast = useToast();
 
-  // Mutations for adding and updating reindeer data.
   const addReindeerMutation = useAddReindeer();
   const updateReindeerMutation = useUpdateReindeer();
 
-  // Mutations for managing organization data.
   const addOrganizationMutation = useAddReindeersOrganization();
   const updateOrganizationMutation = useUpdateReindeersOrganization();
 
-  // State for controlling the modal's visibility and content.
-  const [modalState, setModalState] = React.useState({
+  const [modalState, setModalState] = useState({
     OrganizationModal: {
       isOpen: false,
       data: null,
@@ -50,11 +44,9 @@ export default function OrganizationManager({
     },
   });
 
-  // Tracks the selected reindeer organization to view.
-  const [organizationToView, setOrganizationToView] = React.useState(null);
+  const [organizationToView, setOrganizationToView] = useState(null);
 
-  // Generic function to handle async mutation calls.
-  const hadleMutation = async (
+  const handleMutation = async (
     mutation,
     data,
     success = "Operation successful",
@@ -80,29 +72,20 @@ export default function OrganizationManager({
             <TabsContent value="organization">
               <OrganizationList
                 data={organizationsData}
-                generateOrganizationToView={(organization) => {
-                  // Set the state with the organization
-                  setOrganizationToView(organization);
-                }}
+                generateOrganizationToView={setOrganizationToView}
               />
             </TabsContent>
             <TabsContent value="reindeers">
               <ReindeerList
                 data={{ organizationsData, reindeersData }}
-                generateOrganizationToView={(organization) => {
-                  // Set the state with the organization
-                  setOrganizationToView(organization);
-                }}
+                generateOrganizationToView={setOrganizationToView}
               />
             </TabsContent>
           </Tabs>
-          {organizationToView != null ? (
+          {organizationToView ? (
             <OrganizationOverview
               data={{ organizationToView, organizationsData, reindeersData }}
-              generateOrganizationToView={(organization) => {
-                // Set the state with the organization
-                setOrganizationToView(organization);
-              }}
+              generateOrganizationToView={setOrganizationToView}
             />
           ) : (
             <OrganizationGuide />
@@ -112,16 +95,16 @@ export default function OrganizationManager({
       <OrganizationModal
         isOpen={modalState.OrganizationModal.isOpen}
         isClose={() => {
-          setModalState({
-            ...modalState,
+          setModalState((prevState) => ({
+            ...prevState,
             OrganizationModal: {
               isOpen: false,
               data: null,
             },
-          });
+          }));
         }}
         onSubmit={(data) =>
-          hadleMutation(
+          handleMutation(
             modalState.OrganizationModal.data
               ? updateOrganizationMutation
               : addOrganizationMutation,
@@ -133,37 +116,34 @@ export default function OrganizationManager({
           organizationData: modalState.OrganizationModal.data,
           reindeersData: reindeersData,
         }}
-        generateOrganizationToView={(organization) => {
-          // Set the state with the organization
-          setOrganizationToView(organization);
-        }}
+        generateOrganizationToView={setOrganizationToView}
       />
       <ReindeerModalInfo
         isOpen={modalState.ReindeerModalInfo.isOpen}
         onClose={() =>
-          setModalState({
-            ...modalState,
+          setModalState((prevState) => ({
+            ...prevState,
             ReindeerModalInfo: {
               isOpen: false,
               data: null,
             },
-          })
+          }))
         }
         data={modalState.ReindeerModalInfo.data}
       />
       <ReindeerModal
         isOpen={modalState.ReindeerModal.isOpen}
         isClose={() => {
-          setModalState({
-            ...modalState,
+          setModalState((prevState) => ({
+            ...prevState,
             ReindeerModal: {
               isOpen: false,
               data: null,
             },
-          });
+          }));
         }}
         onSubmit={(data) =>
-          hadleMutation(
+          handleMutation(
             modalState.ReindeerModal.data
               ? updateReindeerMutation
               : addReindeerMutation,

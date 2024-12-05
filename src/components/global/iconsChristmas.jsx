@@ -1,6 +1,6 @@
 import { Baby } from "lucide-react";
 
-export const ChristmasTree = (props) => (
+export const ChristmasTree = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -118,7 +118,7 @@ export const ChristmasLogout = (props) => (
 
 export const ChristmasSantaSleight = (props) => (
   <img
-    src="src/assets/santasleigh.png"
+    src="src/assets/santasleigh.webp"
     alt="Santa's Sleigh"
     className="w-64"
     {...props}

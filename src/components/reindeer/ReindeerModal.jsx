@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import PropTypes from "prop-types";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -14,8 +13,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
-import santahat from "@/assets/santahat.svg";
+import { AlertCircle } from 'lucide-react';
+import santahat from "@/assets/santahat.webp";
 import {
   Select,
   SelectTrigger,
@@ -36,14 +35,14 @@ export default function ReindeerModal({
     name: "",
     type: "",
     skills: [
-      { skill: "Speed", value: "" },
-      { skill: "Stamina", value: "" },
-      { skill: "Maneuverability", value: "" },
-      { skill: "Night vision", value: "" },
-      { skill: "Strength", value: "" },
-      { skill: "Climate adaptability", value: "" },
-      { skill: "Teamwork", value: "" },
-      { skill: "Navigation intelligence", value: "" },
+      { skill: "Speed", value: 0 },
+      { skill: "Stamina", value: 0 },
+      { skill: "Maneuverability", value: 0 },
+      { skill: "Night vision", value: 0 },
+      { skill: "Strength", value: 0 },
+      { skill: "Climate adaptability", value: 0 },
+      { skill: "Teamwork", value: 0 },
+      { skill: "Navigation intelligence", value: 0 },
     ],
     available: true,
   };
@@ -67,12 +66,15 @@ export default function ReindeerModal({
   }, [initialData, reset]);
 
   const onSubmitForm = handleSubmit((data) => {
-    onSubmit({
-      id: initialData
-        ? initialData.id
-        : Math.round(Math.random() * 100).toString(),
+    const formattedData = {
+      id: initialData ? initialData.id : Math.round(Math.random() * 100).toString(),
       ...data,
-    });
+      skills: data.skills.map(skill => ({
+        skill: skill.skill,
+        value: parseInt(skill.value, 10)
+      }))
+    };
+    onSubmit(formattedData);
     isClose();
     reset();
   });
@@ -161,7 +163,7 @@ export default function ReindeerModal({
               Skills
             </Label>
             <div className="grid grid-cols-2 gap-3">
-              {(defaultValues.skills || []).map((skill, index) => (
+              {defaultValues.skills.map((skill, index) => (
                 <div
                   key={index}
                   className="flex items-center justify-between gap-4"
@@ -173,6 +175,8 @@ export default function ReindeerModal({
                     type="number"
                     {...register(`skills.${index}.value`, {
                       valueAsNumber: true,
+                      min: 0,
+                      max: 10,
                     })}
                     placeholder="0-10"
                     min="0"
@@ -201,8 +205,8 @@ ReindeerModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   isClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  initialData: PropTypes.shape({
-    id: PropTypes.string, // This is a number, I use string because i can't query with ID number on json server
+  data: PropTypes.shape({
+    id: PropTypes.string,
     name: PropTypes.string,
     type: PropTypes.string,
     skills: PropTypes.arrayOf(
@@ -213,3 +217,4 @@ ReindeerModal.propTypes = {
     ),
   }),
 };
+

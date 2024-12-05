@@ -1,14 +1,13 @@
-import * as React from "react";
-
 import { useUpdateReindeerOrganizations } from "@/services/reindeer/organizationapi";
 import { useToast } from "@/hooks/useToast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
-import { Check } from "lucide-react";
+import { Check } from 'lucide-react';
 import {
   ReindeerIcon,
   ChristmasSantaSleight,
 } from "@/components/global/iconsChristmas";
+import PropTypes from 'prop-types';
 
 export default function OrganizationOverview({
   data: { organizationToView, organizationsData, reindeersData },
@@ -20,27 +19,36 @@ export default function OrganizationOverview({
   const updateOrganizationsMutation = useUpdateReindeerOrganizations();
 
   // Function to handle selecting a reindeer's organization
-  const handleSelectOrganization = () => {
-    // Update the organizations to mark the selected one
-    const updatedOrganizations = organizationsData.map((organization) => ({
-      ...organization,
-      isSelected: organization.id === organizationToView.id, // Mark as selected if it matches the preview
-    }));
-    //  Find the newly selected organization
-    const organizationSelected = updatedOrganizations.find(
-      (organization) => organization.isSelected === true
-    );
+  const handleSelectOrganization = async () => {
+    if (!organizationToView || !organizationsData) {
+      toast.error("Unable to select organization. Missing data.");
+      return;
+    }
 
-    // Update Organization data and display the new selection in the preview
+    // Update only the selected organization
+    const updatedOrganization = {
+      ...organizationToView,
+      isSelected: true,
+      positions: organizationToView.positions.map(({ position, reindeerId }) => ({
+        position: Number(position),
+        reindeerId: Number(reindeerId)
+      }))
+    };
+
     try {
-      updateOrganizationsMutation.mutateAsync(updatedOrganizations);
-      generateOrganizationToView(organizationSelected);
-      toast.success(`${organizationSelected.name} has been selected.`);
-    } catch {
+      await updateOrganizationsMutation.mutateAsync(updatedOrganization);
+      generateOrganizationToView(updatedOrganization);
+      toast.success(`${updatedOrganization.name} has been selected.`);
+    } catch (error) {
+      console.error("Error updating organization:", error);
       generateOrganizationToView(null);
       toast.error("Failed to select organization");
     }
   };
+
+  if (!organizationToView) {
+    return null; // or return a placeholder component
+  }
 
   return (
     <Card>
@@ -49,11 +57,12 @@ export default function OrganizationOverview({
           <CardTitle>{`${organizationToView.name} organization`}</CardTitle>
           <ChristmasSantaSleight />
           <div className="grid grid-cols-3 gap-3 place-items-center">
-            {organizationToView.positions.map(({ position, reindeer }) => {
+            {organizationToView.positions && organizationToView.positions.map(({ position, reindeerId }) => {
               // Get the name of the reindeer based on its ID in organization
-              const reindeerName = reindeersData.find(
-                ({ id }) => id === reindeer
-              ).name;
+              const reindeer = reindeersData && reindeersData.find(
+                ({ id }) => id === Number(reindeerId)
+              );
+              const reindeerName = reindeer ? reindeer.name : 'Unknown Reindeer';
               return (
                 <Card
                   key={position}
@@ -67,7 +76,7 @@ export default function OrganizationOverview({
           </div>
         </CardContent>
         <CardFooter>
-          {!organizationToView.isSelected && (
+          {organizationToView && !organizationToView.isSelected && (
             <Button
               className="w-full bg-green-600 hover:bg-green-700"
               onClick={handleSelectOrganization}
@@ -80,3 +89,33 @@ export default function OrganizationOverview({
     </Card>
   );
 }
+
+OrganizationOverview.propTypes = {
+  data: PropTypes.shape({
+    organizationToView: PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      name: PropTypes.string.isRequired,
+      positions: PropTypes.arrayOf(
+        PropTypes.shape({
+          position: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+          reindeerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        })
+      ).isRequired,
+      isSelected: PropTypes.bool.isRequired,
+    }),
+    organizationsData: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        isSelected: PropTypes.bool.isRequired,
+      })
+    ),
+    reindeersData: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        name: PropTypes.string.isRequired,
+      })
+    ),
+  }).isRequired,
+  generateOrganizationToView: PropTypes.func.isRequired,
+};
+

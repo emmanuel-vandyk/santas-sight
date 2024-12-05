@@ -6,7 +6,7 @@ import {
     DialogDescription,
 } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import horns from "@/assets/horns.png";
+import horns from "@/assets/horns.webp";
 import propTypes from "prop-types";
 import { Meteors } from "@/components/ui/meteors";
 

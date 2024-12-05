@@ -25,7 +25,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { BadgeInfo, Check } from "lucide-react";
-import santahat from "@/assets/santahat.svg";
+import santahat from "@/assets/santahat.webp";
 import { ChristmasSanta } from "@/components/global/iconsChristmas";
 
 export default function OrganizationModal({
@@ -114,21 +114,25 @@ export default function OrganizationModal({
       (position) => position.reindeer !== ""
     );
 
-    onSubmit({
+    const formattedData = {
       id: organizationData
         ? organizationData.id
         : Math.round(Math.random() * 100).toString(),
       ...data,
+      positions: data.positions.map((p, index) => ({
+        position: index + 1,
+        reindeerId: p.reindeer // Change 'reindeer' to 'reindeerId'
+      })),
       isSelected: organizationData
         ? allPositionsHaveReindeer
           ? organizationData.isSelected
           : false
         : false,
-      isAvailable: organizationData
-        ? allPositionsHaveReindeer
-        : allPositionsHaveReindeer,
-    });
-    generateOrganizationToView(allPositionsHaveReindeer ? data : null);
+      isAvailable: allPositionsHaveReindeer,
+    };
+
+    onSubmit(formattedData);
+    generateOrganizationToView(allPositionsHaveReindeer ? formattedData : null);
     setReindeersSelected(
       Array.from({ length: 6 }, (_, index) => ({
         position: index + 1,

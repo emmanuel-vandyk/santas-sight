@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { Pencil } from 'lucide-react';
-import santahat from "@/assets/santahat.svg";
+import santahat from "@/assets/santahat.webp";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

@@ -403,9 +403,9 @@
     }
   ],
   "santaCalories": {
-    "totalCookies": 1431,
-    "totalConsumed": 200,
-    "totalCalories": 22000
+    "totalCookies": 1381,
+    "totalConsumed": 250,
+    "totalCalories": 22500
   },
   "cookiesForSanta": [
     {
@@ -428,9 +428,9 @@
       "id": "5",
       "name": "Snickerdoodle",
       "calories": 10,
-      "quantity": 97,
-      "consumed": 0,
-      "totalCalories": 0
+      "quantity": 47,
+      "consumed": 50,
+      "totalCalories": 500
     },
     {
       "id": "6",
