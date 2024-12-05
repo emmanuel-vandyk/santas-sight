@@ -3,14 +3,7 @@ import * as React from "react";
 import { useUpdateReindeerOrganizations } from "@/services/reindeer/organizationapi";
 import { useToast } from "@/hooks/useToast";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import {
   ReindeerIcon,

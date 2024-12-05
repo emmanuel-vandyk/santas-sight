@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import * as React from "react";
+
 import propTypes from "prop-types";
 import {
   Dialog,
@@ -14,9 +15,9 @@ import reindeerbackg from "@/assets/reindeerbackg.jpeg";
 import { SnowDecoration } from "@/components/global/snowDecoration";
 
 export default function ReindeerModalInfo({ data: reindeer, isOpen, onClose }) {
-  const [open, setOpen] = useState(isOpen);
+  const [open, setOpen] = React.useState(isOpen);
 
-  useEffect(() => {
+  React.useEffect(() => {
     setOpen(isOpen);
   }, [isOpen]);
 

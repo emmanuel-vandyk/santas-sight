@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import * as React from "react";
+
 import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
 import { toast as customToast } from "react-toastify";
@@ -34,10 +35,10 @@ export default function OrganizationModal({
   data: { organizationData, reindeersData },
   generateOrganizationToView = () => {},
 }) {
-  const [addBestReindeer, setAddBestReindeer] = useState(false);
-  const [bestReindeers, setBestReindeers] = useState(null);
-  const [initialPositions, setInitialPositions] = useState([]);
-  const [reindeersSelected, setReindeersSelected] = useState(
+  const [addBestReindeer, setAddBestReindeer] = React.useState(false);
+  const [bestReindeers, setBestReindeers] = React.useState(null);
+  const [initialPositions, setInitialPositions] = React.useState([]);
+  const [reindeersSelected, setReindeersSelected] = React.useState(
     Array.from({ length: 6 }, (_, index) => ({
       position: index + 1,
       reindeer: "",
@@ -71,7 +72,7 @@ export default function OrganizationModal({
 
   const positions = watch("positions");
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (organizationData) {
       reset(organizationData);
       setInitialPositions(organizationData.positions);
@@ -81,7 +82,7 @@ export default function OrganizationModal({
     }
   }, [organizationData, reset]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const sortedReindeers = [...reindeersData].sort((a, b) => {
       const aScore =
         a.skills.find((s) => s.skill === "Night vision").value +
@@ -94,7 +95,7 @@ export default function OrganizationModal({
     setBestReindeers(sortedReindeers.slice(0, 6));
   }, [reindeersData]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (addBestReindeer) {
       bestReindeers.forEach((reindeer, index) => {
         if (index < 6) {
@@ -144,7 +145,7 @@ export default function OrganizationModal({
     position: reindeer.position,
   }));
 
-  useEffect(() => {
+  React.useEffect(() => {
     const filteredReindeerIDs = reindeersSelected
       .map(({ reindeer }) => reindeer)
       .filter((reindeerID) => reindeerID !== "");
