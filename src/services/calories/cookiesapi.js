@@ -2,14 +2,14 @@ import axios from "axios";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 
 // const URL = import.meta.env.VITE_API_URL;
-const MOCKURL = import.meta.env.VITE_PROD_API_URL;
+const API_URL = import.meta.env.VITE_PROD_API_URL;
 
 // fetch santa calories
 export const useSantaCalories = () => {
   return useQuery({
     queryKey: ["calories"],
     queryFn: async () => {
-      const { data } = await axios.get(`${MOCKURL}/api/santaCalories`);
+      const { data } = await axios.get(`${API_URL}/api/santaCalories`);
       return data;
     },
   });
@@ -20,7 +20,7 @@ export const useCookiesForSanta = () => {
   return useQuery({
     queryKey: ["cookies"],
     queryFn: async () => {
-      const { data } = await axios.get(`${MOCKURL}/api/cookiesForSanta`);
+      const { data } = await axios.get(`${API_URL}/api/cookiesForSanta`);
       return data;
     },
   });
@@ -31,7 +31,7 @@ export const useAddCookiesForSanta = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (newCookiesForSanta) =>
-      axios.post(`${MOCKURL}/api/cookiesForSanta`, newCookiesForSanta),
+      axios.post(`${API_URL}/api/cookiesForSanta`, newCookiesForSanta),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cookies"] });
     },
@@ -48,7 +48,7 @@ export const useUpdateCaloriesForSanta = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (updatedCaloriesForSanta) =>
-      axios.put(`${MOCKURL}/api/santaCalories`, updatedCaloriesForSanta),
+      axios.put(`${API_URL}/api/santaCalories`, updatedCaloriesForSanta),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["calories"] });
     },
@@ -61,7 +61,7 @@ export const useUpdateCookiesForSanta = () => {
   return useMutation({
     mutationFn: (updatedCookiesForSanta) =>
       axios.put(
-        `${MOCKURL}/api/cookiesForSanta/${updatedCookiesForSanta.id}`,
+        `${API_URL}/api/cookiesForSanta/${updatedCookiesForSanta.id}`,
         updatedCookiesForSanta
       ),
     onSuccess: () => {
@@ -77,7 +77,7 @@ export const useUpdateCheckedCookiesForSanta = () => {
     mutationFn: (updatedCheckedCookiesForSanta) =>
       axios.all(
         updatedCheckedCookiesForSanta.map((cookies) =>
-          axios.put(`${MOCKURL}/api/cookiesForSanta/${cookies.id}`, cookies)
+          axios.put(`${API_URL}/api/cookiesForSanta/${cookies.id}`, cookies)
         )
       ),
     onSuccess: () => {
@@ -92,7 +92,7 @@ export const useDeleteCookiesForSanta = () => {
   return useMutation({
     mutationFn: (deletedCookiesForSanta) =>
       axios.delete(
-        `${MOCKURL}/api/cookiesForSanta/${deletedCookiesForSanta.id}`,
+        `${API_URL}/api/cookiesForSanta/${deletedCookiesForSanta.id}`,
         deletedCookiesForSanta
       ),
     onSuccess: () => {
@@ -108,7 +108,7 @@ export const useDeleteCheckedCookiesForSanta = () => {
     mutationFn: (deletedCheckedCookiesForSanta) =>
       axios.all(
         deletedCheckedCookiesForSanta.map((cookies) =>
-          axios.delete(`${MOCKURL}/api/cookiesForSanta/${cookies.id}`, cookies)
+          axios.delete(`${API_URL}/api/cookiesForSanta/${cookies.id}`, cookies)
         )
       ),
     onSuccess: () => {
