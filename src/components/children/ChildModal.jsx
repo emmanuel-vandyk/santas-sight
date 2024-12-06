@@ -72,8 +72,7 @@ export default function ChildModal({ child, onSubmit }) {
                 name="behavior"
                 render={({ field }) => (
                   <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="w-full border border-red-400 rounded-md px-3 py-2 ring-0 focus:ring-0"
-                  onFoc>
+                  <SelectTrigger className="w-full border border-red-400 rounded-md px-3 py-2 ring-0 focus:ring-0">
                     <SelectValue placeholder="Select behavior" />
                   </SelectTrigger>
                   <SelectContent>
