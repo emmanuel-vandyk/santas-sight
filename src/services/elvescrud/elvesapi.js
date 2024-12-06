@@ -2,7 +2,7 @@ import axios from "axios";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 
 // const URL = import.meta.env.VITE_API_URL;
-const MOCKURL = import.meta.env.VITE_MOCK_API_URL;
+const MOCKURL = import.meta.env.VITE_PROD_API_URL;
 
 // fetch all elves
 export const useElves = (page = 1, limit = 10, sortBy = 'id', sortOrder = 'asc', filter = {}) => {

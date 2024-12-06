@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const GPS_API_URL = import.meta.env.VITE_GPS_API_URL;
 const ROUTE_API_URL = import.meta.env.VITE_ROUTE_API_URL;
-const API_URL = import.meta.env.VITE_MOCK_API_URL;
+const API_URL = import.meta.env.VITE_PROD_API_URL;
 
 // Autocomplete suggestions
 export const getAutocompleteSuggestions = async (query) => {
@@ -40,8 +40,8 @@ export const searchLocation = async ({ query }) => {
       if (location.lat && location.lon) {
         return [{
           display_name: location.display_name,
-          lat: parseFloat(location.lat),
-          lng: parseFloat(location.lon),
+          lat: location.lat,
+          lng: location.lon,
         }];
       } else {
         console.error('Invalid location data:', location);
@@ -79,8 +79,8 @@ export const saveLocation = async (location) => {
   try {
     const response = await axios.post(`${API_URL}/api/address`, {
       display_name: location.display_name,
-      lat: parseFloat(location.lat),
-      lng: parseFloat(location.lng),
+      lat: location.lat,
+      lng: location.lng,
     });
     return response.data;
   } catch (error) {
