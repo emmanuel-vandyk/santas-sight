@@ -15,7 +15,7 @@ import {
   ErrorScreen,
 } from "@/components/global/santaDataLoader";
 
-const NORTH_POLE = { lat: 25.7617, lng: -80.1918, display_name: "Miami, Florida" };
+const NORTH_POLE = { lat: "25.7617", lng: "-80.1918", display_name: "Miami, Florida" };
 
 export const RoutesPage = () => {
   const queryClient = useQueryClient();
@@ -40,8 +40,8 @@ export const RoutesPage = () => {
           routeMutation.mutate({
             start: NORTH_POLE,
             end: {
-              lat: parseFloat(location.lat),
-              lng: parseFloat(location.lng),
+              lat: location.lat,
+              lng: location.lng,
               name: location.display_name
             }
           });
@@ -84,7 +84,7 @@ export const RoutesPage = () => {
     mutationFn: ({ start, end }) => getRoute(start, end),
     onSuccess: (data, variables) => {
       if (data && data.routes && data.routes[0]) {
-        const coordinates = decodePolyline(data.routes[0].geometry);
+        const coordinates = decodePolyline(data.routes[0].geometry).map(coord => [coord[0].toString(), coord[1].toString()]);
         queryClient.setQueryData(["currentRoute"], {
           coordinates,
           start: variables.start,

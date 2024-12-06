@@ -1,8 +1,6 @@
 import axios from "axios";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import { useToast } from '@/hooks/useToast';
 
-const toast = useToast();
 // Variables backend data
 const API_URL = import.meta.env.VITE_PROD_API_URL;
 // const MOCKURL = import.meta.env.VITE_MOCK_API_URL;
@@ -34,11 +32,10 @@ export const useUpdateChild = () => {
       }
     },
     onSuccess: () => {
-      toast.success('Child updated successfully');
       queryClient.refetchQueries(['children'])
     },
-    onError: (error) => {
-      toast.error(error.message);
+    onError: () => {
+      console.log('Error updating child');
     }
   });
 };

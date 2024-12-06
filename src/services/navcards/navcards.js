@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_MOCK_API_URL,
+  baseURL: import.meta.env.VITE_PROD_API_URL,
 });
 
 export const fetchLetters = async () => {
