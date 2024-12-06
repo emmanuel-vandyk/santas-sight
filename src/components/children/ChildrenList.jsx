@@ -38,13 +38,13 @@ export const ChildrenList = () => {
 
   const getBehaviorColor = (behavior) => {
     const colors = {
-      Kind: "bg-blue-500",
-      Respectful: "bg-green-500",
-      Lazy: "bg-purple-500",
-      Helpful: "bg-yellow-500",
-      Curious: "bg-red-500"
+      Kind: "bg-blue-300",
+      Respectful: "bg-green-300",
+      Lazy: "bg-purple-300",
+      Helpful: "bg-yellow-300",
+      Curious: "bg-red-300"
     }
-    return colors[behavior] || "bg-gray-500"
+    return colors[behavior] || "bg-gray-300"
   }
 
   return (
@@ -66,7 +66,7 @@ export const ChildrenList = () => {
         </div>
         {/* Tabs */}
         <Tabs defaultValue="all" className="mb-6">
-          <TabsList className="grid grid-cols-3 sm:grid-cols-6 gap-2 h-full">
+          <TabsList className="grid grid-cols-3 sm:grid-cols-6 gap-2 h-full text-zinc-800">
             <TabsTrigger value="all" onClick={() => setFilter("all")}>
               All
             </TabsTrigger>
@@ -84,7 +84,7 @@ export const ChildrenList = () => {
         {/* List */}
         <section className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4'>
           {filteredChildren.map((child) => (
-            <Card key={child.id} className='p-4 space-y-4 bg-gradient-to-b from-red-100 to-green-100'>
+            <Card key={child.id} className='p-4 space-y-4 bg-gradient-to-r from-red-100 to-green-100'>
               <div className='flex items-center gap-3'>
                 <Baby className='rounded-full' width={40} height={40} />
                 <article className='flex-1 min-w-0'>
