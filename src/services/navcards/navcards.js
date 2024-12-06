@@ -5,12 +5,12 @@ const api = axios.create({
 });
 
 export const fetchLetters = async () => {
-  const response = await api.get('/api/card');
+  const response = await api.get('api/card');
   return response.data;
 };
 
 export const updateLetterStatus = async ({ id, isRead }) => {
-  const response = await api.patch(`/api/card/${id}`, { isRead });
+  const response = await api.patch(`api/card/${id}`, { isRead });
   return response.data;
 };
 

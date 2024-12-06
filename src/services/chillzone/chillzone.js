@@ -100,7 +100,7 @@ export const fetchSongDetails = async (songId) => {
 
 export const fetchAllMembers = async () => {
   try {
-    const response = await axios.get(`${API_URL}/api/member`);
+    const response = await axios.get(`${API_URL}api/member`);
     return response.data;
   } catch (error) {
     console.error('Error fetching all members:', error);
@@ -110,7 +110,7 @@ export const fetchAllMembers = async () => {
 
 export const fetchMemberById = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/api/member/${id}`);
+    const response = await axios.get(`${API_URL}api/member/${id}`);
     return response.data;
   } catch (error) {
     console.error(`Error fetching member with ID ${id}:`, error);
@@ -120,7 +120,7 @@ export const fetchMemberById = async (id) => {
 
 export const createMember = async (member) => {
   try {
-    const response = await axios.post(`${API_URL}/api/member`, member);
+    const response = await axios.post(`${API_URL}api/member`, member);
     return response.data;
   } catch (error) {
     console.error('Error creating member:', error);

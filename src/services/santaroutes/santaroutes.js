@@ -77,7 +77,7 @@ export const getRoute = async (start, end) => {
 
 export const saveLocation = async (location) => {
   try {
-    const response = await axios.post(`${API_URL}/api/address`, {
+    const response = await axios.post(`${API_URL}api/address`, {
       display_name: location.display_name,
       lat: location.lat,
       lng: location.lng,
@@ -97,7 +97,7 @@ export const saveLocation = async (location) => {
 
 export const getSearchHistory = async () => {
   try {
-    const response = await axios.get(`${API_URL}/api/address`);
+    const response = await axios.get(`${API_URL}api/address`);
     return response.data;
   } catch (error) {
     console.error('Error fetching search history:', error);
@@ -113,7 +113,7 @@ export const getSearchHistory = async () => {
 
 export const deleteLocation = async (locationToDelete) => {
   try {
-    const response = await axios.delete(`${API_URL}/api/address/${locationToDelete.id}`);
+    const response = await axios.delete(`${API_URL}api/address/${locationToDelete.id}`);
     return response.data;
   } catch (error) {
     console.error('Error deleting location:', error);
