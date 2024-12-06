@@ -16,6 +16,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/useToast";
+import { getByIdAddress } from "@/services/santaroutes/santaroutes";
 
 export default function AddressHistory({ locations, onRestore, onDelete, onDeleteAll }) {
   const [sortedLocations, setSortedLocations] = useState([]);
@@ -57,6 +58,24 @@ export default function AddressHistory({ locations, onRestore, onDelete, onDelet
     setShowingAll(!showingAll);
   };
 
+  const handleRestore = async (location) => {
+    try {
+      const currentRoute = await getByIdAddress(location.id);
+      if (currentRoute && currentRoute.lat && currentRoute.lng) {
+        onRestore({
+          id: currentRoute.id,
+          display_name: currentRoute.display_name,
+          lat: currentRoute.lat,
+          lng: currentRoute.lng,
+        });
+      } else {
+        toast.error("Failed to restore the route. Invalid location data.");
+      }
+    } catch (error) {
+      toast.error(`An error occurred while restoring the route: ${error.message}`);
+    }
+  };
+
   return (
     <Card className="h-100vh md:h-full bg-gradient-to-r from-red-50 to-green-50">
       <CardHeader>
@@ -71,7 +90,7 @@ export default function AddressHistory({ locations, onRestore, onDelete, onDelet
               onClick={handleShowAll}
               className="mr-2 w-32 bg-transparent hover:bg-green-100 text-green-700 shadow-zinc-500"
             >
-              {showingAll ? "Hide All" : "Show All"}
+              {showingAll ? "Hide all" : "Show all"}
             </Button>
             <AlertDialog>
               <AlertDialogTrigger asChild>
@@ -80,7 +99,7 @@ export default function AddressHistory({ locations, onRestore, onDelete, onDelet
                   onClick={() => setLocationToDelete(null)}
                   className="w-32 bg-transparent hover:bg-red-100 text-red-600 shadow-zinc-500"
                 >
-                  Delete All
+                  Delete all
                   <TrashIcon className="h-4 w-4 text-red-600" />
                 </Button>
               </AlertDialogTrigger>
@@ -132,7 +151,7 @@ export default function AddressHistory({ locations, onRestore, onDelete, onDelet
                 <div className="flex items-start md:items-center flex-shrink-0">
                   <Button
                     size="icon"
-                    onClick={() => onRestore(location)}
+                    onClick={() => handleRestore(location)}
                     className="mr-2 bg-transparent hover:bg-green-100"
                   >
                     <RefreshCw className="h-4 w-4 text-green-700" />

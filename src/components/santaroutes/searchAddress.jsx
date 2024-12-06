@@ -4,7 +4,7 @@ import { SearchIcon } from 'lucide-react';
 import PropTypes from 'prop-types'
 import { getAutocompleteSuggestions } from '@/services/santaroutes/santaroutes';
 
-export default function SearchAddress({ onSearch }) {
+export default function SearchAddress({ onSearch, onSave }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -43,17 +43,23 @@ export default function SearchAddress({ onSearch }) {
         };
     }, []);
 
-    const handleSearch = (e) => {
+    const handleSearch = async (e) => {
         e.preventDefault();
-        onSearch(searchTerm);
+        const searchResult = await onSearch(searchTerm);
+        if (searchResult && searchResult.length > 0) {
+            onSave(searchResult[0]);
+        }
         setSearchTerm('');
         setSuggestions([]);
         setIsDropdownOpen(false);
     };
 
-    const handleSuggestionClick = (suggestion) => {
+    const handleSuggestionClick = async (suggestion) => {
         setSearchTerm(suggestion.display_name);
-        onSearch(suggestion.display_name);
+        const searchResult = await onSearch(suggestion.display_name);
+        if (searchResult && searchResult.length > 0) {
+            onSave(searchResult[0]);
+        }
         setSuggestions([]);
         setIsDropdownOpen(false);
     };
@@ -109,6 +115,6 @@ export default function SearchAddress({ onSearch }) {
 }
 
 SearchAddress.propTypes = {
-    onSearch: PropTypes.func.isRequired
+    onSearch: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired
 }
-
