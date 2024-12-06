@@ -2,17 +2,20 @@ import axios from "axios";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 
 // Variables backend data
-// const URL = import.meta.env.VITE_API_URL;
-const MOCKURL = import.meta.env.VITE_PROD_API_URL;
+const API_URL = import.meta.env.VITE_PROD_API_URL;
+// const MOCKURL = import.meta.env.VITE_MOCK_API_URL;
 
 // fetch all children
 export const useChildren = () => {
   return useQuery({
     queryKey: ["children"],
     queryFn: async () => {
-      const { data } = await axios.get(`${MOCKURL}/children`); // /api/children
+      const params = new URLSearchParams()
+      const { data } = await axios.get(`${API_URL}api/children?${params.toString()}`); // /api/children
       return data;
     },
+    keepPreviousData: true,
+    staleTime: 5000,
   });
 };
 
@@ -22,7 +25,7 @@ export const useUpdateChild = () => {
   return useMutation({
     mutationFn: async (updatedChild) => {
       try {
-        const response = await axios.patch(`${MOCKURL}/children/${updatedChild.id}`, updatedChild);
+        const response = await axios.put(`${API_URL}api/children/${updatedChild.id}`, updatedChild);
         return response.data;
       } catch (error) {
         throw new Error(error.response?.data?.message || 'Error updating child');
