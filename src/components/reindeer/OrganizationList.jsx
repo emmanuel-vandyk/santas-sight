@@ -6,9 +6,9 @@ import {
   useDeleteCheckedReindeerOrganizations,
 } from "@/services/reindeer/organizationapi";
 import SelectAll from "@/components/global/selectAll";
+import CustomCheckbox from "@/components/global/customCheckbox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import CustomCheckbox from "@/components/global/customCheckbox";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";

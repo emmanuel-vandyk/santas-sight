@@ -2,12 +2,12 @@ import { useUpdateReindeerOrganizations } from "@/services/reindeer/organization
 import { useToast } from "@/hooks/useToast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
-import { Check } from 'lucide-react';
+import { Check } from "lucide-react";
 import {
   ReindeerIcon,
   ChristmasSantaSleight,
 } from "@/components/global/iconsChristmas";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 export default function OrganizationOverview({
   data: { organizationToView, organizationsData, reindeersData },
@@ -29,10 +29,12 @@ export default function OrganizationOverview({
     const updatedOrganization = {
       ...organizationToView,
       isSelected: true,
-      positions: organizationToView.positions.map(({ position, reindeerId }) => ({
-        position: Number(position),
-        reindeerId: Number(reindeerId)
-      }))
+      positions: organizationToView.positions.map(
+        ({ position, reindeerId }) => ({
+          position: Number(position),
+          reindeerId: Number(reindeerId),
+        })
+      ),
     };
 
     try {
@@ -57,22 +59,25 @@ export default function OrganizationOverview({
           <CardTitle>{`${organizationToView.name} organization`}</CardTitle>
           <ChristmasSantaSleight />
           <div className="grid grid-cols-3 gap-3 place-items-center">
-            {organizationToView.positions && organizationToView.positions.map(({ position, reindeerId }) => {
-              // Get the name of the reindeer based on its ID in organization
-              const reindeer = reindeersData && reindeersData.find(
-                ({ id }) => id === Number(reindeerId)
-              );
-              const reindeerName = reindeer ? reindeer.name : 'Unknown Reindeer';
-              return (
-                <Card
-                  key={position}
-                  className="flex items-center justify-center p-2 rounded-sm"
-                >
-                  <ReindeerIcon width="18px" height="18px" />
-                  <CardTitle>{reindeerName}</CardTitle>
-                </Card>
-              );
-            })}
+            {organizationToView.positions &&
+              organizationToView.positions.map(({ position, reindeerId }) => {
+                // Get the name of the reindeer based on its ID in organization
+                const reindeer =
+                  reindeersData &&
+                  reindeersData.find(({ id }) => id === Number(reindeerId));
+                const reindeerName = reindeer
+                  ? reindeer.name
+                  : "Unknown Reindeer";
+                return (
+                  <Card
+                    key={position}
+                    className="flex items-center justify-center p-2 rounded-sm"
+                  >
+                    <ReindeerIcon width="18px" height="18px" />
+                    <CardTitle>{reindeerName}</CardTitle>
+                  </Card>
+                );
+              })}
           </div>
         </CardContent>
         <CardFooter>
@@ -93,29 +98,32 @@ export default function OrganizationOverview({
 OrganizationOverview.propTypes = {
   data: PropTypes.shape({
     organizationToView: PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       name: PropTypes.string.isRequired,
       positions: PropTypes.arrayOf(
         PropTypes.shape({
-          position: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-          reindeerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+          position: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+            .isRequired,
+          reindeerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+            .isRequired,
         })
       ).isRequired,
       isSelected: PropTypes.bool.isRequired,
     }),
     organizationsData: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+          .isRequired,
         isSelected: PropTypes.bool.isRequired,
       })
     ),
     reindeersData: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+          .isRequired,
         name: PropTypes.string.isRequired,
       })
     ),
   }).isRequired,
   generateOrganizationToView: PropTypes.func.isRequired,
 };
-
