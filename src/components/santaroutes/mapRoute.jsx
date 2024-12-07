@@ -9,7 +9,7 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { GiftIcon } from "lucide-react";
+import { GiftIcon } from 'lucide-react';
 import PropTypes from "prop-types";
 import SearchAddress from "./searchAddress";
 
@@ -44,6 +44,7 @@ export default function MapRoute({
   routeCoordinates,
   northPole,
   onSearch,
+  onSave,
 }) {
   const mapRef = useRef(null);
   const [mapBounds, setMapBounds] = useState(null);
@@ -52,24 +53,28 @@ export default function MapRoute({
     if (mapRef.current) {
       if (currentRoute && currentRoute.lat && currentRoute.lng) {
         const bounds = L.latLngBounds(
-          [northPole.lat, northPole.lng],
-          [currentRoute.lat, currentRoute.lng]
+          [parseFloat(northPole.lat), parseFloat(northPole.lng)],
+          [parseFloat(currentRoute.lat), parseFloat(currentRoute.lng)]
         );
         setMapBounds(bounds);
       } else {
-        mapRef.current.setView([northPole.lat, northPole.lng], 3);
+        mapRef.current.setView([parseFloat(northPole.lat), parseFloat(northPole.lng)], 3);
         setMapBounds(null);
       }
     }
   }, [currentRoute, northPole]);
 
+  const routePoints = routeCoordinates && routeCoordinates.length > 0
+    ? routeCoordinates.map(coord => [parseFloat(coord[0]), parseFloat(coord[1])])
+    : [];
+
   return (
     <div className="shadow-lg shadow-zinc-500 rounded-xl overflow-hidden relative">
       <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-[1000] w-full max-w-md">
-        <SearchAddress onSearch={onSearch} />
+        <SearchAddress onSearch={onSearch} onSave={onSave} />
       </div>
       <MapContainer
-        center={[northPole.lat, northPole.lng]}
+        center={[parseFloat(northPole.lat), parseFloat(northPole.lng)]}
         zoom={3}
         style={{ height: "75vh", width: "100%", borderRadius: "10px" }}
         ref={mapRef}
@@ -79,12 +84,12 @@ export default function MapRoute({
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-        <Marker position={[northPole.lat, northPole.lng]} icon={christmasIcon}>
+        <Marker position={[parseFloat(northPole.lat), parseFloat(northPole.lng)]} icon={christmasIcon}>
           <Popup>{northPole.name} - Santa&apos;s Workshop</Popup>
         </Marker>
         {currentRoute && currentRoute.lat && currentRoute.lng && (
           <Marker
-            position={[currentRoute.lat, currentRoute.lng]}
+            position={[parseFloat(currentRoute.lat), parseFloat(currentRoute.lng)]}
             icon={christmasIcon}
           >
             <Popup>
@@ -95,9 +100,9 @@ export default function MapRoute({
             </Popup>
           </Marker>
         )}
-        {routeCoordinates && routeCoordinates.length > 0 && (
+        {routePoints.length > 0 && (
           <Polyline
-            positions={routeCoordinates}
+            positions={routePoints}
             color="red"
             weight={3}
             opacity={0.7}
@@ -119,11 +124,13 @@ MapRoute.propTypes = {
     lat: PropTypes.string,
     lng: PropTypes.string,
   }),
-  routeCoordinates: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
+  routeCoordinates: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
   northPole: PropTypes.shape({
     lat: PropTypes.string,
     lng: PropTypes.string,
     name: PropTypes.string,
   }).isRequired,
   onSearch: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
+
