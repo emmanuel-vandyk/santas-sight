@@ -55,6 +55,7 @@ export default function OrganizationModal({
   });
 
   const positions = watch("positions");
+
   const reindeersList = reindeersData.map((reindeer) => ({
     id: reindeer.id,
     name: reindeer.name,
@@ -72,13 +73,17 @@ export default function OrganizationModal({
       );
     } else {
       reset(defaultValues);
-      setSelectedReindeers(defaultValues.positions.map(() => null));
+      setSelectedReindeers(
+        defaultValues.positions.map((position) => position.reindeerId)
+      );
     }
   }, [organizationData, reset]);
 
   React.useEffect(() => {
     if (isClose) {
-      setSelectedReindeers(defaultValues.positions.map(() => null));
+      setSelectedReindeers(
+        defaultValues.positions.map((position) => position.reindeerId)
+      );
       reset(defaultValues);
     }
   }, [isClose, reset]);
@@ -244,16 +249,24 @@ OrganizationModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   isClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  initialData: PropTypes.shape({
-    id: PropTypes.string, // This is a number, I use string because i can't query with ID number on json server
-    name: PropTypes.string,
-    positions: PropTypes.arrayOf(
+  data: PropTypes.shape({
+    organizationData: PropTypes.shape({
+      name: PropTypes.string,
+      positions: PropTypes.arrayOf(
+        PropTypes.shape({
+          position: PropTypes.number,
+          reindeerId: PropTypes.number,
+        })
+      ),
+      isSelected: PropTypes.bool,
+      isAvailable: PropTypes.bool,
+    }),
+    reindeersData: PropTypes.arrayOf(
       PropTypes.shape({
-        position: PropTypes.number,
-        reindeerId: PropTypes.number,
+        id: PropTypes.number,
+        name: PropTypes.string,
       })
-    ),
-    isAvailable: PropTypes.bool,
-    isSelected: PropTypes.bool,
+    ).isRequired,
   }),
+  generateOrganizationToView: PropTypes.func,
 };

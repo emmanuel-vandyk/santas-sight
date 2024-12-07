@@ -77,7 +77,7 @@ export default function ReindeerList({
       (organization) => {
         // Check if the organization contains the reindeer
         const containsReindeer = organization.positions.some(
-          (position) => position.reindeer === reindeer.id
+          (position) => position.reindeerId === reindeer.id
         );
 
         // If it contains the reindeer, set isAvailable to false and isSelected to false
