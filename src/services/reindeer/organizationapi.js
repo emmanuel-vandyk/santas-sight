@@ -2,13 +2,13 @@ import axios from "axios";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 
 // const URL = import.meta.env.VITE_API_URL;
-const MOCKURL = import.meta.env.VITE_MOCK_API_URL;
+const API_URL = import.meta.env.VITE_PROD_API_URL;
 
 export const useReindeersOrganizations = () => {
   return useQuery({
     queryKey: ["organizations"],
     queryFn: async () => {
-      const { data } = await axios.get(`${MOCKURL}/api/reindeerOrganizations`);
+      const { data } = await axios.get(`${API_URL}api/reindeerOrganizations`);
       return data.data;
     },
   });
@@ -26,7 +26,7 @@ export const useAddReindeersOrganization = () => {
           reindeerId: Number(p.reindeerId), // Change 'reindeer' to 'reindeerId'
         })),
       };
-      return axios.post(`${MOCKURL}/api/reindeerOrganizations`, formattedData);
+      return axios.post(`${API_URL}api/reindeerOrganizations`, formattedData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
@@ -48,7 +48,7 @@ export const useUpdateReindeersOrganization = () => {
         })),
       };
       return axios.put(
-        `${MOCKURL}/api/reindeerOrganizations/${formattedData.id}`,
+        `${API_URL}api/reindeerOrganizations/${formattedData.id}`,
         formattedData
       );
     },
@@ -74,7 +74,7 @@ export const useUpdateReindeerOrganizations = () => {
           };
 
           return axios.put(
-            `${MOCKURL}/api/reindeerOrganizations/${formattedData.id}`,
+            `${API_URL}/api/reindeerOrganizations/${formattedData.id}`,
             formattedData
           );
         })
@@ -91,7 +91,7 @@ export const useDeleteReindeersOrganization = () => {
   return useMutation({
     mutationFn: (deletedReindeersOrganization) =>
       axios.delete(
-        `${MOCKURL}/api/reindeerOrganizations/${Number(
+        `${API_URL}api/reindeerOrganizations/${Number(
           deletedReindeersOrganization.id
         )}`
       ),
@@ -108,7 +108,7 @@ export const useDeleteCheckedReindeerOrganizations = () => {
       axios.all(
         deletedCheckedReindeerOrganization.map((organization) =>
           axios.delete(
-            `${MOCKURL}/api/reindeerOrganizations/${Number(organization.id)}`
+            `${API_URL}api/reindeerOrganizations/${Number(organization.id)}`
           )
         )
       ),

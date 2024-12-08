@@ -2,13 +2,13 @@ import axios from "axios";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 
 // const URL = import.meta.env.VITE_API_URL;
-const MOCKURL = import.meta.env.VITE_MOCK_API_URL;
+const API_URL = import.meta.env.VITE_PROD_API_URL;
 
 export const useReindeers = () => {
   return useQuery({
     queryKey: ["reindeers"],
     queryFn: async () => {
-      const { data } = await axios.get(`${MOCKURL}/api/reindeer`);
+      const { data } = await axios.get(`${API_URL}api/reindeer`);
       return data.data;
     },
   });
@@ -25,7 +25,7 @@ export const useAddReindeer = () => {
           value: Number(s.value),
         })),
       };
-      return axios.post(`${MOCKURL}/api/reindeer`, formattedData);
+      return axios.post(`${API_URL}api/reindeer`, formattedData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reindeers"] });
@@ -47,7 +47,7 @@ export const useUpdateReindeer = () => {
         })),
       };
       return axios.put(
-        `${MOCKURL}/api/reindeer/${formattedData.id}`,
+        `${API_URL}api/reindeer/${formattedData.id}`,
         formattedData
       );
     },
@@ -72,7 +72,7 @@ export const useUpdateCheckedReindeers = () => {
             })),
           };
           return axios.put(
-            `${MOCKURL}/api/reindeer/${formattedData.id}`,
+            `${API_URL}api/reindeer/${formattedData.id}`,
             formattedData
           );
         })
@@ -87,9 +87,10 @@ export const useDeleteReindeer = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (deletedReindeer) =>
-      axios.delete(`${MOCKURL}/api/reindeer/${Number(deletedReindeer.id)}`),
+      axios.delete(`${API_URL}api/reindeer/${Number(deletedReindeer.id)}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reindeers"] });
+      queryClient.refetchQueries(["organizations"]);
     },
   });
 };
@@ -100,11 +101,12 @@ export const useDeleteCheckedReindeer = () => {
     mutationFn: (deletedCheckedReindeer) =>
       axios.all(
         deletedCheckedReindeer.map((reindeer) =>
-          axios.delete(`${MOCKURL}/api/reindeer/${Number(reindeer.id)}`)
+          axios.delete(`${API_URL}api/reindeer/${Number(reindeer.id)}`)
         )
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reindeers"] });
+      queryClient.refetchQueries(["organizations"]);
     },
   });
 };

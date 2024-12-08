@@ -62,30 +62,42 @@ export default function ReindeerList({
     try {
       await deleteCheckedReindeer.mutateAsync(reindeersToDelete);
       toast.success("Reindeers deleted successfully");
-      setChecketReindeer([]);
+      showReindeerImpactToast(reindeersToDelete);
     } catch {
       toast.error("Failed to delete selected reindeers");
     }
   };
 
-  const showReindeerImpactToast = (reindeer) => {
-    // Find organizations that include the given reindeer
-    const organizationsWithReindeer = organizationsData.filter(
-      (organization) => {
-        // Check if the organization contains the reindeer
-        const containsReindeer = organization.positions.some(
-          (position) => position.reindeerId === reindeer.id
-        );
+  const showReindeerImpactToast = (reindeers) => {
+    const reindeerList = Array.isArray(reindeers) ? reindeers : [reindeers];
 
-        // Return only the organizations that contain the reindeer
-        return containsReindeer;
-      }
-    );
+    const impactedOrganizations = new Set();
+
+    reindeerList.forEach((reindeer) => {
+      // Find organizations that include the given reindeer
+      const organizationsWithReindeer = organizationsData.filter(
+        (organization) => {
+          // Check if the organization contains the reindeer
+          const containsReindeer = organization.positions.some(
+            (position) => position.reindeerId === reindeer.id
+          );
+
+          // Return only the organizations that contain the reindeer
+          return containsReindeer;
+        }
+      );
+
+      organizationsWithReindeer.forEach((organization) => {
+        impactedOrganizations.add(organization.id);
+      });
+    });
 
     // Show a toast if there are impacted organizations
-    if (organizationsWithReindeer.length > 0) {
+    if (impactedOrganizations.size > 0) {
       toast.info(
-        `You removed ${reindeer.name}, which impacted and updated ${organizationsWithReindeer.length} organization`
+        `With the removal, ${impactedOrganizations.size} organization${
+          impactedOrganizations.size > 1 && "s"
+        } were impacted and updated.`
       );
       generateOrganizationToView(null);
     }

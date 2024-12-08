@@ -15,7 +15,7 @@ import {
   ErrorScreen,
 } from "@/components/global/santaDataLoader";
 
-const NORTH_POLE = { lat: 25.7617, lng: -80.1918, display_name: "Miami, Florida" };
+const NORTH_POLE = { lat: "25.7617", lng: "-80.1918", display_name: "Miami, Florida" };
 
 export const RoutesPage = () => {
   const queryClient = useQueryClient();
@@ -40,8 +40,8 @@ export const RoutesPage = () => {
           routeMutation.mutate({
             start: NORTH_POLE,
             end: {
-              lat: parseFloat(location.lat),
-              lng: parseFloat(location.lng),
+              lat: location.lat,
+              lng: location.lng,
               name: location.display_name
             }
           });
@@ -60,7 +60,6 @@ export const RoutesPage = () => {
     mutationFn: saveLocation,
     onSuccess: () => {
       queryClient.invalidateQueries("searchHistory");
-      toast.success("Location saved successfully!");
     },
     onError: (error) => {
       console.error('Save error:', error);
@@ -72,31 +71,35 @@ export const RoutesPage = () => {
     mutationFn: deleteLocation,
     onSuccess: () => {
       queryClient.invalidateQueries("searchHistory");
-      toast.success("Location deleted successfully!");
     },
     onError: (error) => {
-      console.error('Delete error:', error);
       toast.error(error.message || "Error deleting location.");
     },
   });
 
   const routeMutation = useMutation({
-    mutationFn: ({ start, end }) => getRoute(start, end),
+    mutationFn: ({ start, end }) => {
+      if (!start.lat || !start.lng || !end.lat || !end.lng) {
+        throw new Error("Invalid coordinates. Please try again with a valid location.");
+      }
+      return getRoute(
+        { lat: parseFloat(start.lat), lng: parseFloat(start.lng) },
+        { lat: parseFloat(end.lat), lng: parseFloat(end.lng) }
+      );
+    },
     onSuccess: (data, variables) => {
       if (data && data.routes && data.routes[0]) {
-        const coordinates = decodePolyline(data.routes[0].geometry);
+        const coordinates = decodePolyline(data.routes[0].geometry).map(coord => [coord[0], coord[1]]);
         queryClient.setQueryData(["currentRoute"], {
           coordinates,
           start: variables.start,
-          end: variables.end,
+          end: {
+            lat: variables.end.lat,
+            lng: variables.end.lng,
+            name: variables.end.name
+          },
         });
-        // Only save the location if the route was successfully calculated
-        saveMutation.mutate({
-          display_name: variables.end.name,
-          lat: variables.end.lat,
-          lng: variables.end.lng,
-        });
-        toast.success("Route found successfully!");
+        toast.success("Route restored successfully!");
       } else {
         toast.error("No route found. The destination might be unreachable.");
       }
@@ -107,21 +110,27 @@ export const RoutesPage = () => {
     },
   });
 
-  const handleSearch = (query) => {
-    searchMutation.mutate({ query });
+  const handleSearch = async (query) => {
+    const result = await searchMutation.mutateAsync({ query });
+    return result;
+  };
+
+  const handleSave = (location) => {
+    saveMutation.mutate(location);
   };
 
   const handleRestore = (location) => {
-    const parsedLocation = {
-      ...location,
-      lat: parseFloat(location.lat),
-      lng: parseFloat(location.lng),
-    };
-    if (parsedLocation) {
+    if (location && location.lat && location.lng) {
       routeMutation.mutate({
         start: NORTH_POLE,
-        end: parsedLocation,
+        end: {
+          lat: location.lat,
+          lng: location.lng,
+          name: location.display_name
+        }
       });
+    } else {
+      toast.error("Invalid location data. Unable to restore the route.");
     }
   };
 
@@ -185,7 +194,6 @@ export const RoutesPage = () => {
   }
 
   if (isHistoryError) {
-    console.error('History error:', historyError);
     return <ErrorScreen message={historyError.message || "Error loading search history"} />;
   }
 
@@ -199,11 +207,11 @@ export const RoutesPage = () => {
           <div className="flex flex-col lg:flex-row w-full gap-4">
             <div className="w-full lg:w-3/5">
               <MapRoute
-                currentRoute={currentRoute?.end || NORTH_POLE}
+                currentRoute={currentRoute?.end}
                 routeCoordinates={currentRoute?.coordinates}
                 northPole={NORTH_POLE}
-                searchHistory={searchHistory}
                 onSearch={handleSearch}
+                onSave={handleSave}
               />
             </div>
             <div className="w-full lg:w-2/5">
@@ -220,4 +228,3 @@ export const RoutesPage = () => {
     </div>
   );
 };
-
