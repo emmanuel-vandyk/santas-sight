@@ -9,13 +9,13 @@ export const PieChart = ({ data }) => {
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
-          <RechartsPieChart>
+          <RechartsPieChart margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
             <Pie
               data={data}
               cx="50%"
               cy="50%"
               labelLine={false}
-              outerRadius={120}
+              outerRadius={80}
               fill="#8884d8"
               dataKey="value"
             >
@@ -24,7 +24,18 @@ export const PieChart = ({ data }) => {
               ))}
             </Pie>
             <Tooltip />
-            <Legend />
+            <Legend
+              layout="horizontal"
+              verticalAlign="bottom"
+              align="center"
+              wrapperStyle={{
+                paddingTop: '20px',
+                fontSize: '12px',
+                '@media (max-width: 480px)': {
+                  fontSize: '10px'
+                }
+              }}
+            />
           </RechartsPieChart>
         </ResponsiveContainer>
       </CardContent>
@@ -41,3 +52,4 @@ PieChart.propTypes = {
     })
   ).isRequired,
 };
+
