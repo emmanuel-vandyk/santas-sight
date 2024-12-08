@@ -1,4 +1,4 @@
-import { useUpdateReindeerOrganizations } from "@/services/reindeer/organizationapi";
+import { useUpdateReindeersOrganization } from "@/services/reindeer/organizationapi";
 import { useToast } from "@/hooks/useToast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
@@ -16,7 +16,7 @@ export default function OrganizationOverview({
   const toast = useToast();
 
   // Mutations for managing organization data.
-  const updateOrganizationsMutation = useUpdateReindeerOrganizations();
+  const updateOrganizationsMutation = useUpdateReindeersOrganization();
 
   // Function to handle selecting a reindeer's organization
   const handleSelectOrganization = async () => {
