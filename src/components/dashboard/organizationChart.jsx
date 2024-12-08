@@ -20,13 +20,13 @@ export const OrganizationChart = ({ organizations, selectedOrganization }) => {
         <p className="text-sm text-gray-500 mb-4">Total Organizations</p>
         <Badge variant="secondary" className="mb-2">Selected: {selectedOrganization}</Badge>
         <ResponsiveContainer width="100%" height={200}>
-          <PieChart>
+          <PieChart margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
             <Pie
               data={data}
               cx="50%"
               cy="50%"
-              innerRadius={60}
-              outerRadius={80}
+              innerRadius={40}
+              outerRadius={60}
               fill="#8884d8"
               paddingAngle={5}
               dataKey="value"
