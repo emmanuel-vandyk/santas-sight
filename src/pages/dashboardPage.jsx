@@ -64,7 +64,7 @@ export const DashboardPage = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 sm:p-6 max-w-[100vw] overflow-x-hidden">
       <h1 className="text-4xl text-center font-bold text-red-600 mb-8">
         <UnderlineTitle text="Santa's Dashboard" />
       </h1>
@@ -75,7 +75,7 @@ export const DashboardPage = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 md:gap-4 md:mb-0">
       <StatCard
           icon={<MapPin className="h-4 w-4" />}
           title="Searches"
@@ -101,14 +101,15 @@ export const DashboardPage = () => {
           subtitle={`${calories.consumedCookies} of ${calories.totalCookies} cookies`}
         /> */}
       </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-0">
+      <div className="p-2 sm:p-4 md:p-6">
         <ChartContainer
           config={{
             master: { label: "Master", color: "#D32F2F" },
             junior: { label: "Junior", color: "#4d7c0f" },
             trainee: { label: "Trainee", color: "#ffc658" },
           }}
+          className="min-h-[300px] w-full mb-10 md:mb-0"
         >
           <ReindeerChart
             data={[
@@ -118,6 +119,8 @@ export const DashboardPage = () => {
             ]}
           />
         </ChartContainer>
+        </div>
+        <div className="p-2 sm:p-4 md:p-6 mb-16 md:mb-0">
         <ChartContainer
           config={{
             Kind: { label: "Kind", color: behaviorColors.Kind },
@@ -126,6 +129,7 @@ export const DashboardPage = () => {
             Helpful: { label: "Helpful", color: behaviorColors.Helpful },
             Curious: { label: "Curious", color: behaviorColors.Curious },
           }}
+          className="mb-32 md:mb-0"
         >
           <PieChart
             data={behaviorSummary ? Object.entries(behaviorSummary).map(([behavior, count]) => ({
@@ -135,15 +139,17 @@ export const DashboardPage = () => {
             })) : []}
           />
         </ChartContainer>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
+        </div>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-20 md:gap-0">
         <div className="lg:col-span-2">
+        <div className="p-2 sm:p-4 md:p-2">
           <ChartContainer
             config={{
               availableElves: { label: "Available Elves", color: "#4d7c0f" },
               unavailableElves: { label: "Unavailable Elves", color: "#D32F2F" },
             }}
+            className="mb-28 md:mb-0"
           >
             <ElvesChart
               data={[
@@ -152,7 +158,9 @@ export const DashboardPage = () => {
               ]}
             />
           </ChartContainer>
+          </div>
         </div>
+        <div className="p-2 sm:p-4 md:p-2">
         <ChartContainer
           config={{
             selected: { label: "Selected", color: "#4d7c0f" },
@@ -164,7 +172,8 @@ export const DashboardPage = () => {
             selectedOrganization={organizationsData?.[0]?.name || "N/A"}
           />
         </ChartContainer>
-      </div>
+        </div>
+        </div>
     </div>
   );
 }
