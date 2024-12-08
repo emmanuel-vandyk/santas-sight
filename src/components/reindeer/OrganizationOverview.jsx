@@ -44,7 +44,9 @@ export default function OrganizationOverview({
     } catch (error) {
       console.error("Error updating organization:", error);
       generateOrganizationToView(null);
-      toast.error("Failed to select organization");
+      toast.error(
+        "Failed to select organization. Please verify and complete all required information."
+      );
     }
   };
 
@@ -99,16 +101,15 @@ OrganizationOverview.propTypes = {
   data: PropTypes.shape({
     organizationToView: PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      name: PropTypes.string.isRequired,
+      name: PropTypes.string,
       positions: PropTypes.arrayOf(
         PropTypes.shape({
-          position: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-            .isRequired,
-          reindeerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-            .isRequired,
+          position: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+          reindeerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         })
-      ).isRequired,
-      isSelected: PropTypes.bool.isRequired,
+      ),
+      isSelected: PropTypes.bool,
+      isAvailable: PropTypes.bool,
     }),
     organizationsData: PropTypes.arrayOf(
       PropTypes.shape({

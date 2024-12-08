@@ -20,11 +20,11 @@ export const useAddReindeersOrganization = () => {
     mutationFn: (newReindeersOrganization) => {
       const formattedData = {
         ...newReindeersOrganization,
-        positions: newReindeersOrganization.positions.map(p => ({
+        positions: newReindeersOrganization.positions.map((p) => ({
           ...p,
           position: Number(p.position),
-          reindeerId: Number(p.reindeerId) // Change 'reindeer' to 'reindeerId'
-        }))
+          reindeerId: Number(p.reindeerId), // Change 'reindeer' to 'reindeerId'
+        })),
       };
       return axios.post(`${MOCKURL}/api/reindeerOrganizations`, formattedData);
     },
@@ -41,11 +41,11 @@ export const useUpdateReindeersOrganization = () => {
       const formattedData = {
         ...updatedReindeersOrganization,
         id: Number(updatedReindeersOrganization.id),
-        positions: updatedReindeersOrganization.positions.map(p => ({
+        positions: updatedReindeersOrganization.positions.map((p) => ({
           ...p,
           position: Number(p.position),
-          reindeerId: Number(p.reindeerId) // Change 'reindeer' to 'reindeerId'
-        }))
+          reindeerId: Number(p.reindeerId),
+        })),
       };
       return axios.put(
         `${MOCKURL}/api/reindeerOrganizations/${formattedData.id}`,
@@ -62,17 +62,22 @@ export const useUpdateReindeerOrganizations = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (updatedReindeerOrganization) => {
-      const formattedData = {
-        ...updatedReindeerOrganization,
-        id: Number(updatedReindeerOrganization.id),
-        positions: updatedReindeerOrganization.positions.map(p => ({
-          position: Number(p.position),
-          reindeerId: Number(p.reindeerId)
-        }))
-      };
-      return axios.put(
-        `${MOCKURL}/api/reindeerOrganizations/${formattedData.id}`,
-        formattedData
+      axios.all(
+        updatedReindeerOrganization.map((organization) => {
+          const formattedData = {
+            ...organization,
+            id: Number(organization.id),
+            positions: organization.positions.map((p) => ({
+              position: Number(p.position),
+              reindeerId: Number(p.reindeerId) || null,
+            })),
+          };
+
+          return axios.put(
+            `${MOCKURL}/api/reindeerOrganizations/${formattedData.id}`,
+            formattedData
+          );
+        })
       );
     },
     onSuccess: () => {
@@ -86,7 +91,9 @@ export const useDeleteReindeersOrganization = () => {
   return useMutation({
     mutationFn: (deletedReindeersOrganization) =>
       axios.delete(
-        `${MOCKURL}/api/reindeerOrganizations/${Number(deletedReindeersOrganization.id)}`
+        `${MOCKURL}/api/reindeerOrganizations/${Number(
+          deletedReindeersOrganization.id
+        )}`
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
@@ -110,4 +117,3 @@ export const useDeleteCheckedReindeerOrganizations = () => {
     },
   });
 };
-

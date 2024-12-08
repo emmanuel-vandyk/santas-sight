@@ -5,7 +5,6 @@ import {
   useDeleteReindeer,
   useDeleteCheckedReindeer,
 } from "@/services/reindeer/reindeerapi";
-import { useUpdateReindeerOrganizations } from "@/services/reindeer/organizationapi";
 import { useToast } from "@/hooks/useToast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,14 +42,13 @@ export default function ReindeerList({
   // Mutations for deleting reindeer data.
   const deleteReindeerMutation = useDeleteReindeer();
   const deleteCheckedReindeer = useDeleteCheckedReindeer();
-  // Mutations for managing organization data.
-  const updateOrganizationsMutation = useUpdateReindeerOrganizations();
 
   // Function to handle deleting a reindeer
   const handleDeleteReindeer = async (reindeerDeleted) => {
     try {
       await deleteReindeerMutation.mutateAsync(reindeerDeleted);
       toast.success(`${reindeerDeleted.name} has been deleted.`);
+      showReindeerImpactToast(reindeerDeleted);
     } catch {
       toast.error(`Failed to delete ${reindeerDeleted.name}.`);
     }
@@ -70,9 +68,8 @@ export default function ReindeerList({
     }
   };
 
-  // Function to handle deleting a reindeers in some organization.
-  const hadleUpdateOrganizations = (reindeer) => {
-    // Find organizations with this reindeer
+  const showReindeerImpactToast = (reindeer) => {
+    // Find organizations that include the given reindeer
     const organizationsWithReindeer = organizationsData.filter(
       (organization) => {
         // Check if the organization contains the reindeer
@@ -80,20 +77,16 @@ export default function ReindeerList({
           (position) => position.reindeerId === reindeer.id
         );
 
-        // If it contains the reindeer, set isAvailable to false and isSelected to false
-        if (containsReindeer) {
-          organization.isAvailable = false;
-          organization.isSelected = false;
-        }
-
         // Return only the organizations that contain the reindeer
         return containsReindeer;
       }
     );
 
-    // Update the "isAvailable" property in organizations associated with the reindeer.
+    // Show a toast if there are impacted organizations
     if (organizationsWithReindeer.length > 0) {
-      updateOrganizationsMutation.mutateAsync(organizationsWithReindeer);
+      toast.info(
+        `You removed ${reindeer.name}, which impacted and updated ${organizationsWithReindeer.length} organization`
+      );
       generateOrganizationToView(null);
     }
   };
@@ -232,10 +225,7 @@ export default function ReindeerList({
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
                               <AlertDialogAction
                                 className="bg-red-600 hover:bg-red-700"
-                                onClick={() => {
-                                  hadleUpdateOrganizations(reindeer);
-                                  handleDeleteReindeer(reindeer);
-                                }}
+                                onClick={() => handleDeleteReindeer(reindeer)}
                               >
                                 Continue
                               </AlertDialogAction>

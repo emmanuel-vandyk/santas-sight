@@ -37,6 +37,7 @@ export default function OrganizationList({
   const toast = useToast();
   const [checkedOrganization, setCheckedOrganization] = React.useState([]);
   const [filter, setFilter] = React.useState("");
+  // Mutations for managing organization data.
   const deleteReindeersOrganizationMutation = useDeleteReindeersOrganization();
   const deleteCheckedReindeerOrganization =
     useDeleteCheckedReindeerOrganizations();
