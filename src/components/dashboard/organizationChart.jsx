@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import PropTypes from 'prop-types';
@@ -39,7 +38,6 @@ export const OrganizationChart = ({ organizations, selectedOrganization }) => {
             <ChartTooltip content={<ChartTooltipContent />} />
           </PieChart>
         </ResponsiveContainer>
-        <Button className="w-full mt-4 bg-green-700">Manage Organizations</Button>
       </CardContent>
     </Card>
   );
