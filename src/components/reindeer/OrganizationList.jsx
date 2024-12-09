@@ -24,7 +24,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Pencil, PlusSquare, Trash2, Eye } from "lucide-react";
-import { SantaSleigh } from "@/components/global/iconsChristmas";
+import { SantaSledge } from "@/components/global/iconsChristmas";
 import { useToast } from "@/hooks/useToast";
 
 export default function OrganizationList({
@@ -136,7 +136,11 @@ export default function OrganizationList({
                         }
                       />
                       <CardTitle className="flex items-center gap-1">
-                        <SantaSleigh width="18px" height="18px" />
+                        <SantaSledge
+                          width="18px"
+                          height="18px"
+                          transform="scale(-1, 1)"
+                        />
                         {organization.name}
                       </CardTitle>
                     </div>

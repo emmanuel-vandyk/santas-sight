@@ -13,7 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle } from "lucide-react";
 import santahat from "@/assets/santahat.webp";
 import {
   Select,
@@ -67,12 +67,14 @@ export default function ReindeerModal({
 
   const onSubmitForm = handleSubmit((data) => {
     const formattedData = {
-      id: initialData ? initialData.id : Math.round(Math.random() * 100).toString(),
+      id: initialData
+        ? initialData.id
+        : Math.round(Math.random() * 100).toString(),
       ...data,
-      skills: data.skills.map(skill => ({
+      skills: data.skills.map((skill) => ({
         skill: skill.skill,
-        value: parseInt(skill.value, 10)
-      }))
+        value: parseInt(skill.value, 10),
+      })),
     };
     onSubmit(formattedData);
     isClose();
@@ -82,18 +84,17 @@ export default function ReindeerModal({
   return (
     <Dialog open={isOpen} onOpenChange={isClose}>
       <DialogContent className="sm:max-w-[450px] bg-gradient-to-b from-red-100 to-green-100">
-        <DialogHeader>
-          <DialogTitle className="flex items-center justify-center text-2xl font-bold text-red-600">
-            <span className="relative">
-              {initialData ? "Edit reindeer" : "+ New reindeer"}
-              <img
-                src={santahat}
-                alt="Santa hat"
-                className="absolute -top-11 -left-2 w-12 h-12"
-              />
-            </span>
+        <DialogHeader className="text-start mb-4">
+          <DialogTitle className="text-2xl font-bold text-red-600 relative inline-block">
+            {initialData ? "Edit reindeer" : "+ New reindeer"}
+            <img
+              src={santahat}
+              alt="Santa hat"
+              className="absolute -top-11 -left-2 w-12 h-12"
+              aria-hidden="true"
+            />
           </DialogTitle>
-          <DialogDescription className="text-center text-green-700">
+          <DialogDescription className="text-green-700">
             {initialData
               ? "Edit the details of the reindeer"
               : "Add a new reindeer to Santa's workshop"}
@@ -217,4 +218,3 @@ ReindeerModal.propTypes = {
     ),
   }),
 };
-
