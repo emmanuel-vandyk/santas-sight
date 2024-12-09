@@ -1,5 +1,6 @@
 import { useUpdateReindeersOrganization } from "@/services/reindeer/organizationapi";
 import { useToast } from "@/hooks/useToast";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { Check } from "lucide-react";
@@ -17,6 +18,15 @@ export default function OrganizationOverview({
 
   // Mutations for managing organization data.
   const updateOrganizationsMutation = useUpdateReindeersOrganization();
+
+  const reindeerPositions = [
+    { name: "6th", colStart: 1, rowStart: 1, position: 1 },
+    { name: "5th", colStart: 1, rowStart: 2, position: 2 },
+    { name: "4th", colStart: 2, rowStart: 1, position: 3 },
+    { name: "3rd", colStart: 2, rowStart: 2, position: 4 },
+    { name: "2nd", colStart: 3, rowStart: 1, position: 5 },
+    { name: "1st", colStart: 3, rowStart: 2, position: 6 },
+  ];
 
   // Function to handle selecting a reindeer's organization
   const handleSelectOrganization = async () => {
@@ -62,24 +72,40 @@ export default function OrganizationOverview({
           <ChristmasSantaSleight />
           <div className="grid grid-cols-3 gap-3 place-items-center">
             {organizationToView.positions &&
-              organizationToView.positions.map(({ position, reindeerId }) => {
-                // Get the name of the reindeer based on its ID in organization
-                const reindeer =
-                  reindeersData &&
-                  reindeersData.find(({ id }) => id === Number(reindeerId));
-                const reindeerName = reindeer
-                  ? reindeer.name
-                  : "Unknown Reindeer";
-                return (
-                  <Card
-                    key={position}
-                    className="flex items-center justify-center p-2 rounded-sm"
-                  >
-                    <ReindeerIcon width="18px" height="18px" />
-                    <CardTitle>{reindeerName}</CardTitle>
-                  </Card>
-                );
-              })}
+              organizationToView.positions.map(
+                ({ position, reindeerId }, index) => {
+                  // Get the name of the reindeer based on its ID in organization
+                  const reindeer =
+                    reindeersData &&
+                    reindeersData.find(({ id }) => id === Number(reindeerId));
+
+                  const reindeerName = reindeer
+                    ? reindeer.name
+                    : "Unknown Reindeer";
+
+                  return (
+                    <div
+                      key={position}
+                      className="flex flex-col gap-2"
+                      style={{
+                        gridColumnStart: reindeerPositions[index].colStart,
+                        gridRowStart: reindeerPositions[index].rowStart,
+                      }}
+                    >
+                      <Badge
+                        variant="outline"
+                        className="bg-amber-900 text-white mx-auto"
+                      >
+                        {reindeerPositions[index].name}
+                      </Badge>
+                      <Card className="flex items-center justify-center p-2 rounded-sm">
+                        <ReindeerIcon width="18px" height="18px" />
+                        <CardTitle>{reindeerName}</CardTitle>
+                      </Card>
+                    </div>
+                  );
+                }
+              )}
           </div>
         </CardContent>
         <CardFooter>

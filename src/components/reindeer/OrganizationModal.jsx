@@ -5,7 +5,9 @@ import PropTypes from "prop-types";
 import ReindeerComboBox from "@/components/reindeer/ReindeerComboBox";
 import CustomCheckbox from "@/components/global/customCheckbox";
 import santahat from "@/assets/santahat.webp";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {
   Dialog,
@@ -15,16 +17,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { BadgeInfo, Check } from "lucide-react";
+import { CardDescription } from "@/components/ui/card";
+import { Check } from "lucide-react";
+import { SantaSledge } from "@/components/global/iconsChristmas";
 
 export default function OrganizationModal({
   isOpen,
@@ -55,6 +50,14 @@ export default function OrganizationModal({
   });
 
   const positions = watch("positions");
+  const reindeerPositions = [
+    { name: "6th", colStart: 1, rowStart: 1, position: 1 },
+    { name: "5th", colStart: 1, rowStart: 2, position: 2 },
+    { name: "4th", colStart: 2, rowStart: 1, position: 3 },
+    { name: "3rd", colStart: 2, rowStart: 2, position: 4 },
+    { name: "2nd", colStart: 3, rowStart: 1, position: 5 },
+    { name: "1st", colStart: 3, rowStart: 2, position: 6 },
+  ];
 
   const reindeersList = reindeersData.map((reindeer) => ({
     id: reindeer.id,
@@ -132,22 +135,21 @@ export default function OrganizationModal({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={isClose}>
-        <DialogContent className="sm:max-w-[450px] bg-gradient-to-b from-red-100 to-green-100">
-          <DialogHeader>
-            <DialogTitle className="flex items-center justify-center text-2xl font-bold text-red-600">
-              <span className="relative">
-                {organizationData ? "Edit organization" : "New organization"}
-                <img
-                  src={santahat}
-                  alt="Santa hat"
-                  className="absolute -top-11 -left-2 w-12 h-12"
-                />
-              </span>
+        <DialogContent className="sm:max-w-[500px] bg-gradient-to-b from-red-100 to-green-100">
+          <DialogHeader className="text-start mb-4">
+            <DialogTitle className="text-2xl font-bold text-red-600 relative inline-block">
+              {organizationData ? "Edit organization" : "+ New organization"}
+              <img
+                src={santahat}
+                alt="Santa hat"
+                className="absolute -top-10 -left-6 w-12 h-12"
+                aria-hidden="true"
+              />
             </DialogTitle>
-            <DialogDescription className="text-center text-green-700">
+            <DialogDescription className="text-green-700">
               {organizationData
                 ? "Edit the details of the organization"
-                : "Add a new reindeer organization to Santa's workshop"}
+                : "Add a new organization to Santa's workshop"}
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={onSubmitForm} className="space-y-6">
@@ -188,29 +190,37 @@ export default function OrganizationModal({
                 Suggested best reindeer for December 25th.
               </Label>
             </div>
-            <Card className="bg-transparent">
-              <div className="flex flex-col">
-                <CardHeader>
-                  <CardTitle>Organize your reindeer</CardTitle>
-                  <CardDescription>
-                    Organize the reindeer for Santa&apos;s sleigh. Click each
-                    button to assign a different reindeer to its position. When
-                    you click a button, a menu will appear with a list of
-                    available reindeer for easy selection
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-col gap-5">
-                    <p
-                      className={`flex text-sm text-muted-foreground gap-2 items-center`}
-                    >
-                      <BadgeInfo size={16} />A reindeer cannot be in more than
-                      one position
-                    </p>
-                    <div className="grid grid-cols-2 gap-5 place-items-center md:grid-cols-3">
-                      {positions.map((_, index) => (
+            <div className="flex flex-col gap-1">
+              <Label className=" text-zinc-500">Organize your reindeer</Label>
+              <CardDescription className="hidden min-[400px]:block">
+                Assign reindeer to Santa&apos;s sleigh by clicking buttons to
+                select from a menu of available options.
+              </CardDescription>
+              <div className="flex items-center justify-center p-3">
+                <SantaSledge
+                  className="hidden min-[450px]:block"
+                  transform="scale(-1, 1)"
+                  width={124}
+                  height={124}
+                />
+                <div className="grid grid-cols-3 gap-1 place-items-center">
+                  {reindeerPositions.map((position, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="flex flex-col gap-2"
+                        style={{
+                          gridColumnStart: position.colStart,
+                          gridRowStart: position.rowStart,
+                        }}
+                      >
+                        <Badge
+                          variant="outline"
+                          className="bg-amber-900 text-white mx-auto"
+                        >
+                          {position.name}
+                        </Badge>
                         <ReindeerComboBox
-                          key={index}
                           data={reindeersList.filter(
                             (reindeer) =>
                               !selectedReindeers.includes(reindeer.id) ||
@@ -221,23 +231,21 @@ export default function OrganizationModal({
                             handleReindeerChange(index, value)
                           }
                         />
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <DialogFooter className="w-full">
-                    <Button
-                      type="submit"
-                      className=" bg-green-600 hover:bg-green-700 w-full"
-                      disabled={isSubmitDisabled}
-                    >
-                      <Check /> Save
-                    </Button>
-                  </DialogFooter>
-                </CardFooter>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </Card>
+            </div>
+            <DialogFooter className="w-full">
+              <Button
+                type="submit"
+                className=" bg-green-600 hover:bg-green-700 w-full"
+                disabled={isSubmitDisabled}
+              >
+                <Check /> Save
+              </Button>
+            </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>
