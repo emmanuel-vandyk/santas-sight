@@ -39,7 +39,7 @@ export default function CookiesGuide() {
           className="w-full"
         >
           <PlusSquare />
-          New cookie
+          Create a cookie
         </Button>
       </CardFooter>
     </Card>

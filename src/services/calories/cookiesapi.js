@@ -9,8 +9,8 @@ export const useSantaCalories = () => {
   return useQuery({
     queryKey: ["calories"],
     queryFn: async () => {
-      const { data } = await axios.get(`${API_URL}api/santaCalories`);
-      return data;
+      const { data } = await axios.get(`${API_URL}api/cookie/stats`);
+      return data.data;
     },
   });
 };
@@ -20,8 +20,8 @@ export const useCookiesForSanta = () => {
   return useQuery({
     queryKey: ["cookies"],
     queryFn: async () => {
-      const { data } = await axios.get(`${API_URL}api/cookiesForSanta`);
-      return data;
+      const { data } = await axios.get(`${API_URL}api/cookie`);
+      return data.data;
     },
   });
 };
@@ -31,26 +31,40 @@ export const useAddCookiesForSanta = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (newCookiesForSanta) =>
-      axios.post(`${API_URL}api/cookiesForSanta`, newCookiesForSanta),
+      axios.post(`${API_URL}api/cookie`, newCookiesForSanta),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cookies"] });
+      queryClient.refetchQueries(["calories"]);
     },
   });
 };
 
-/** ¡INFO!
- *
- * Update calories info:
- * This is just for the mock. This section will not be used once calculations are handled by the backend.
- *
- */
-export const useUpdateCaloriesForSanta = () => {
+// add the consumption of a cookie.
+export const useAddConsumption = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (updatedCaloriesForSanta) =>
-      axios.put(`${API_URL}api/santaCalories`, updatedCaloriesForSanta),
+    mutationFn: (newConsumption) =>
+      axios.post(`${API_URL}api/cookie/consume`, newConsumption),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["calories"] });
+      queryClient.invalidateQueries({ queryKey: ["cookies"] });
+      queryClient.refetchQueries(["calories"]);
+    },
+  });
+};
+
+// add the consumption of cookies.
+export const useAddMultipleConsumption = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (newMultipleConsumption) =>
+      axios.all(
+        newMultipleConsumption.map((cookies) =>
+          axios.post(`${API_URL}api/cookie/consume`, cookies)
+        )
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cookies"] });
+      queryClient.refetchQueries(["calories"]);
     },
   });
 };
@@ -61,24 +75,8 @@ export const useUpdateCookiesForSanta = () => {
   return useMutation({
     mutationFn: (updatedCookiesForSanta) =>
       axios.put(
-        `${API_URL}api/cookiesForSanta/${updatedCookiesForSanta.id}`,
+        `${API_URL}api/cookie/${updatedCookiesForSanta.id}`,
         updatedCookiesForSanta
-      ),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cookies"] });
-    },
-  });
-};
-
-// update checked cookiess
-export const useUpdateCheckedCookiesForSanta = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (updatedCheckedCookiesForSanta) =>
-      axios.all(
-        updatedCheckedCookiesForSanta.map((cookies) =>
-          axios.put(`${API_URL}api/cookiesForSanta/${cookies.id}`, cookies)
-        )
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cookies"] });
@@ -92,7 +90,7 @@ export const useDeleteCookiesForSanta = () => {
   return useMutation({
     mutationFn: (deletedCookiesForSanta) =>
       axios.delete(
-        `${API_URL}api/cookiesForSanta/${deletedCookiesForSanta.id}`,
+        `${API_URL}api/cookie/${deletedCookiesForSanta.id}`,
         deletedCookiesForSanta
       ),
     onSuccess: () => {
@@ -108,7 +106,7 @@ export const useDeleteCheckedCookiesForSanta = () => {
     mutationFn: (deletedCheckedCookiesForSanta) =>
       axios.all(
         deletedCheckedCookiesForSanta.map((cookies) =>
-          axios.delete(`${API_URL}api/cookiesForSanta/${cookies.id}`, cookies)
+          axios.delete(`${API_URL}api/cookie/${cookies.id}`, cookies)
         )
       ),
     onSuccess: () => {

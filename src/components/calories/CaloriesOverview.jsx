@@ -28,13 +28,13 @@ export default function CaloriesOverview() {
           <Card className=" w-full text-center">
             <CardHeader>
               <CardTitle>Cookies</CardTitle>
-              <CardDescription>{`${caloriesData.totalCookies} Cookies`}</CardDescription>
+              <CardDescription>{`${caloriesData.availableCookies} Cookies`}</CardDescription>
             </CardHeader>
           </Card>
           <Card className=" w-full text-center">
             <CardHeader>
               <CardTitle>Cookies consumed</CardTitle>
-              <CardDescription>{`${caloriesData.totalConsumed} Cookies`}</CardDescription>
+              <CardDescription>{`${caloriesData.consumedCookies} Cookies`}</CardDescription>
             </CardHeader>
           </Card>
           <Card className=" w-full text-center">
