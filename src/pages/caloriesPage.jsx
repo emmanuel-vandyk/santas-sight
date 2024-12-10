@@ -40,7 +40,7 @@ export const CaloriesPage = () => {
       <CookiesContext.Provider value={{ cookiesData, caloriesData }}>
         <div className="grid grid-cols-1 gap-3 sm:p-8  lg:grid-cols-3">
           <div className="lg:col-span-2">
-            <CookiesManager />
+            <CookiesManager data={cookiesData} />
           </div>
           <CaloriesOverview />
         </div>

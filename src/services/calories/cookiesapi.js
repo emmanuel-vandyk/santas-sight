@@ -9,8 +9,8 @@ export const useSantaCalories = () => {
   return useQuery({
     queryKey: ["calories"],
     queryFn: async () => {
-      const { data } = await axios.get(`${API_URL}api/santaCalories`);
-      return data;
+      const { data } = await axios.get(`${API_URL}api/cookie/stats`);
+      return data.data;
     },
   });
 };
@@ -20,8 +20,8 @@ export const useCookiesForSanta = () => {
   return useQuery({
     queryKey: ["cookies"],
     queryFn: async () => {
-      const { data } = await axios.get(`${API_URL}api/cookiesForSanta`);
-      return data;
+      const { data } = await axios.get(`${API_URL}api/cookie`);
+      return data.data;
     },
   });
 };
@@ -31,26 +31,61 @@ export const useAddCookiesForSanta = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (newCookiesForSanta) =>
-      axios.post(`${API_URL}api/cookiesForSanta`, newCookiesForSanta),
+      axios.post(`${API_URL}api/cookie`, newCookiesForSanta),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cookies"] });
+      queryClient.refetchQueries(["calories"]);
     },
   });
 };
 
-/** ¡INFO!
- *
- * Update calories info:
- * This is just for the mock. This section will not be used once calculations are handled by the backend.
- *
- */
-export const useUpdateCaloriesForSanta = () => {
+// add the consumption of a cookie.
+export const useAddConsumption = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (updatedCaloriesForSanta) =>
-      axios.put(`${API_URL}api/santaCalories`, updatedCaloriesForSanta),
+    mutationFn: (newConsumption) =>
+      axios.post(`${API_URL}api/cookie/consume`, newConsumption),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["calories"] });
+      queryClient.invalidateQueries({ queryKey: ["cookies"] });
+      queryClient.refetchQueries(["calories"]);
+    },
+  });
+};
+
+// add the consumption of cookies.
+export const useAddMultipleConsumption = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (newMultipleConsumption) =>
+      axios.all(
+        newMultipleConsumption.map((cookies) =>
+          axios.post(`${API_URL}api/cookie/consume`, cookies)
+        )
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cookies"] });
+      queryClient.refetchQueries(["calories"]);
+    },
+  });
+};
+
+// add quantity of cookies
+export const useAddQuantity = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (newQuantity) => {
+      const formattedData = {
+        quantity: newQuantity.quantity,
+      };
+
+      axios.post(
+        `${API_URL}api/cookie/add-quantity/${newQuantity.id}`,
+        formattedData
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cookies"] });
+      queryClient.refetchQueries(["calories"]);
     },
   });
 };
@@ -59,29 +94,17 @@ export const useUpdateCaloriesForSanta = () => {
 export const useUpdateCookiesForSanta = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (updatedCookiesForSanta) =>
-      axios.put(
-        `${API_URL}api/cookiesForSanta/${updatedCookiesForSanta.id}`,
-        updatedCookiesForSanta
-      ),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cookies"] });
-    },
-  });
-};
+    mutationFn: (cookie) => {
+      const formattedData = {
+        name: cookie.name,
+        calories: cookie.calories,
+      };
 
-// update checked cookiess
-export const useUpdateCheckedCookiesForSanta = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (updatedCheckedCookiesForSanta) =>
-      axios.all(
-        updatedCheckedCookiesForSanta.map((cookies) =>
-          axios.put(`${API_URL}api/cookiesForSanta/${cookies.id}`, cookies)
-        )
-      ),
+      axios.put(`${API_URL}api/cookie/${cookie.id}`, formattedData);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cookies"] });
+      queryClient.refetchQueries(["calories"]);
     },
   });
 };
@@ -90,13 +113,11 @@ export const useUpdateCheckedCookiesForSanta = () => {
 export const useDeleteCookiesForSanta = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (deletedCookiesForSanta) =>
-      axios.delete(
-        `${API_URL}api/cookiesForSanta/${deletedCookiesForSanta.id}`,
-        deletedCookiesForSanta
-      ),
+    mutationFn: (deletedCookie) =>
+      axios.delete(`${API_URL}api/cookie/${deletedCookie.id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cookies"] });
+      queryClient.refetchQueries(["calories"]);
     },
   });
 };
@@ -105,14 +126,15 @@ export const useDeleteCookiesForSanta = () => {
 export const useDeleteCheckedCookiesForSanta = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (deletedCheckedCookiesForSanta) =>
+    mutationFn: (deletedCheckedCoookie) =>
       axios.all(
-        deletedCheckedCookiesForSanta.map((cookies) =>
-          axios.delete(`${API_URL}api/cookiesForSanta/${cookies.id}`, cookies)
+        deletedCheckedCoookie.map((deletedCookie) =>
+          axios.delete(`${API_URL}api/cookie/${deletedCookie.id}`)
         )
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cookies"] });
+      queryClient.refetchQueries(["calories"]);
     },
   });
 };
