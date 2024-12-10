@@ -24,6 +24,8 @@ export default function CaloriesManager({
   // State to track updates to the cookies consume data
   const [cookiesConsumed, setCookiesConsumed] = React.useState([]);
 
+  console.log(cookiesConsumed);
+
   // useEffect to update the default state when the component reloads with different cookiesData
   React.useEffect(() => {
     if (cookiesData) {
@@ -65,6 +67,7 @@ export default function CaloriesManager({
             genterateCalories(cookiesConsumed);
             generateCookiesToSend([]);
           }}
+          disabled={cookiesConsumed.every((cookie) => cookie.amount == 0)}
         >
           <Check /> Save
         </Button>
@@ -94,6 +97,7 @@ export default function CaloriesManager({
                 genterateCalories(cookiesConsumed);
                 generateCookiesToSend([]);
               }}
+              disabled={cookiesConsumed.some((cookie) => cookie.amount == 0)}
             >
               <Check /> Save
             </Button>

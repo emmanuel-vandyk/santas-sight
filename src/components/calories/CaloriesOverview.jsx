@@ -8,13 +8,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ChristmasSantaClaus } from "@/components/global/iconsChristmas";
+import { Separator } from "@/components/ui/separator";
+import { CaloriesChart } from "@/components/calories/CaloriesChart";
 
 export default function CaloriesOverview() {
   const { caloriesData } = React.useContext(CookiesContext);
 
   return (
-    <Card className="flex flex-col justify-between">
+    <Card className="flex flex-col">
       <CardHeader>
         <CardTitle>Santa &apos;s calories</CardTitle>
         <CardDescription>
@@ -22,28 +23,15 @@ export default function CaloriesOverview() {
           in one place
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <ChristmasSantaClaus className="w-1/2 mx-auto" />
-        <div className="flex flex-col gap-3 w-full">
-          <Card className=" w-full text-center">
-            <CardHeader>
-              <CardTitle>Cookies</CardTitle>
-              <CardDescription>{`${caloriesData.availableCookies} Cookies`}</CardDescription>
-            </CardHeader>
-          </Card>
-          <Card className=" w-full text-center">
-            <CardHeader>
-              <CardTitle>Cookies consumed</CardTitle>
-              <CardDescription>{`${caloriesData.consumedCookies} Cookies`}</CardDescription>
-            </CardHeader>
-          </Card>
-          <Card className=" w-full text-center">
-            <CardHeader>
-              <CardTitle>Total calories</CardTitle>
-              <CardDescription>{`${caloriesData.totalCalories} Calories`}</CardDescription>
-            </CardHeader>
-          </Card>
-        </div>
+      <CardContent className="flex flex-col gap-3 justify-between h-full">
+        <CaloriesChart />
+        <Separator />
+        <Card className="text-center bg-gradient-to-r from-red-100 to-green-100">
+          <CardHeader>
+            <CardTitle>Total calories</CardTitle>
+            <CardDescription>{`${caloriesData.totalCalories} Calories`}</CardDescription>
+          </CardHeader>
+        </Card>
       </CardContent>
     </Card>
   );
