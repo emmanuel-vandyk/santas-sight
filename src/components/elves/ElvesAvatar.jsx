@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import PropTypes from 'prop-types';
+import elf from "@/assets/elf-1.webp"
+import elf2 from "@/assets/elf-2.webp"
+import elf3 from "@/assets/elf-3.webp"
 
   const avatars = [
-    "https://www.svgrepo.com/show/396366/elf-dark-skin-tone.svg",
-    "https://www.svgrepo.com/show/396367/elf-light-skin-tone.svg",
-    "https://www.svgrepo.com/show/396368/elf-medium-dark-skin-tone.svg",
-    "https://www.svgrepo.com/show/405285/elf-medium-light-skin-tone.svg",
+    elf,
+    elf2,
+    elf3,
   ];
 
   export default function ElvesAvatar({ id, initials }) {

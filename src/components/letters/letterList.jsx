@@ -1,4 +1,4 @@
-import { LetterItem } from './LetterItem'
+import { LetterItem } from './letterItem'
 import propTypes from 'prop-types'
 
 export const LetterList = ({ letters, onToggleReadStatus, onOpenLetter }) => {
