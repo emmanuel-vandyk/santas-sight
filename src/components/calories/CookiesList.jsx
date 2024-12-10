@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/card";
 import { PlusSquare, Pencil, Trash2, Eye, Cookie } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -119,89 +118,90 @@ export default function CookiesList({ generateCookiesToSend }) {
           </Button>
         </div>
         <ScrollArea className="h-72 rounded-md border p-2 box-border">
-          {cookiesData
-            .filter((cookie) =>
-              cookie.name.toLowerCase().includes(filter.toLowerCase())
-            )
-            .map((cookie) => (
-              <div key={cookie.id}>
-                <Card className="grid grid-cols-1 gap-5 items-center p-3">
-                  <div className="flex flex-col gap-3 items-center justify-center lg:justify-normal sm:flex-row">
-                    <CustomCheckbox
-                      checked={checkedCookies.includes(cookie.id)}
-                      onCheckedChange={(checked) =>
-                        toggleCheckedCookies(cookie.id, checked)
-                      }
-                      className={cn({ hidden: cookie.quantity == 0 })}
-                    />
-                    <CardTitle className="flex items-center gap-1">
-                      <Cookie size={18} className="text-amber-900" />
-                      {cookie.name}
-                    </CardTitle>
-                    <Badge
-                      variant="destructive"
-                      className={cn({ hidden: cookie.quantity > 0 })}
-                    >
-                      Consumed
-                    </Badge>
-                  </div>
-                  <div className="flex flex-col items-center justify-between lg:flex-row">
-                    <CardDescription>
-                      Calories: {cookie.calories}
-                    </CardDescription>
-                    <div className="flex justify-center">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => generateCookiesToSend(cookie.id)}
-                      >
-                        <Eye />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() =>
-                          setModalState({ isOpen: true, cookieData: cookie })
+          <div className="flex flex-col gap-3">
+            {cookiesData
+              .filter((cookie) =>
+                cookie.name.toLowerCase().includes(filter.toLowerCase())
+              )
+              .map((cookie) => (
+                <div key={cookie.id}>
+                  <Card className="grid grid-cols-1 gap-5 items-center p-3 bg-gradient-to-r from-red-100 to-green-100">
+                    <div className="flex flex-col gap-3 items-center justify-center lg:justify-normal sm:flex-row">
+                      <CustomCheckbox
+                        checked={checkedCookies.includes(cookie.id)}
+                        onCheckedChange={(checked) =>
+                          toggleCheckedCookies(cookie.id, checked)
                         }
+                        className={cn({ hidden: cookie.quantity == 0 })}
+                      />
+                      <CardTitle className="flex items-center gap-1">
+                        <Cookie size={18} className="text-amber-900" />
+                        {cookie.name}
+                      </CardTitle>
+                      <Badge
+                        variant="destructive"
+                        className={cn({ hidden: cookie.quantity > 0 })}
                       >
-                        <Pencil />
-                      </Button>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <Trash2 />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>
-                              {`Are you absolutely sure you want to delete ${cookie.name}`}
-                            </AlertDialogTitle>
-                            <AlertDialogDescription>
-                              {`This action cannot be undone. This will permanently
-                            delete ${cookie.name}`}
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction
-                              className="bg-red-600 hover:bg-red-700"
-                              onClick={() => {
-                                handleDeleteCookies(cookie);
-                                generateCookiesToSend([]);
-                              }}
-                            >
-                              Continue
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                        Consumed
+                      </Badge>
                     </div>
-                  </div>
-                </Card>
-                <Separator className="my-3" />
-              </div>
-            ))}
+                    <div className="flex flex-col items-center justify-between lg:flex-row">
+                      <CardDescription>
+                        Calories: {cookie.calories}
+                      </CardDescription>
+                      <div className="flex justify-center">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => generateCookiesToSend(cookie.id)}
+                        >
+                          <Eye />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() =>
+                            setModalState({ isOpen: true, cookieData: cookie })
+                          }
+                        >
+                          <Pencil />
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <Trash2 />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                {`Are you absolutely sure you want to delete ${cookie.name}`}
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                {`This action cannot be undone. This will permanently
+                            delete ${cookie.name}`}
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                className="bg-red-600 hover:bg-red-700"
+                                onClick={() => {
+                                  handleDeleteCookies(cookie);
+                                  generateCookiesToSend([]);
+                                }}
+                              >
+                                Continue
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+              ))}
+          </div>
         </ScrollArea>
       </CardContent>
       <CardFooter className="grid grid-cols-1 gap-2 lg:grid-cols-2">

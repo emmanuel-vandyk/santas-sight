@@ -21,16 +21,20 @@ export default function CaloriesManager({
   genterateCalories,
   generateCookiesToSend,
 }) {
-  // State to track updates to the calories data
-  const [calories, setCalories] = React.useState([]);
+  // State to track updates to the cookies consume data
+  const [cookiesConsumed, setCookiesConsumed] = React.useState([]);
+
+  console.log(cookiesConsumed);
 
   // useEffect to update the default state when the component reloads with different cookiesData
   React.useEffect(() => {
     if (cookiesData) {
-      setCalories(
+      setCookiesConsumed(
         cookiesData.length > 1
-          ? cookiesData.filter((cookie) => cookie.quantity > 0)
-          : cookiesData
+          ? cookiesData
+              .filter((cookie) => cookie.quantity > 0)
+              .map((cookie) => ({ cookieId: cookie.id, amount: 0 }))
+          : cookiesData.map((cookie) => ({ cookieId: cookie.id, amount: 0 }))
       );
     }
   }, [cookiesData]);
@@ -45,7 +49,7 @@ export default function CaloriesManager({
               <CarouselItem key={cookie.id}>
                 <RemainingCookiesPanel
                   data={cookie}
-                  setCalories={setCalories}
+                  setCookiesConsumed={setCookiesConsumed}
                 />
               </CarouselItem>
             ))}
@@ -60,10 +64,10 @@ export default function CaloriesManager({
           variant="outline"
           className=" bg-green-600 text-white w-full hover:bg-green-700 hover:text-white"
           onClick={() => {
-            //console.log("Save calories: ", calories);
-            genterateCalories(calories);
+            genterateCalories(cookiesConsumed);
             generateCookiesToSend([]);
           }}
+          disabled={cookiesConsumed.every((cookie) => cookie.amount == 0)}
         >
           <Check /> Save
         </Button>
@@ -83,17 +87,17 @@ export default function CaloriesManager({
         <>
           <RemainingCookiesPanel
             data={cookiesData[0]}
-            setCalories={setCalories}
+            setCookiesConsumed={setCookiesConsumed}
           />
           <CardFooter className="mt-auto">
             <Button
               variant="outline"
               className=" bg-green-600 text-white w-full hover:bg-green-700 hover:text-white"
               onClick={() => {
-                //console.log("Save calories: ", calories);
-                genterateCalories(calories);
+                genterateCalories(cookiesConsumed);
                 generateCookiesToSend([]);
               }}
+              disabled={cookiesConsumed.some((cookie) => cookie.amount == 0)}
             >
               <Check /> Save
             </Button>

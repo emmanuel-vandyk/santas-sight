@@ -46,16 +46,9 @@ export default function CookieModal({
 
   const onSubmitForm = handleSubmit((data) => {
     onSubmit({
-      id: cookieData
-        ? cookieData.id
-        : Math.round(Math.random() * 100).toString(),
       ...data,
       calories: Number(data.calories),
       quantity: cookieData ? cookieData.quantity : Number(data.quantity),
-      consumed: cookieData ? cookieData.consumed : 0,
-      totalCalories: cookieData
-        ? cookieData.consumed * data.calories // This is just for simulation. This section should not perform calculations once the backend has processed the calculations (with backend: cookieData.consumed)
-        : 0,
     });
     isClose();
     reset();
@@ -174,12 +167,5 @@ CookieModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   isClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  cookieData: PropTypes.shape({
-    id: PropTypes.string, // This is a number, I use string because i can't query with ID number on json server
-    name: PropTypes.string,
-    calories: PropTypes.number,
-    quantity: PropTypes.number,
-    consumed: PropTypes.number,
-    totalCalories: PropTypes.number,
-  }),
+  cookieData: PropTypes.object,
 };

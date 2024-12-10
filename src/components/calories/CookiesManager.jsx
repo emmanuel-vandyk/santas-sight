@@ -1,11 +1,11 @@
 import * as React from "react";
 
-import { CookiesContext } from "@/pages/caloriesPage";
 import {
   useAddCookiesForSanta,
+  useAddConsumption,
+  useAddMultipleConsumption,
+  useAddQuantity,
   useUpdateCookiesForSanta,
-  useUpdateCheckedCookiesForSanta,
-  useUpdateCaloriesForSanta, // This is just for the mock. This section will not be used once calculations are handled by the backend.
 } from "@/services/calories/cookiesapi";
 import {
   Card,
@@ -23,14 +23,14 @@ import CaloriesGuide from "@/components/calories/CaloriesGuide";
 // Create a context to store and provide the modal state
 export const ModalContext = React.createContext();
 
-export default function CookiesManager() {
-  const { cookiesData } = React.useContext(CookiesContext);
+export default function CookiesManager({ data: cookiesData }) {
   const toast = useToast();
   // Mutations for adding and updating cookies data.
   const addCookiesMutation = useAddCookiesForSanta();
+  const addConsumptionMutation = useAddConsumption();
+  const addMultipleConsumptionMutation = useAddMultipleConsumption();
+  const addQuantityMutation = useAddQuantity();
   const updateCookiesMutation = useUpdateCookiesForSanta();
-  const updateCheckedCookiesMutation = useUpdateCheckedCookiesForSanta();
-  const updateCaloriesForSanta = useUpdateCaloriesForSanta(); // This is just for the mock. This section will not be used once calculations are handled by the backend.
 
   // State for controlling the modal's visibility and content.
   const [modalState, setModalState] = React.useState({
@@ -55,34 +55,12 @@ export default function CookiesManager() {
     }
   };
 
-  /** ¡INFO!
-   *
-   * Update calories info:
-   * This is just for the mock. This section will not be used once calculations are handled by the backend.
-   *
-   */
-  React.useEffect(() => {
-    const totalInfo = cookiesData.reduce(
-      (accumulated, { quantity, consumed, totalCalories }) => {
-        accumulated.totalCookies += quantity;
-        accumulated.totalConsumed += consumed;
-        accumulated.totalCalories += totalCalories;
-        return accumulated;
-      },
-      {
-        totalCookies: 0,
-        totalConsumed: 0,
-        totalCalories: 0,
-      }
-    );
-
-    updateCaloriesForSanta.mutateAsync(totalInfo);
-  }, [cookiesData]);
-
   // Function to generate the list of cookies to send, based on the provided cookie IDs
   const generateCookiesToSend = (cookieIds) => {
+    const cookiesIds = Array.isArray(cookieIds) ? cookieIds : [cookieIds];
+
     // Map the cookie IDs and get the corresponding data for each cookie
-    const selectedCookies = Array.prototype.concat(cookieIds).map((id) => {
+    const selectedCookies = cookiesIds.map((id) => {
       // Find the cookie in the cookiesData array by matching the id
       return cookiesData.find((cookie) => cookie.id === id);
     });
@@ -93,14 +71,16 @@ export default function CookiesManager() {
 
   // Function to generate the list of cookies with new calories count
   const genterateCalories = (data) => {
+    const cookiesConsumed = Array.isArray(data) ? data : [data];
+
     // Check if data has any cookies
-    if (data.length > 0) {
+    if (cookiesConsumed.length > 0) {
       // If there is exactly one item in data, use updateCookiesMutation
       hadleMutation(
-        data.length === 1
-          ? updateCookiesMutation
-          : updateCheckedCookiesMutation,
-        data.length === 1 ? data[0] : data, // Pass the single item or the entire array
+        cookiesConsumed.length === 1
+          ? addConsumptionMutation
+          : addMultipleConsumptionMutation,
+        cookiesConsumed.length === 1 ? cookiesConsumed[0] : cookiesConsumed, // Pass the single item or the entire array
         "Calories added successfully",
         "Failed to added calories"
       );
@@ -115,7 +95,7 @@ export default function CookiesManager() {
     // Check if the data object is not empty
     if (Object.keys(data).length > 0) {
       hadleMutation(
-        updateCookiesMutation,
+        addQuantityMutation,
         data,
         "Cookies added successfully",
         "Failed to added cookies"
@@ -152,7 +132,7 @@ export default function CookiesManager() {
                   generateCookiesToSend={generateCookiesToSend}
                 />
               ) : (
-                <CaloriesGuide setModalState />
+                <CaloriesGuide />
               )}
             </ModalContext.Provider>
           </div>
@@ -172,7 +152,7 @@ export default function CookiesManager() {
             data,
             "Cookie saved successfully"
           );
-          setCookiesToSend([data]);
+          generateCookiesToSend([]);
         }}
         data={modalState.cookieData}
       />

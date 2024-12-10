@@ -18,6 +18,12 @@ export function CookiesConsumedPanel({
   addNewQuantity = () => {},
 }) {
   const [newQuantity, setNewQuantity] = React.useState(0);
+  const [inputValue, setInputValue] = React.useState("");
+
+  React.useEffect(() => {
+    setNewQuantity(0);
+    setInputValue("");
+  }, [cookieData]);
 
   const handleQuantityChange = () => {
     //console.log("Save :", { ...cookieData, quantity: newQuantity });
@@ -59,9 +65,15 @@ export function CookiesConsumedPanel({
               min="1"
               onChange={(e) => {
                 setNewQuantity(Math.round(Math.max(0, e.target.value)));
+                setInputValue(e.target.value);
               }}
+              value={inputValue}
             />
-            <Button variant="outline" onClick={handleQuantityChange}>
+            <Button
+              variant="outline"
+              onClick={handleQuantityChange}
+              disabled={newQuantity == 0}
+            >
               Add
             </Button>
           </div>
@@ -87,11 +99,23 @@ export function CookiesConsumedPanel({
   );
 }
 
-export function RemainingCookiesPanel({ data: cookieData, setCalories }) {
-  const [userPreview, setUserPreview] = React.useState({
+export function RemainingCookiesPanel({
+  data: cookieData,
+  setCookiesConsumed,
+}) {
+  const [userConsume, setUserConsume] = React.useState({
+    inputValue: "",
     consumed: 0,
     calories: 0,
   });
+
+  React.useEffect(() => {
+    setUserConsume({
+      inputValue: "",
+      consumed: 0,
+      calories: 0,
+    });
+  }, [cookieData]);
 
   // Handle changes to the number of consumed cookies
   const handleConsumedChange = (e) => {
@@ -100,24 +124,21 @@ export function RemainingCookiesPanel({ data: cookieData, setCalories }) {
       Math.min(Math.max(0, e.target.value), cookieData.quantity)
     );
 
-    // Update the state of calories
-    setCalories((prevState) => {
+    // Update the state of consumed cookies
+    setCookiesConsumed((prevState) => {
       // Update consumed count by adding the new cookies
       return prevState.map((cookie) =>
-        cookie.id === cookieData.id
+        cookie.cookieId === cookieData.id
           ? {
               ...cookie,
-              quantity:
-                cookieData.quantity > 0 ? cookieData.quantity - newConsumed : 0,
-              consumed: cookieData.consumed + newConsumed,
-              totalCalories:
-                (cookieData.consumed + newConsumed) * cookieData.calories,
+              amount: newConsumed,
             }
           : cookie
       );
     });
 
-    setUserPreview({
+    setUserConsume({
+      inputValue: e.target.value,
       consumed: newConsumed,
       calories: newConsumed * cookieData.calories,
     });
@@ -144,12 +165,12 @@ export function RemainingCookiesPanel({ data: cookieData, setCalories }) {
               </Label>
               <Label
                 className={cn({
-                  hidden: userPreview.consumed == 0,
+                  hidden: userConsume.consumed == 0,
                   "text-red-500 flex items-center gap-2":
-                    userPreview.consumed > 0,
+                    userConsume.consumed > 0,
                 })}
               >
-                {`- ${userPreview.consumed}`}
+                {`- ${userConsume.consumed}`}
                 <Cookie size={18} />
               </Label>
             </div>
@@ -162,6 +183,7 @@ export function RemainingCookiesPanel({ data: cookieData, setCalories }) {
             min="0"
             max={cookieData.quantity}
             onChange={handleConsumedChange}
+            value={userConsume.inputValue}
           />
         </Card>
         <Card>
@@ -170,12 +192,12 @@ export function RemainingCookiesPanel({ data: cookieData, setCalories }) {
             <CardDescription
               className={cn(
                 {
-                  "text-green-500": userPreview.calories > 0,
+                  "text-green-500": userConsume.calories > 0,
                 },
                 "flex items-center gap-2 mt-0"
               )}
             >
-              {cookieData.consumed + userPreview.consumed}
+              {cookieData.consumed + userConsume.consumed}
               <Cookie size={18} />
             </CardDescription>
           </CardContent>
@@ -193,10 +215,10 @@ export function RemainingCookiesPanel({ data: cookieData, setCalories }) {
             <CardTitle>Total calories</CardTitle>
             <CardDescription
               className={cn({
-                "text-green-500": userPreview.calories > 0,
+                "text-green-500": userConsume.calories > 0,
               })}
             >
-              {`${cookieData.totalCalories + userPreview.calories} Calories`}
+              {`${cookieData.totalCalories + userConsume.calories} Calories`}
             </CardDescription>
           </CardContent>
         </Card>

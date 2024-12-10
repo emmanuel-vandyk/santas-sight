@@ -24,9 +24,9 @@ export const ElvesChart = ({ data }) => (
             dataKey="name" 
             tick={{ fontSize: 12 }}
             interval={0}
-            angle={-45}
-            textAnchor="end"
-            height={60}
+            angle={0}
+            textAnchor="center"
+            height={40}
           />
           <YAxis tick={{ fontSize: 12 }} />
           <ChartTooltip content={<ChartTooltipContent />} />

@@ -20,7 +20,7 @@ export default function CookiesGuide() {
   return (
     <Card className="flex flex-col justify-between gap-2 box-border">
       <CardHeader>
-        <CardTitle>Choose Your Cookie</CardTitle>
+        <CardTitle>Choose your cookie</CardTitle>
         <CardDescription>
           Explore and manage cookies for Santa. Select one or multiple cookies
           from the list, view detailed information about each, or add more
@@ -39,7 +39,7 @@ export default function CookiesGuide() {
           className="w-full"
         >
           <PlusSquare />
-          New cookie
+          Create a cookie
         </Button>
       </CardFooter>
     </Card>
