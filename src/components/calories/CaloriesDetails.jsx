@@ -18,6 +18,12 @@ export function CookiesConsumedPanel({
   addNewQuantity = () => {},
 }) {
   const [newQuantity, setNewQuantity] = React.useState(0);
+  const [inputValue, setInputValue] = React.useState("");
+
+  React.useEffect(() => {
+    setNewQuantity(0);
+    setInputValue("");
+  }, [cookieData]);
 
   const handleQuantityChange = () => {
     //console.log("Save :", { ...cookieData, quantity: newQuantity });
@@ -59,9 +65,15 @@ export function CookiesConsumedPanel({
               min="1"
               onChange={(e) => {
                 setNewQuantity(Math.round(Math.max(0, e.target.value)));
+                setInputValue(e.target.value);
               }}
+              value={inputValue}
             />
-            <Button variant="outline" onClick={handleQuantityChange}>
+            <Button
+              variant="outline"
+              onClick={handleQuantityChange}
+              disabled={newQuantity == 0}
+            >
               Add
             </Button>
           </div>
