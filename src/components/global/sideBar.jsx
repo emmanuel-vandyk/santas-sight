@@ -17,6 +17,7 @@ import { SnowDecoration } from "@/components/global/snowDecoration";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import logo from "@/assets/sslogo2.webp";
 import { ChildrenIcon } from "./iconsChristmas";
+import santaIcon from "@/assets/santa-claus-christmas.webp"
 
 // Menu items.
 const items = [
@@ -41,7 +42,7 @@ const items = [
     icon: Cookie,
       },
     {
-    title: "Children",
+    title: "Children Sorter",
     url: "/children",
     icon: ChildrenIcon,
   },
@@ -79,7 +80,7 @@ export default function SideBar() {
   const SidebarContent = () => (
     <>
       <div className="relative z-10 flex flex-col items-center pt-2 flex-grow">
-        <div className="flex justify-around items-center w-full mb-6 px-4">
+        <div className="flex justify-around items-center w-full px-4">
           <img
             src={logo}
             alt="Santa's Workshop Logo"
@@ -100,19 +101,19 @@ export default function SideBar() {
           )}
         </div>
         <nav className="w-full flex-grow">
-          <ul className={`space-y-2 px-2 ${isCollapsed ? "py-6 mt-8" : ""}`}>
+          <ul className={`flex flex-col gap-2 px-2 ${isCollapsed ? "py-10 mt-8" : ""}`}>
             {items.map((item) => (
               <li key={item.title} className="group">
                 <Link
                   to={item.url}
-                  className={`flex items-center px-4 py-3 w-full hover:bg-green-600 hover:scale-105 text-white font-bold transition-all duration-300 rounded-lg overflow-hidden ${
+                  className={`flex items-center px-4 py-3 w-full hover:bg-green-600 hover:scale-100 text-white font-bold transition-all duration-300 rounded-lg overflow-hidden ${
                     location.pathname === item.url
                       ? "bg-green-700 text-white"
                       : ""
                   }`}
                 >
                   <item.icon
-                    className="h-6 w-6 flex-shrink-0"
+                    className="size-6 flex-shrink-0"
                     aria-hidden="true"
                   />
                   <span className={`ml-3 ${isCollapsed ? "hidden" : ""}`}>
@@ -124,20 +125,22 @@ export default function SideBar() {
           </ul>
         </nav>
       </div>
-      <div className="relative z-10 p-4 bg-green-700 rounded-t-full shadow-xl mt-auto">
+      <div className="relative z-10 bg-green-700 rounded-t-full shadow-xl mt-4 pb-4 px-4">
         <div
           className={`flex flex-col items-center gap-4 mb-4 transition-all duration-300 ease-in-out ${
             isCollapsed ? "mb-0" : ""
           }`}
         >
           <Avatar
-            className={`border-4 border-red-200 ${
-              isCollapsed ? "w-10 h-10" : "w-16 h-16"
+            className={`border-4 border-red-200 mt-3 ${
+              isCollapsed ? "size-10" : "size-16"
             }`}
           >
             <AvatarImage
-              src="https://www.svgrepo.com/show/222575/santa-claus-christmas.svg"
+              src={santaIcon}
               alt="Santa Claus"
+              width={100}
+              height={100}
             />
             <AvatarFallback>SC</AvatarFallback>
           </Avatar>
@@ -155,7 +158,7 @@ export default function SideBar() {
           } text-white hover:bg-red-700 hover:text-white transition-all duration-300 font-bold flex items-center justify-center`}
         >
           <ChristmasLogout
-            className={`h-5 w-10 font-bold ${isCollapsed ? "h-6 w-6" : ""}`}
+            className={`h-5 w-10 font-bold ${isCollapsed ? "size-6" : ""}`}
           />
           <span className={`${isCollapsed ? "hidden" : "ml-2"}`}>Log out</span>
         </Button>
@@ -172,9 +175,9 @@ export default function SideBar() {
           aria-label={mobileOpen ? "Close sidebar" : "Open sidebar"}
         >
           {mobileOpen ? (
-            <X className="h-6 w-6" />
+            <X className="size-6" />
           ) : (
-            <AlignCenter className="h-6 w-6" />
+            <AlignCenter className="size-6" />
           )}
         </button>
       )}
