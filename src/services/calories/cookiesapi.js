@@ -69,17 +69,42 @@ export const useAddMultipleConsumption = () => {
   });
 };
 
+// add quantity of cookies
+export const useAddQuantity = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (newQuantity) => {
+      const formattedData = {
+        quantity: newQuantity.quantity,
+      };
+
+      axios.post(
+        `${API_URL}api/cookie/add-quantity/${newQuantity.id}`,
+        formattedData
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cookies"] });
+      queryClient.refetchQueries(["calories"]);
+    },
+  });
+};
+
 // update cookie
 export const useUpdateCookiesForSanta = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (updatedCookiesForSanta) =>
-      axios.put(
-        `${API_URL}api/cookie/${updatedCookiesForSanta.id}`,
-        updatedCookiesForSanta
-      ),
+    mutationFn: (cookie) => {
+      const formattedData = {
+        name: cookie.name,
+        calories: cookie.calories,
+      };
+
+      axios.put(`${API_URL}api/cookie/${cookie.id}`, formattedData);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cookies"] });
+      queryClient.refetchQueries(["calories"]);
     },
   });
 };
@@ -88,13 +113,11 @@ export const useUpdateCookiesForSanta = () => {
 export const useDeleteCookiesForSanta = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (deletedCookiesForSanta) =>
-      axios.delete(
-        `${API_URL}api/cookie/${deletedCookiesForSanta.id}`,
-        deletedCookiesForSanta
-      ),
+    mutationFn: (deletedCookie) =>
+      axios.delete(`${API_URL}api/cookie/${deletedCookie.id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cookies"] });
+      queryClient.refetchQueries(["calories"]);
     },
   });
 };
@@ -103,14 +126,15 @@ export const useDeleteCookiesForSanta = () => {
 export const useDeleteCheckedCookiesForSanta = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (deletedCheckedCookiesForSanta) =>
+    mutationFn: (deletedCheckedCoookie) =>
       axios.all(
-        deletedCheckedCookiesForSanta.map((cookies) =>
-          axios.delete(`${API_URL}api/cookie/${cookies.id}`, cookies)
+        deletedCheckedCoookie.map((deletedCookie) =>
+          axios.delete(`${API_URL}api/cookie/${deletedCookie.id}`)
         )
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cookies"] });
+      queryClient.refetchQueries(["calories"]);
     },
   });
 };

@@ -4,6 +4,7 @@ import {
   useAddCookiesForSanta,
   useAddConsumption,
   useAddMultipleConsumption,
+  useAddQuantity,
   useUpdateCookiesForSanta,
 } from "@/services/calories/cookiesapi";
 import {
@@ -26,8 +27,9 @@ export default function CookiesManager({ data: cookiesData }) {
   const toast = useToast();
   // Mutations for adding and updating cookies data.
   const addCookiesMutation = useAddCookiesForSanta();
-  const addConsumption = useAddConsumption();
-  const addMultipleConsumption = useAddMultipleConsumption();
+  const addConsumptionMutation = useAddConsumption();
+  const addMultipleConsumptionMutation = useAddMultipleConsumption();
+  const addQuantityMutation = useAddQuantity();
   const updateCookiesMutation = useUpdateCookiesForSanta();
 
   // State for controlling the modal's visibility and content.
@@ -53,30 +55,6 @@ export default function CookiesManager({ data: cookiesData }) {
     }
   };
 
-  // /** ¡INFO!
-  //  *
-  //  * Update calories info:
-  //  * This is just for the mock. This section will not be used once calculations are handled by the backend.
-  //  *
-  //  */
-  // React.useEffect(() => {
-  //   const totalInfo = cookiesData.reduce(
-  //     (accumulated, { quantity, consumed, totalCalories }) => {
-  //       accumulated.totalCookies += quantity;
-  //       accumulated.totalConsumed += consumed;
-  //       accumulated.totalCalories += totalCalories;
-  //       return accumulated;
-  //     },
-  //     {
-  //       totalCookies: 0,
-  //       totalConsumed: 0,
-  //       totalCalories: 0,
-  //     }
-  //   );
-
-  //   updateCaloriesForSanta.mutateAsync(totalInfo);
-  // }, [cookiesData]);
-
   // Function to generate the list of cookies to send, based on the provided cookie IDs
   const generateCookiesToSend = (cookieIds) => {
     const cookiesIds = Array.isArray(cookieIds) ? cookieIds : [cookieIds];
@@ -99,7 +77,9 @@ export default function CookiesManager({ data: cookiesData }) {
     if (cookiesConsumed.length > 0) {
       // If there is exactly one item in data, use updateCookiesMutation
       hadleMutation(
-        cookiesConsumed.length === 1 ? addConsumption : addMultipleConsumption,
+        cookiesConsumed.length === 1
+          ? addConsumptionMutation
+          : addMultipleConsumptionMutation,
         cookiesConsumed.length === 1 ? cookiesConsumed[0] : cookiesConsumed, // Pass the single item or the entire array
         "Calories added successfully",
         "Failed to added calories"
@@ -115,7 +95,7 @@ export default function CookiesManager({ data: cookiesData }) {
     // Check if the data object is not empty
     if (Object.keys(data).length > 0) {
       hadleMutation(
-        updateCookiesMutation,
+        addQuantityMutation,
         data,
         "Cookies added successfully",
         "Failed to added cookies"
@@ -172,6 +152,7 @@ export default function CookiesManager({ data: cookiesData }) {
             data,
             "Cookie saved successfully"
           );
+          generateCookiesToSend([]);
         }}
         data={modalState.cookieData}
       />
