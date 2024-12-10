@@ -92,9 +92,18 @@ export function RemainingCookiesPanel({
   setCookiesConsumed,
 }) {
   const [userConsume, setUserConsume] = React.useState({
+    inputValue: "",
     consumed: 0,
     calories: 0,
   });
+
+  React.useEffect(() => {
+    setUserConsume({
+      inputValue: "",
+      consumed: 0,
+      calories: 0,
+    });
+  }, [cookieData]);
 
   // Handle changes to the number of consumed cookies
   const handleConsumedChange = (e) => {
@@ -117,6 +126,7 @@ export function RemainingCookiesPanel({
     });
 
     setUserConsume({
+      inputValue: e.target.value,
       consumed: newConsumed,
       calories: newConsumed * cookieData.calories,
     });
@@ -161,6 +171,7 @@ export function RemainingCookiesPanel({
             min="0"
             max={cookieData.quantity}
             onChange={handleConsumedChange}
+            value={userConsume.inputValue}
           />
         </Card>
         <Card>
