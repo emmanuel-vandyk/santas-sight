@@ -16,7 +16,8 @@ export const ChillZone = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(10);
   const audioRef = useRef(null);
-  const [currentSongIndex, setCurrentSongIndex] = useState(3);
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const playPromiseRef = useRef(null);
 
   const {
     data: christmasSongs,
@@ -28,22 +29,59 @@ export const ChillZone = () => {
   });
 
   const {
-    data,
+    data: membersData,
   } = useQuery({
     queryKey: ["members"],
     queryFn: fetchAllMembers,
   });
 
+  const stopCurrentPlayback = useCallback(async () => {
+    if (playPromiseRef.current) {
+      try {
+        playPromiseRef.current;
+        if (audioRef.current) {
+          audioRef.current.pause();
+        }
+      } catch (error) {
+        console.error("Error stopping playback:", error);
+      }
+      playPromiseRef.current = null;
+    } else if (audioRef.current) {
+      audioRef.current.pause();
+    }
+  }, []);
+
+  const playSong = useCallback(async (song) => {
+    if (!audioRef.current || !song?.previewUrl) return;
+
+    try {
+      await stopCurrentPlayback();
+      audioRef.current.src = song.previewUrl;
+      audioRef.current.load();
+      playPromiseRef.current = audioRef.current.play();
+      playPromiseRef.current;
+      setIsPlaying(true);
+      playPromiseRef.current = null;
+    } catch (error) {
+      console.error("Playback failed:", error);
+      setIsPlaying(false);
+      playPromiseRef.current = null;
+    }
+  }, [stopCurrentPlayback]);
+
   useEffect(() => {
     if (christmasSongs && christmasSongs.length > 0) {
       const song = christmasSongs[currentSongIndex];
       setCurrentSong(song);
-      if (audioRef.current && song.previewUrl) {
-        audioRef.current.src = song.previewUrl;
-        audioRef.current.load();
+      if (song?.previewUrl) {
+        playSong(song);
       }
     }
-  }, [christmasSongs, currentSongIndex]);
+    
+    return () => {
+      stopCurrentPlayback();
+    };
+  }, [christmasSongs, currentSongIndex, playSong, stopCurrentPlayback]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -51,33 +89,28 @@ export const ChillZone = () => {
     }
   }, [volume]);
 
-  useEffect(() => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.play().catch(error => {
-          console.error("Autoplay failed:", error);
-          setIsPlaying(false);
-        });
-      } else {
-        audioRef.current.pause();
-      }
-    }
-  }, [isPlaying]);
-
-  const handlePlayPause = useCallback(() => {
-    if (audioRef.current && audioRef.current.src) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play().catch(error => {
-          console.error("Playback failed:", error);
-        });
-      }
-      setIsPlaying(!isPlaying);
-    } else {
+  const handlePlayPause = useCallback(async () => {
+    if (!audioRef.current || !audioRef.current.src) {
       console.error("No audio source available");
+      return;
     }
-  }, [isPlaying]);
+
+    try {
+      if (isPlaying) {
+        await stopCurrentPlayback();
+        setIsPlaying(false);
+      } else {
+        playPromiseRef.current = audioRef.current.play();
+        playPromiseRef.current;
+        setIsPlaying(true);
+        playPromiseRef.current = null;
+      }
+    } catch (error) {
+      console.error("PlayPause failed:", error);
+      setIsPlaying(false);
+      playPromiseRef.current = null;
+    }
+  }, [isPlaying, stopCurrentPlayback]);
 
   const handleVolumeChange = (newVolume) => {
     setVolume(newVolume[0]);
@@ -86,30 +119,29 @@ export const ChillZone = () => {
     }
   };
 
-  const handleSongSelect = useCallback((song, index) => {
+  const handleSongSelect = useCallback(async (song, index) => {
     setCurrentSong(song);
     setCurrentSongIndex(index);
-    setIsPlaying(false);
-    if (audioRef.current && song.previewUrl) {
-      audioRef.current.src = song.previewUrl;
-      audioRef.current.load();
+    if (song?.previewUrl) {
+      await playSong(song);
     }
-  }, []);
+  }, [playSong]);
 
-  const handleSkipForward = () => {
+  const handleSkipForward = useCallback(async () => {
     if (christmasSongs && christmasSongs.length > 0) {
       const nextIndex = (currentSongIndex + 1) % christmasSongs.length;
-      handleSongSelect(christmasSongs[nextIndex], nextIndex);
+      const nextSong = christmasSongs[nextIndex];
+      await handleSongSelect(nextSong, nextIndex);
     }
-  };
+  }, [christmasSongs, currentSongIndex, handleSongSelect]);
 
-  const handleSkipBack = () => {
+  const handleSkipBack = useCallback(async () => {
     if (christmasSongs && christmasSongs.length > 0) {
-      const prevIndex =
-        (currentSongIndex - 1 + christmasSongs.length) % christmasSongs.length;
-      handleSongSelect(christmasSongs[prevIndex], prevIndex);
+      const prevIndex = (currentSongIndex - 1 + christmasSongs.length) % christmasSongs.length;
+      const prevSong = christmasSongs[prevIndex];
+      await handleSongSelect(prevSong, prevIndex);
     }
-  };
+  }, [christmasSongs, currentSongIndex, handleSongSelect]);
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -119,12 +151,12 @@ export const ChillZone = () => {
     return <ErrorScreen />;
   }
 
-  const members = Array.isArray(data?.data) ? data.data : []
+  const members = Array.isArray(membersData?.data) ? membersData.data : [];
 
   return (
     <div className="min-h-screen text-white p-4 md:p-8">
       <h1 className="text-4xl text-center font-bold text-red-600 mb-8">
-        <UnderlineTitle text="Christmas Chill Zone" />
+        <UnderlineTitle text="Christmas Chill Zone 2024" />
       </h1>
       <div className="max-w-8xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
@@ -134,6 +166,7 @@ export const ChillZone = () => {
             onPlayPause={handlePlayPause}
             onSkipForward={handleSkipForward}
             onSkipBack={handleSkipBack}
+            isPlayable={!!currentSong?.previewUrl}
           />
           <div className="mt-6">
             <VolumeControl
@@ -145,7 +178,7 @@ export const ChillZone = () => {
         <div className="lg:col-span-1">
           <Playlist
             songs={christmasSongs}
-            onSongSelect={(song, index) => handleSongSelect(song, index)}
+            onSongSelect={handleSongSelect}
             currentSongIndex={currentSongIndex}
           />
         </div>
@@ -157,6 +190,11 @@ export const ChillZone = () => {
         ref={audioRef}
         src={currentSong?.previewUrl}
         onEnded={handleSkipForward}
+        onError={(e) => {
+          console.error("Audio playback error:", e);
+          setIsPlaying(false);
+          playPromiseRef.current = null;
+        }}
       />
     </div>
   );

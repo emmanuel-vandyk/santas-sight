@@ -57,16 +57,15 @@ export default function CookieModal({
   return (
     <Dialog open={isOpen} onOpenChange={isClose}>
       <DialogContent className="sm:max-w-[450px] bg-gradient-to-b from-red-100 to-green-100">
-        <DialogHeader>
-          <DialogTitle className="flex items-center justify-center text-2xl font-bold text-red-600">
-            <span className="relative">
-              {cookieData ? "Edit cookie" : "+ New cookie"}
-              <img
-                src={santahat}
-                alt="Santa hat"
-                className="absolute -top-11 -left-2 w-12 h-12"
-              />
-            </span>
+        <DialogHeader className="text-start mb-4">
+          <DialogTitle className="text-2xl font-bold text-red-600 relative inline-block">
+            {cookieData ? "Edit cookie" : "+ New cookie"}
+            <img
+              src={santahat}
+              alt="Santa hat"
+              className="absolute -top-11 -left-2 w-12 h-12"
+              aria-hidden="true"
+            />
           </DialogTitle>
           <DialogDescription className="text-center text-green-700">
             {cookieData ? "Edit the details of the cookie" : "Add a new cookie"}
