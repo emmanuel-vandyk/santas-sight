@@ -30,8 +30,8 @@ export const NowPlaying = ({
       <CardContent>
         {currentSong ? (
           <div className="flex flex-col items-center">
-            <Avatar className="w-32 h-32 md:w-48 md:h-48 mb-4">
-              <AvatarImage src={currentSong.albumArt} alt={currentSong.title} />
+            <Avatar className="w-32 h-32 md:w-52 md:h-48 mb-4 rounded-lg">
+              <AvatarImage src={currentSong.albumArt} alt={currentSong.title} className="rounded-lg" />
               <AvatarFallback>{currentSong.title[0]}</AvatarFallback>
             </Avatar>
             <h2 className="text-lg md:text-xl text-green-700 font-bold text-center">
