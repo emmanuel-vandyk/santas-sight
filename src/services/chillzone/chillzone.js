@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const SPOTIFY_API_BASE_URL = 'https://api.spotify.com/v1';
-const SPOTIFY_ACCOUNTS_URL = 'https://accounts.spotify.com/api/token';
+const SPOTIFY_API_BASE_URL = import.meta.env.VITE_SPOTIFY_API_BASE_URL;
+const SPOTIFY_ACCOUNTS_URL = import.meta.env.VITE_SPOTIFY_ACCOUNTS_URL;
 const API_URL = import.meta.env.VITE_PROD_API_URL;
 
 let accessToken = '';
