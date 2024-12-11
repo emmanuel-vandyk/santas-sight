@@ -119,108 +119,118 @@ export default function OrganizationList({
             New
           </Button>
         </div>
-        <ScrollArea className="h-72 rounded-md border p-2 box-border">
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {organizationsData
-              .filter((organization) =>
-                organization.name.toLowerCase().includes(filter.toLowerCase())
-              )
-              .map((organization) => (
-                <div key={organization.id}>
-                  <Card className="grid grid-cols-1 gap-5 items-center p-3 bg-gradient-to-r from-red-100 to-green-100">
-                    <div className="flex flex-col gap-3 items-center justify-center lg:justify-normal sm:flex-row">
-                      <CustomCheckbox
-                        checked={checkedOrganization.includes(organization.id)}
-                        onCheckedChange={(checked) =>
-                          toggleCheckedOrganization(organization.id, checked)
-                        }
-                      />
-                      <CardTitle className="flex items-center gap-1">
-                        <SantaSledge
-                          width="18px"
-                          height="18px"
-                          transform="scale(-1, 1)"
-                        />
-                        {organization.name}
-                      </CardTitle>
-                    </div>
-                    <div className="flex flex-col items-center justify-between lg:flex-row">
-                      {organization.isSelected ? (
-                        <Badge variant="outline" className="bg-orange-300">
-                          Selected
-                        </Badge>
-                      ) : organization.isAvailable ? (
-                        <Badge variant="outline" className="bg-green-300">
-                          Available
-                        </Badge>
-                      ) : (
-                        <Badge variant="destructive">Incomplete</Badge>
-                      )}
-                      <div className="flex justify-center">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() =>
-                            generateOrganizationToView(organization)
+        {organizationsData.length > 0 ? (
+          <ScrollArea className="h-72 rounded-md border p-2 box-border">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {organizationsData
+                .filter((organization) =>
+                  organization.name.toLowerCase().includes(filter.toLowerCase())
+                )
+                .map((organization) => (
+                  <div key={organization.id}>
+                    <Card className="grid grid-cols-1 gap-5 items-center p-3 bg-gradient-to-r from-red-100 to-green-100">
+                      <div className="flex flex-col gap-3 items-center justify-center lg:justify-normal sm:flex-row">
+                        <CustomCheckbox
+                          checked={checkedOrganization.includes(
+                            organization.id
+                          )}
+                          onCheckedChange={(checked) =>
+                            toggleCheckedOrganization(organization.id, checked)
                           }
-                          disabled={!organization.isAvailable}
-                        >
-                          <Eye />
-                        </Button>
-                        <Button
-                          onClick={() => {
-                            setModalState((prevState) => ({
-                              ...prevState,
-                              OrganizationModal: {
-                                isOpen: true,
-                                data: organization,
-                              },
-                            }));
-                          }}
-                          variant="ghost"
-                          size="icon"
-                        >
-                          <Pencil />
-                        </Button>
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                              <Trash2 />
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>
-                                Are you absolutely sure you want to delete{" "}
-                                {organization.name}?
-                              </AlertDialogTitle>
-                              <AlertDialogDescription>
-                                This action cannot be undone. This will
-                                permanently delete {organization.name} and
-                                remove it from Santa&apos;s workshop.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction
-                                className="bg-red-600 hover:bg-red-700"
-                                onClick={() => {
-                                  handleDeleteOrganization(organization);
-                                  generateOrganizationToView(null);
-                                }}
-                              >
-                                Continue
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
+                        />
+                        <CardTitle className="flex items-center gap-1">
+                          <SantaSledge
+                            width="18px"
+                            height="18px"
+                            transform="scale(-1, 1)"
+                          />
+                          {organization.name}
+                        </CardTitle>
                       </div>
-                    </div>
-                  </Card>
-                </div>
-              ))}
-          </div>
-        </ScrollArea>
+                      <div className="flex flex-col items-center justify-between lg:flex-row">
+                        {organization.isSelected ? (
+                          <Badge variant="outline" className="bg-orange-300">
+                            Selected
+                          </Badge>
+                        ) : organization.isAvailable ? (
+                          <Badge variant="outline" className="bg-green-300">
+                            Available
+                          </Badge>
+                        ) : (
+                          <Badge variant="destructive">Incomplete</Badge>
+                        )}
+                        <div className="flex justify-center">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() =>
+                              generateOrganizationToView(organization)
+                            }
+                            disabled={!organization.isAvailable}
+                          >
+                            <Eye />
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              setModalState((prevState) => ({
+                                ...prevState,
+                                OrganizationModal: {
+                                  isOpen: true,
+                                  data: organization,
+                                },
+                              }));
+                            }}
+                            variant="ghost"
+                            size="icon"
+                          >
+                            <Pencil />
+                          </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button variant="ghost" size="icon">
+                                <Trash2 />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                  Are you absolutely sure you want to delete{" "}
+                                  {organization.name}?
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  This action cannot be undone. This will
+                                  permanently delete {organization.name} and
+                                  remove it from Santa&apos;s workshop.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  className="bg-red-600 hover:bg-red-700"
+                                  onClick={() => {
+                                    handleDeleteOrganization(organization);
+                                    generateOrganizationToView(null);
+                                  }}
+                                >
+                                  Continue
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
+                ))}
+            </div>
+          </ScrollArea>
+        ) : (
+          <Card className="h-72 flex items-center justify-center">
+            <p className="text-sm text-muted-foreground">
+              Missing organization data
+            </p>
+          </Card>
+        )}
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="outline" disabled={checkedOrganization.length < 2}>
