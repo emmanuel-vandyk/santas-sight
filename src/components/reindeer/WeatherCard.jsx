@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Snowflake } from "lucide-react";
 import { fetchWeather } from "@/services/weather/weather";
 import SantaChristmasSpinner from "@/components/global/spinner";
+import fondoweather from "@/assets/nortpole.webp";
 
 export const WeatherCard = () => {
   const { data, isLoading, isError } = useQuery({
@@ -28,7 +29,7 @@ export const WeatherCard = () => {
       <div
         className="absolute inset-0 bg-cover bg-center rounded-xl"
         style={{
-          backgroundImage: "url(/src/assets/nortpole.webp)",
+          backgroundImage: `url(${fondoweather})`,
           backgroundSize: "cover",
         }}
       ></div>
