@@ -10,9 +10,10 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { CaloriesChart } from "@/components/calories/CaloriesChart";
+import { SearchIcon } from "@/components/global/iconsChristmas";
 
 export default function CaloriesOverview() {
-  const { caloriesData } = React.useContext(CookiesContext);
+  const { caloriesData, cookiesData } = React.useContext(CookiesContext);
 
   return (
     <Card className="flex flex-col">
@@ -24,7 +25,20 @@ export default function CaloriesOverview() {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-3 justify-between h-full">
-        <CaloriesChart />
+        {cookiesData.length > 0 && caloriesData.consumedCookies > 0 ? (
+          <CaloriesChart />
+        ) : (
+          <Card className="flex flex-col items-center h-full">
+            <CardHeader>
+              <CardTitle>Missing calories data</CardTitle>
+              <CardDescription>
+                There is currently no information available regarding the
+                cookies Santa has consumed.
+              </CardDescription>
+            </CardHeader>
+            <SearchIcon width={120} height={120} className="my-auto" />
+          </Card>
+        )}
         <Separator />
         <Card className="text-center bg-gradient-to-r from-red-100 to-green-100">
           <CardHeader>

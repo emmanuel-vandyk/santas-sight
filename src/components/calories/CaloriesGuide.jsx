@@ -22,9 +22,7 @@ export default function CookiesGuide() {
       <CardHeader>
         <CardTitle>Choose your cookie</CardTitle>
         <CardDescription>
-          Explore and manage cookies for Santa. Select one or multiple cookies
-          from the list, view detailed information about each, or add more
-          cookies for Santa.
+          Manage Santa's cookies: select, view details, or add new ones.
         </CardDescription>
       </CardHeader>
       <CardContent>

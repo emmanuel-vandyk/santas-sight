@@ -142,115 +142,123 @@ export default function ReindeerList({
             <PlusSquare /> New
           </Button>
         </div>
-        <ScrollArea className="h-72 rounded-md border p-2 box-border">
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {reindeersData
-              .filter((reindeer) =>
-                reindeer.name.toLowerCase().includes(filter.toLowerCase())
-              )
-              .map((reindeer) => (
-                <div key={reindeer.id}>
-                  <Card className="grid grid-cols-1 gap-5 items-center p-3 bg-gradient-to-r from-red-100 to-green-100">
-                    <div className="flex flex-col gap-3 items-center justify-center lg:justify-normal sm:flex-row">
-                      <CustomCheckbox
-                        className="data-[state=checked]:bg-green-400"
-                        checked={checkedReindeer.includes(reindeer.id)}
-                        onCheckedChange={(checked) =>
-                          setChecketReindeer((prev) =>
-                            checked
-                              ? [...prev, reindeer.id]
-                              : prev.filter((id) => id !== reindeer.id)
-                          )
-                        }
-                      />
-                      <CardTitle className="flex items-center gap-1">
-                        <ReindeerIcon width="18px" height="18px" />
-                        {reindeer.name}
-                      </CardTitle>
-                    </div>
-                    <div className="flex flex-col items-center justify-between lg:flex-row">
-                      {(reindeer.type === "master" && (
-                        <Badge variant="outline" className="bg-purple-300">
-                          Master
-                        </Badge>
-                      )) ||
-                        (reindeer.type === "trainee" && (
-                          <Badge variant="outline" className="bg-yellow-300">
-                            Trainee
+        {reindeersData.length > 0 ? (
+          <ScrollArea className="h-72 rounded-md border p-2 box-border">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {reindeersData
+                .filter((reindeer) =>
+                  reindeer.name.toLowerCase().includes(filter.toLowerCase())
+                )
+                .map((reindeer) => (
+                  <div key={reindeer.id}>
+                    <Card className="grid grid-cols-1 gap-5 items-center p-3 bg-gradient-to-r from-red-100 to-green-100">
+                      <div className="flex flex-col gap-3 items-center justify-center lg:justify-normal sm:flex-row">
+                        <CustomCheckbox
+                          className="data-[state=checked]:bg-green-400"
+                          checked={checkedReindeer.includes(reindeer.id)}
+                          onCheckedChange={(checked) =>
+                            setChecketReindeer((prev) =>
+                              checked
+                                ? [...prev, reindeer.id]
+                                : prev.filter((id) => id !== reindeer.id)
+                            )
+                          }
+                        />
+                        <CardTitle className="flex items-center gap-1">
+                          <ReindeerIcon width="18px" height="18px" />
+                          {reindeer.name}
+                        </CardTitle>
+                      </div>
+                      <div className="flex flex-col items-center justify-between lg:flex-row">
+                        {(reindeer.type === "master" && (
+                          <Badge variant="outline" className="bg-purple-300">
+                            Master
                           </Badge>
                         )) ||
-                        (reindeer.type === "junior" && (
-                          <Badge variant="outline" className="bg-orange-300">
-                            Junior
-                          </Badge>
-                        ))}
-                      <div className="flex justify-center">
-                        <Button
-                          onClick={() =>
-                            setModalState((prevState) => ({
-                              ...prevState,
-                              ReindeerModalInfo: {
-                                isOpen: true,
-                                data: reindeer,
-                              },
-                            }))
-                          }
-                          variant="ghost"
-                          size="icon"
-                        >
-                          <Eye />
-                        </Button>
-                        <Button
-                          onClick={() =>
-                            setModalState((prevState) => ({
-                              ...prevState,
-                              ReindeerModal: {
-                                isOpen: true,
-                                data: reindeer,
-                              },
-                            }))
-                          }
-                          variant="ghost"
-                          size="icon"
-                        >
-                          <Pencil />
-                        </Button>
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                              <Trash2 />
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>
-                                Are you absolutely sure you want to delete{" "}
-                                {reindeer.name}?
-                              </AlertDialogTitle>
-                              <AlertDialogDescription>
-                                This action cannot be undone. This will
-                                permanently delete {reindeer.name} and remove it
-                                from Santa&apos;s workshop.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction
-                                className="bg-red-600 hover:bg-red-700"
-                                onClick={() => handleDeleteReindeer(reindeer)}
-                              >
-                                Continue
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
+                          (reindeer.type === "trainee" && (
+                            <Badge variant="outline" className="bg-yellow-300">
+                              Trainee
+                            </Badge>
+                          )) ||
+                          (reindeer.type === "junior" && (
+                            <Badge variant="outline" className="bg-orange-300">
+                              Junior
+                            </Badge>
+                          ))}
+                        <div className="flex justify-center">
+                          <Button
+                            onClick={() =>
+                              setModalState((prevState) => ({
+                                ...prevState,
+                                ReindeerModalInfo: {
+                                  isOpen: true,
+                                  data: reindeer,
+                                },
+                              }))
+                            }
+                            variant="ghost"
+                            size="icon"
+                          >
+                            <Eye />
+                          </Button>
+                          <Button
+                            onClick={() =>
+                              setModalState((prevState) => ({
+                                ...prevState,
+                                ReindeerModal: {
+                                  isOpen: true,
+                                  data: reindeer,
+                                },
+                              }))
+                            }
+                            variant="ghost"
+                            size="icon"
+                          >
+                            <Pencil />
+                          </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button variant="ghost" size="icon">
+                                <Trash2 />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                  Are you absolutely sure you want to delete{" "}
+                                  {reindeer.name}?
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  This action cannot be undone. This will
+                                  permanently delete {reindeer.name} and remove
+                                  it from Santa&apos;s workshop.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  className="bg-red-600 hover:bg-red-700"
+                                  onClick={() => handleDeleteReindeer(reindeer)}
+                                >
+                                  Continue
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </div>
                       </div>
-                    </div>
-                  </Card>
-                </div>
-              ))}
-          </div>
-        </ScrollArea>
+                    </Card>
+                  </div>
+                ))}
+            </div>
+          </ScrollArea>
+        ) : (
+          <Card className="h-72 flex items-center justify-center">
+            <p className="text-sm text-muted-foreground">
+              Missing reindeers data
+            </p>
+          </Card>
+        )}
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="outline" disabled={checkedReindeer.length < 2}>
