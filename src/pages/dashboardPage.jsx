@@ -3,7 +3,7 @@ import { StatCard } from "@/components/dashboard/statCard";
 import { ReindeerChart } from "@/components/dashboard/reindeerChart";
 import { ElvesChart } from "@/components/dashboard/elvesChart";
 import { OrganizationChart } from "@/components/dashboard/organizationChart";
-import { CaloriesChart } from "@/components/dashboard/CaloriesChart";
+import { CaloriesChart } from "@/components/dashboard/caloriesChart";
 import { Countdown } from "@/components/dashboard/countDown";
 import { UnderlineTitle } from "@/components/global/underlineTitle";
 import { ChartContainer } from "@/components/ui/chart";
