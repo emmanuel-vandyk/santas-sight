@@ -1,39 +1,25 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { FaHardHat, FaTools } from "react-icons/fa"
-import './App.css'
+import { Outlet } from "react-router-dom";
+import  SideBar  from "@/components/global/sideBar";
+import { Separator } from "@/components/ui/separator";
+import SnowFlakeTop from "@/components/global/snowFlakeTop";
+import { ChristmasToastContainer } from "@/components/global/toastContainer";
 
-function App() {
-
-
+export default function Component() {
   return (
-    <>
-     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold flex items-center justify-center gap-2">
-            <FaHardHat className="text-yellow-500" />
-            Page Under Construction
-          </CardTitle>
-          <CardDescription>We&apos;re working hard to bring you something amazing!</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="flex justify-center">
-            <FaTools className="text-6xl text-primary animate-pulse" />
+    <div className="flex h-dvh overflow-hidden">
+      <SideBar />
+      <div className="flex flex-col flex-1 relative">
+        <Separator className="relative z-20" />
+        <div className="absolute top-0 left-0 w-full h-20 z-10 overflow-hidden">
+          <div className="w-[120%] -ml-[10%]">
+            <SnowFlakeTop />
           </div>
-          <p className="text-center text-muted-foreground">
-            Our team is currently building this page. Please check back soon for updates!
-          </p>
-          <div className="flex justify-center">
-            <Button variant="default" className="mt-4">
-              Return Home
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+        <main className="flex-1 overflow-auto px-1 relative z-20 pt-16"> 
+          <Outlet />
+        </main>
+      </div>
+      <ChristmasToastContainer />
     </div>
-    </>
-  )
+  );
 }
-
-export default App
