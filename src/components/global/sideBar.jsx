@@ -27,27 +27,27 @@ const items = [
     icon: ChristmasTree,
   },
   {
-    title: "Santa's Routes",
+    title: "Routes",
     url: "/santaroutes",
     icon: Route,
   },
   {
-    title: "Reindeer Setup",
+    title: "Reindeers",
     url: "/reindeer",
     icon: Reindeer,
   },
   {
-    title: "Santa's Calories",
+    title: "Calories",
     url: "/calories",
     icon: Cookie,
       },
     {
-    title: "Children Sorter",
+    title: "Childrens",
     url: "/children",
     icon: ChildrenIcon,
   },
   {
-    title: "Elve Management",
+    title: "Elves",
     url: "/elves",
     icon: ChristmasElf,
   },
@@ -57,7 +57,7 @@ const items = [
     icon: Letters,
   },
   {
-    title: "Chill Zone",
+    title: "Chillzone",
     url: "/chillzone",
     icon: ChristmasSnowflake,
   },
