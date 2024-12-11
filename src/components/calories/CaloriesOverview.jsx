@@ -30,7 +30,7 @@ export default function CaloriesOverview() {
         ) : (
           <Card className="flex flex-col items-center h-full">
             <CardHeader>
-              <CardTitle>No calories information</CardTitle>
+              <CardTitle>Missing calories data</CardTitle>
               <CardDescription>
                 There is currently no information available regarding the
                 cookies Santa has consumed.
