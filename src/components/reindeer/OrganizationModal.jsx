@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
 import ReindeerComboBox from "@/components/reindeer/ReindeerComboBox";
@@ -18,9 +17,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { CardDescription } from "@/components/ui/card";
-import { Check } from "lucide-react";
+import { Check } from 'lucide-react';
 import { SantaSledge } from "@/components/global/iconsChristmas";
-
+import { fetchWeather } from "@/services/weather/weather";
+import { useQuery } from "@tanstack/react-query";
 export default function OrganizationModal({
   isOpen,
   isClose,
@@ -51,22 +51,29 @@ export default function OrganizationModal({
 
   const positions = watch("positions");
   const reindeerPositions = [
-    { name: "6th", colStart: 1, rowStart: 1, position: 1 },
-    { name: "5th", colStart: 1, rowStart: 2, position: 2 },
-    { name: "4th", colStart: 2, rowStart: 1, position: 3 },
-    { name: "3rd", colStart: 2, rowStart: 2, position: 4 },
-    { name: "2nd", colStart: 3, rowStart: 1, position: 5 },
     { name: "1st", colStart: 3, rowStart: 2, position: 6 },
+    { name: "2nd", colStart: 3, rowStart: 1, position: 5 },
+    { name: "3rd", colStart: 2, rowStart: 2, position: 4 },
+    { name: "4th", colStart: 2, rowStart: 1, position: 3 },
+    { name: "5th", colStart: 1, rowStart: 2, position: 2 },
+    { name: "6th", colStart: 1, rowStart: 1, position: 1 },
   ];
 
   const reindeersList = reindeersData.map((reindeer) => ({
     id: reindeer.id,
     name: reindeer.name,
+    climateAdaptability: reindeer.climateAdaptability,
   }));
 
   const [selectedReindeers, setSelectedReindeers] = React.useState(
     positions.map((position) => position.reindeerId)
   );
+
+  const { data: weatherData } = useQuery({
+    queryKey: ["weather"],
+    queryFn: fetchWeather,
+    staleTime: Infinity,
+  });
 
   React.useEffect(() => {
     if (organizationData) {
@@ -91,16 +98,54 @@ export default function OrganizationModal({
     }
   }, [isClose, reset]);
 
+  const getBestReindeerForWeather = (weatherDescription, reindeers) => {
+    const weatherConditions = {
+      "partly cloudy": ["Dasher", "Dancer", "Comet", "Cupid", "Donner", "Blitzen", "Prancer", "Vixen", "Rudolph"],
+      "clear": ["Comet", "Cupid", "Dasher", "Dancer", "Donner", "Blitzen", "Prancer", "Vixen", "Rudolph"],
+      "sunny": ["Donner", "Blitzen", "Comet", "Cupid", "Dasher", "Dancer", "Prancer", "Vixen", "Rudolph"],
+      "moderate rain": ["Prancer", "Vixen", "Dasher", "Dancer", "Comet", "Cupid", "Donner", "Blitzen", "Rudolph"],
+      "patchy rain nearby": ["Rudolph", "Prancer", "Vixen", "Dasher", "Dancer", "Comet", "Cupid", "Donner", "Blitzen"],
+      "haze": ["Rudolph", "Dasher", "Dancer", "Comet", "Cupid", "Donner", "Blitzen", "Prancer", "Vixen"],
+      "light rain shower": ["Prancer", "Vixen", "Rudolph", "Dasher", "Dancer", "Comet", "Cupid", "Donner", "Blitzen"],
+      "light rain": ["Prancer", "Vixen", "Rudolph", "Dasher", "Dancer", "Comet", "Cupid", "Donner", "Blitzen"],
+      "overcast": ["Rudolph", "Dasher", "Dancer", "Comet", "Cupid", "Donner", "Blitzen", "Prancer", "Vixen"],
+      "mist": ["Rudolph", "Dasher", "Dancer", "Comet", "Cupid", "Donner", "Blitzen", "Prancer", "Vixen"],
+    };
+
+    const bestReindeerNames = weatherConditions[weatherDescription.toLowerCase()] || ["Rudolph", "Dasher", "Dancer", "Comet", "Cupid", "Donner", "Blitzen", "Prancer", "Vixen"];
+    
+    // Sort reindeers and their climate adaptability
+    return reindeers.sort((a, b) => {
+      const aIndex = bestReindeerNames.indexOf(a.name);
+      const bIndex = bestReindeerNames.indexOf(b.name);
+      if (aIndex !== bIndex) {
+        return aIndex - bIndex;
+      }
+      return b.climateAdaptability - a.climateAdaptability;
+    });
+  };
+
   const handleReindeerChange = (index, selectedId) => {
     setSelectedReindeers((prev) => {
       const updated = [...prev];
       updated[index] = selectedId;
 
-      updated.forEach((id, i) => {
-        if (id === selectedId && i !== index) {
-          updated[i] = null;
-        }
-      });
+      if (document.getElementById("addBestReindeer").checked && weatherData) {
+        const bestReindeer = getBestReindeerForWeather(
+          weatherData.current.weather_descriptions[0],
+          reindeersData
+        );
+        const availablePositions = [5, 4, 3, 2, 1, 0].filter(
+          (i) => i !== index && !updated[i]
+        );
+
+        bestReindeer.forEach((reindeer) => {
+          if (availablePositions.length > 0 && !updated.includes(reindeer.id)) {
+            const positionIndex = availablePositions.shift();
+            updated[positionIndex] = reindeer.id;
+          }
+        });
+      }
 
       return updated;
     });
@@ -182,7 +227,34 @@ export default function OrganizationModal({
               </div>
             </div>
             <div className="flex items-center space-x-2 mt-4">
-              <CustomCheckbox id="addBestReindeer" className="border-red-400" />
+              <CustomCheckbox
+                id="addBestReindeer"
+                className="border-red-400"
+                onCheckedChange={(checked) => {
+                  if (checked && weatherData) {
+                    const bestReindeer = getBestReindeerForWeather(
+                      weatherData.current.weather_descriptions[0],
+                      reindeersData
+                    );
+                    const updatedReindeers = Array(6).fill(null);
+                    bestReindeer.forEach((reindeer, index) => {
+                      if (index < 6) {
+                        updatedReindeers[5 - index] = reindeer.id;
+                      }
+                    });
+                    setSelectedReindeers(updatedReindeers);
+                    updatedReindeers.forEach((reindeerId, index) => {
+                      setValue(`positions.${index}.reindeerId`, reindeerId);
+                    });
+                  } else {
+                    const emptyReindeers = Array(6).fill(null);
+                    setSelectedReindeers(emptyReindeers);
+                    emptyReindeers.forEach((_, index) => {
+                      setValue(`positions.${index}.reindeerId`, null);
+                    });
+                  }
+                }}
+              />
               <Label
                 htmlFor="addBestReindeer"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-green-700"
@@ -191,7 +263,9 @@ export default function OrganizationModal({
               </Label>
             </div>
             <div className="flex flex-col gap-1">
-              <Label className=" text-zinc-500">Organize your reindeer</Label>
+              <Label className=" text-zinc-500">
+                Organize your reindeer
+              </Label>
               <CardDescription className="hidden min-[400px]:block">
                 Assign reindeer to Santa&apos;s sleigh by clicking buttons to
                 select from a menu of available options.
@@ -224,11 +298,11 @@ export default function OrganizationModal({
                           data={reindeersList.filter(
                             (reindeer) =>
                               !selectedReindeers.includes(reindeer.id) ||
-                              selectedReindeers[index] === reindeer.id
+                              selectedReindeers[5 - index] === reindeer.id
                           )}
-                          value={selectedReindeers[index]}
+                          value={selectedReindeers[5 - index]}
                           onChange={(value) =>
-                            handleReindeerChange(index, value)
+                            handleReindeerChange(5 - index, value)
                           }
                         />
                       </div>
@@ -273,8 +347,10 @@ OrganizationModal.propTypes = {
       PropTypes.shape({
         id: PropTypes.number,
         name: PropTypes.string,
+        climateAdaptability: PropTypes.number,
       })
     ).isRequired,
   }),
   generateOrganizationToView: PropTypes.func,
 };
+

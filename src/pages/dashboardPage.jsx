@@ -1,13 +1,14 @@
-import { MapPin, Users, MailOpen } from 'lucide-react';
+import { MapPin, Users, MailOpen, Cookie } from 'lucide-react';
 import { StatCard } from "@/components/dashboard/statCard";
 import { ReindeerChart } from "@/components/dashboard/reindeerChart";
 import { ElvesChart } from "@/components/dashboard/elvesChart";
 import { OrganizationChart } from "@/components/dashboard/organizationChart";
+import { CaloriesChart } from "@/components/dashboard/CaloriesChart";
 import { Countdown } from "@/components/dashboard/countDown";
 import { UnderlineTitle } from "@/components/global/underlineTitle";
 import { ChartContainer } from "@/components/ui/chart";
 import { useChildren } from "@/services/children/childrenapi";
-// import { useCookiesForSanta, useSantaCalories } from "@/services/calories/cookiesapi";
+import { useCookiesForSanta, useSantaCalories } from "@/services/calories/cookiesapi";
 import { useElves } from "@/services/elvescrud/elvesapi";
 import { useReindeersOrganizations } from "@/services/reindeer/organizationapi";
 import { useReindeers } from "@/services/reindeer/reindeerapi";
@@ -18,8 +19,8 @@ import { useQuery } from "@tanstack/react-query";
 
 export const DashboardPage = () => {
   const { data: childrenData } = useChildren();
-  // const { data: cookiesData } = useCookiesForSanta();
-  // const { data: caloriesData } = useSantaCalories();
+  const { data: cookiesData } = useCookiesForSanta();
+  const { data: caloriesData } = useSantaCalories();
   const { data: elvesData } = useElves();
   const { data: organizationsData } = useReindeersOrganizations();
   const { data: reindeersData } = useReindeers();
@@ -43,24 +44,24 @@ export const DashboardPage = () => {
     trainee: reindeersData?.filter(r => r.type === 'trainee').length || 0,
   };
 
-  // const calories = {
-  //   totalCookies: cookiesData?.length || 0,
-  //   consumedCookies: cookiesData?.filter(cookie => cookie.isEaten).length || 0,
-  //   totalCalories: caloriesData?.totalCalories || 0,
-  // };
+  const calories = {
+    totalCookies: cookiesData?.length || 0,
+    consumedCookies: caloriesData?.consumedCookies || 0,
+    totalCalories: caloriesData?.totalCalories || 0,
+  };
 
-     // Prepare behavior data
+  // Prepare behavior data
   const behaviorSummary = childrenData?.reduce((acc, child) => {
     acc[child.behavior] = (acc[child.behavior] || 0) + 1;
     return acc;
   }, {});
 
   const behaviorColors = {
-    Kind: "#4299E1",     // Blue
-    Respectful: "#48BB78", // Green
-    Lazy: "#ED8936",     // Orange
-    Helpful: "#ECC94B",   // Yellow
-    Curious: "#ED64A6"    // Pink
+    Kind: "#4299E1",     
+    Respectful: "#48BB78", 
+    Lazy: "#ED8936",     
+    Helpful: "#ECC94B",   
+    Curious: "#ED64A6"   
   };
 
   return (
@@ -75,8 +76,8 @@ export const DashboardPage = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 md:gap-4 md:mb-0">
-      <StatCard
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <StatCard
           icon={<MapPin className="h-4 w-4" />}
           title="Searches"
           value={totalSearches}
@@ -88,28 +89,27 @@ export const DashboardPage = () => {
           value={totalLetters}
           subtitle={`${readLetters} read, ${unreadLetters} unread`}
         />
-        
         <StatCard
           icon={<Users className="h-4 w-4" />}
           title="Children"
           value={totalChildren}
         />
-        {/* <StatCard
+        <StatCard
           icon={<Cookie className="h-4 w-4" />}
           title="Calories Consumed"
           value={calories.totalCalories}
           subtitle={`${calories.consumedCookies} of ${calories.totalCookies} cookies`}
-        /> */}
+        />
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-0">
-      <div className="p-2 sm:p-4 md:p-6">
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <ChartContainer
           config={{
             master: { label: "Master", color: "#D32F2F" },
             junior: { label: "Junior", color: "#4d7c0f" },
             trainee: { label: "Trainee", color: "#ffc658" },
           }}
-          className="min-h-[300px] w-full mb-10 md:mb-0"
+          className="min-h-[300px] w-full"
         >
           <ReindeerChart
             data={[
@@ -119,8 +119,17 @@ export const DashboardPage = () => {
             ]}
           />
         </ChartContainer>
-        </div>
-        <div className="p-2 sm:p-4 md:p-6 mb-16 md:mb-0">
+
+        <ChartContainer
+          config={{
+            consumed: { label: "Consumed", color: "#ED8936" },
+            available: { label: "Available", color: "#48BB78" },
+          }}
+          className="min-h-[300px] w-full mt-20 md:mt-0"
+        >
+          <CaloriesChart data={calories} />
+        </ChartContainer>
+
         <ChartContainer
           config={{
             Kind: { label: "Kind", color: behaviorColors.Kind },
@@ -129,7 +138,7 @@ export const DashboardPage = () => {
             Helpful: { label: "Helpful", color: behaviorColors.Helpful },
             Curious: { label: "Curious", color: behaviorColors.Curious },
           }}
-          className="mb-32 md:mb-0"
+          className="min-h-[300px] w-full mt-20 md:mt-0"
         >
           <PieChart
             data={behaviorSummary ? Object.entries(behaviorSummary).map(([behavior, count]) => ({
@@ -139,41 +148,37 @@ export const DashboardPage = () => {
             })) : []}
           />
         </ChartContainer>
-        </div>
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-20 md:gap-0">
-        <div className="lg:col-span-2">
-        <div className="p-2 sm:p-4 md:p-2">
-          <ChartContainer
-            config={{
-              availableElves: { label: "Available Elves", color: "#4d7c0f" },
-              unavailableElves: { label: "Unavailable Elves", color: "#D32F2F" },
-            }}
-            className="mb-28 md:mb-0"
-          >
-            <ElvesChart
-              data={[
-                { name: "Available Elves", value: availableElves, color: "#4d7c0f" },
-                { name: "Unavailable Elves", value: unavailableElves, color: "#D32F2F" },
-              ]}
-            />
-          </ChartContainer>
-          </div>
-        </div>
-        <div className="p-2 sm:p-4 md:p-2">
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-28">
+        <ChartContainer
+          config={{
+            availableElves: { label: "Available Elves", color: "#4d7c0f" },
+            unavailableElves: { label: "Unavailable Elves", color: "#D32F2F" },
+          }}
+          className="min-h-[300px] w-full"
+        >
+          <ElvesChart
+            data={[
+              { name: "Available Elves", value: availableElves, color: "#4d7c0f" },
+              { name: "Unavailable Elves", value: unavailableElves, color: "#D32F2F" },
+            ]}
+          />
+        </ChartContainer>
+
         <ChartContainer
           config={{
             selected: { label: "Selected", color: "#4d7c0f" },
             others: { label: "Others", color: "#CCCCCC" },
           }}
+          className="min-h-[300px] w-full mt-20 md:mt-0"
         >
           <OrganizationChart
             organizations={organizationsData?.length || 0}
             selectedOrganization={organizationsData?.[0]?.name || "N/A"}
           />
         </ChartContainer>
-        </div>
-        </div>
+      </div>
     </div>
   );
 }

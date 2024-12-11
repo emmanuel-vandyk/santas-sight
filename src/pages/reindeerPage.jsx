@@ -5,6 +5,7 @@ import {
   ErrorScreen,
 } from "@/components/global/santaDataLoader";
 import OrganizationManager from "@/components/reindeer/OrganizationManager";
+import { WeatherCard } from "@/components/reindeer/WeatherCard";
 import { UnderlineTitle } from "@/components/global/underlineTitle";
 
 export const ReindeerPage = () => {
@@ -25,15 +26,16 @@ export const ReindeerPage = () => {
 
   return (
     <section>
-      <h1 className="text-4xl font-bold text-red-600 text-center mb-8">
+      <h1 className="text-4xl font-bold text-red-600 text-center ">
         <UnderlineTitle text="Reindeer Setup" />
       </h1>
+      <div className="flex flex-col sm:p-8">
+      <WeatherCard />
+      </div>
+
       <div className="flex flex-col gap-5 sm:p-8">
-        <OrganizationManager
-          data={{ reindeersData, organizationsData }}
-        />
+        <OrganizationManager data={{ reindeersData, organizationsData }} />
       </div>
     </section>
   );
 };
-
