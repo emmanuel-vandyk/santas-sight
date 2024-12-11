@@ -4,6 +4,9 @@ import { useForm, Controller } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Dialog,
   DialogContent,
@@ -12,9 +15,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
-import santahat from "@/assets/santahat.webp";
 import {
   Select,
   SelectTrigger,
@@ -24,6 +24,7 @@ import {
   SelectLabel,
   SelectItem,
 } from "@/components/ui/select";
+import santahat from "@/assets/santahat.webp";
 
 export default function ReindeerModal({
   isOpen,
@@ -163,30 +164,32 @@ export default function ReindeerModal({
             <Label className="text-zinc-500 text-center block mb-2">
               Skills
             </Label>
-            <div className="grid grid-cols-2 gap-3">
-              {defaultValues.skills.map((skill, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between gap-4"
-                >
-                  <Label className="w-1/2 text-sm text-gray-700">
-                    {skill.skill}
-                  </Label>
-                  <Input
-                    type="number"
-                    {...register(`skills.${index}.value`, {
-                      valueAsNumber: true,
-                      min: 0,
-                      max: 10,
-                    })}
-                    placeholder="0-10"
-                    min="0"
-                    max="10"
-                    className="w-20 text-center border border-red-400 rounded"
-                  />
-                </div>
-              ))}
-            </div>
+            <ScrollArea className="h-28 sm:h-1/2 rounded-md border p-2 box-border">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {defaultValues.skills.map((skill, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between gap-4"
+                  >
+                    <Label className="w-1/2 text-sm text-gray-700">
+                      {skill.skill}
+                    </Label>
+                    <Input
+                      type="number"
+                      {...register(`skills.${index}.value`, {
+                        valueAsNumber: true,
+                        min: 0,
+                        max: 10,
+                      })}
+                      placeholder="0-10"
+                      min="0"
+                      max="10"
+                      className="w-20 text-center border border-red-400 rounded"
+                    />
+                  </div>
+                ))}
+              </div>
+            </ScrollArea>
           </div>
           <DialogFooter>
             <Button
