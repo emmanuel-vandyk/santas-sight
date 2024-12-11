@@ -4,3 +4,4 @@ package-lock.json
 settings.json
 dev.nix
 .idx
+dist
