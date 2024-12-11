@@ -1,4 +1,5 @@
 import { Baby } from "lucide-react";
+import santaSleigh from "@/assets/santasleigh.webp";
 
 export const ChristmasTree = () => (
   <svg
@@ -118,7 +119,7 @@ export const ChristmasLogout = (props) => (
 
 export const ChristmasSantaSleight = (props) => (
   <img
-    src="src/assets/santasleigh.webp"
+    src={santaSleigh}
     alt="Santa's Sleigh"
     className="w-64"
     {...props}
