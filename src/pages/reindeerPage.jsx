@@ -29,7 +29,7 @@ export const ReindeerPage = () => {
       <h1 className="text-4xl font-bold text-red-600 text-center ">
         <UnderlineTitle text="Reindeer Setup" />
       </h1>
-      <div className="flex flex-col sm:p-8">
+      <div className="flex flex-col sm:p-8 mb-8 md:mb-0">
       <WeatherCard />
       </div>
 
