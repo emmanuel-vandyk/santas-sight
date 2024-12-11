@@ -346,7 +346,7 @@ export const ChristmasCookies = (props) => (
   </svg>
 );
 
-export const ChildrenIcon = (props) => {
+export const ChildrenIcon = () => {
   return <Baby />;
 };
 
