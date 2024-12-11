@@ -26,9 +26,9 @@ export const WeatherCard = () => {
   return (
     <Card className="flex flex-col gap-5 w-full md:w-auto p-4 text-white h-32 border-none relative">
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center rounded-xl"
         style={{
-          backgroundImage: "url(/src/assets/nortpole.avif)",
+          backgroundImage: "url(/src/assets/nortpole.webp)",
           backgroundSize: "cover",
         }}
       ></div>
