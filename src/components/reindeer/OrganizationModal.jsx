@@ -19,7 +19,7 @@ import {
 import { CardDescription } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import { SantaSledge } from "@/components/global/iconsChristmas";
-// import { fetchWeather } from "@/services/weather/weather";
+import { fetchWeather } from "@/services/weather/weather";
 import { useQuery } from "@tanstack/react-query";
 export default function OrganizationModal({
   isOpen,
@@ -68,11 +68,11 @@ export default function OrganizationModal({
     positions.map((position) => position.reindeerId)
   );
 
-  // const { data: weatherData } = useQuery({
-  //   queryKey: ["weather"],
-  //   queryFn: fetchWeather,
-  //   staleTime: Infinity,
-  // });
+  const { data: weatherData } = useQuery({
+    queryKey: ["weather"],
+    queryFn: fetchWeather,
+    staleTime: Infinity,
+  });
 
   React.useEffect(() => {
     if (organizationData) {

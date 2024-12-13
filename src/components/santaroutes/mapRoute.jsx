@@ -71,7 +71,7 @@ export default function MapRoute({
 
   return (
     <div className="shadow-lg shadow-zinc-500 rounded-xl overflow-hidden relative">
-      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-[1000] w-full max-w-md">
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-[1000] w-11/12 md:w-full max-w-md ">
         <SearchAddress onSearch={onSearch} onSave={onSave} />
       </div>
       <MapContainer

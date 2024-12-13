@@ -49,7 +49,7 @@ export const ChildrenList = () => {
 
   return (
     <>
-      <div className='max-2-xl mx-auto p-4 md:p-6'>
+      <div className='max-2-xl mx-auto p-4 md:px-6'>
         {/* Header */}
         <h1 className="text-4xl text-center font-bold text-red-600 mb-8">
         <UnderlineTitle text="Children Sorter" />
