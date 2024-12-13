@@ -67,7 +67,7 @@ export default function CookieModal({
               aria-hidden="true"
             />
           </DialogTitle>
-          <DialogDescription className="text-center text-green-700">
+          <DialogDescription className=" text-green-700">
             {cookieData ? "Edit the details of the cookie" : "Add a new cookie"}
           </DialogDescription>
         </DialogHeader>

@@ -5,7 +5,7 @@ import {
   ErrorScreen,
 } from "@/components/global/santaDataLoader";
 import OrganizationManager from "@/components/reindeer/OrganizationManager";
-import { WeatherCard } from "@/components/reindeer/WeatherCard";
+// import { WeatherCard } from "@/components/reindeer/WeatherCard";
 import { UnderlineTitle } from "@/components/global/underlineTitle";
 
 export const ReindeerPage = () => {
