@@ -106,7 +106,7 @@ export const useUpdateCookiesForSanta = () => {
       axios.put(`${API_URL}api/cookie/${cookie.id}`, formattedData);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cookies"] });
+      queryClient.refetchQueries(["cookies"]);
       queryClient.refetchQueries(["calories"]);
     },
   });
