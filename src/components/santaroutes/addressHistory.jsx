@@ -42,7 +42,7 @@ export default function AddressHistory({ locations, onRestore, onDelete, onDelet
 
   const handleDeleteAll = () => {
     onDeleteAll();
-    toast.success("All locations deleted successfully");
+    
   };
 
   const handleLoadMore = () => {
@@ -77,7 +77,7 @@ export default function AddressHistory({ locations, onRestore, onDelete, onDelet
   };
 
   return (
-    <Card className="w-full bg-gradient-to-r from-red-50 to-green-50">
+    <Card className="w-full h-full bg-gradient-to-r from-red-50 to-green-50">
       <CardHeader>
         <CardTitle className="text-xl font-semibold flex flex-col sm:flex-row items-center justify-between text-green-700 gap-4">
           <div className="flex items-center">
@@ -196,7 +196,7 @@ export default function AddressHistory({ locations, onRestore, onDelete, onDelet
             <div className="flex justify-center">
               <Button
                 onClick={handleLoadMore}
-                className="mt-4 w-full md:w-auto bg-transparent hover:bg-green-100 text-green-700 shadow-zinc-700"
+                className="my-2 w-11-12 md:w-auto bg-transparent hover:bg-green-100 text-green-700 shadow-zinc-700"
               >
                 Show more
               </Button>

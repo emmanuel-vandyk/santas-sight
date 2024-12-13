@@ -19,8 +19,9 @@ export const ChillZone = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(10);
   const audioRef = useRef(null);
-  const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const [currentSongIndex, setCurrentSongIndex] = useState(2);
   const playPromiseRef = useRef(null);
+  const [userInteracted, setUserInteracted] = useState(false);
 
   const {
     data: christmasSongs,
@@ -60,32 +61,27 @@ export const ChillZone = () => {
         await stopCurrentPlayback();
         audioRef.current.src = song.previewUrl;
         audioRef.current.load();
-        playPromiseRef.current = audioRef.current.play();
-        playPromiseRef.current;
+        await audioRef.current.play();
         setIsPlaying(true);
-        playPromiseRef.current = null;
       } catch (error) {
         console.error("Playback failed:", error);
         setIsPlaying(false);
-        playPromiseRef.current = null;
       }
     },
     [stopCurrentPlayback]
   );
 
   useEffect(() => {
-    if (christmasSongs && christmasSongs.length > 0) {
-      const song = christmasSongs[currentSongIndex];
+    if (christmasSongs && christmasSongs.length > 2) {
+      const song = christmasSongs[2];
       setCurrentSong(song);
-      if (song?.previewUrl) {
-        playSong(song);
-      }
+      setCurrentSongIndex(2);
     }
 
     return () => {
       stopCurrentPlayback();
     };
-  }, [christmasSongs, currentSongIndex, playSong, stopCurrentPlayback]);
+  }, [christmasSongs, stopCurrentPlayback]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -100,21 +96,22 @@ export const ChillZone = () => {
     }
 
     try {
+      if (!userInteracted) {
+        setUserInteracted(true);
+      }
+
       if (isPlaying) {
-        await stopCurrentPlayback();
+        await audioRef.current.pause();
         setIsPlaying(false);
       } else {
-        playPromiseRef.current = audioRef.current.play();
-        playPromiseRef.current;
+        await audioRef.current.play();
         setIsPlaying(true);
-        playPromiseRef.current = null;
       }
     } catch (error) {
       console.error("PlayPause failed:", error);
       setIsPlaying(false);
-      playPromiseRef.current = null;
     }
-  }, [isPlaying, stopCurrentPlayback]);
+  }, [isPlaying, userInteracted]);
 
   const handleVolumeChange = (newVolume) => {
     setVolume(newVolume[0]);
@@ -175,6 +172,7 @@ export const ChillZone = () => {
             onSkipForward={handleSkipForward}
             onSkipBack={handleSkipBack}
             isPlayable={!!currentSong?.previewUrl}
+            userInteracted={userInteracted}
           />
           <div className="mt-6">
             <VolumeControl
@@ -207,3 +205,4 @@ export const ChillZone = () => {
     </div>
   );
 };
+
