@@ -49,6 +49,11 @@ export default function CookiesList({ generateCookiesToSend }) {
   // Declare a state variable to hold the checked cookies' IDs
   const [checkedCookies, setCheckedCookies] = React.useState([]);
 
+  // Filter cookies based on entered text
+  const filteredCookies = cookiesData.filter((cookie) =>
+    cookie.name.toLowerCase().includes(filter.toLowerCase())
+  );
+
   // Function to handle deleting a cookie
   const handleDeleteCookies = async (cookiesDeleted) => {
     try {
@@ -96,13 +101,11 @@ export default function CookiesList({ generateCookiesToSend }) {
             type="text"
             placeholder="Filter cookies names..."
             value={filter}
-            onChange={(e) => {
-              setFilter(e.target.value);
-            }}
+            onChange={(e) => setFilter(e.target.value)}
           />
           <SelectAll
             className="col-span-2"
-            items={cookiesData}
+            items={filteredCookies}
             selectedItems={checkedCookies}
             onSelectionChange={(newSelection) =>
               setCheckedCookies(newSelection)
@@ -117,94 +120,90 @@ export default function CookiesList({ generateCookiesToSend }) {
             New
           </Button>
         </div>
-        {cookiesData.length > 0 ? (
+        {filteredCookies.length > 0 ? (
           <ScrollArea className="h-72 rounded-md border p-2 box-border">
             <div className="flex flex-col gap-3">
-              {cookiesData
-                .filter((cookie) =>
-                  cookie.name.toLowerCase().includes(filter.toLowerCase())
-                )
-                .map((cookie) => (
-                  <div key={cookie.id}>
-                    <Card className="grid grid-cols-1 gap-5 items-center p-3 bg-gradient-to-r from-red-100 to-green-100">
-                      <div className="flex flex-col gap-3 items-center justify-center lg:justify-normal sm:flex-row">
-                        <CustomCheckbox
-                          checked={checkedCookies.includes(cookie.id)}
-                          onCheckedChange={(checked) =>
-                            toggleCheckedCookies(cookie.id, checked)
-                          }
-                          className={cn({ hidden: cookie.quantity == 0 })}
-                        />
-                        <CardTitle className="flex items-center gap-1">
-                          <Cookie size={18} className="text-amber-900" />
-                          {cookie.name}
-                        </CardTitle>
-                        <Badge
-                          variant="destructive"
-                          className={cn({ hidden: cookie.quantity > 0 })}
+              {filteredCookies.map((cookie) => (
+                <div key={cookie.id}>
+                  <Card className="grid grid-cols-1 gap-5 items-center p-3 bg-gradient-to-r from-red-100 to-green-100">
+                    <div className="flex flex-col gap-3 items-center justify-center lg:justify-normal sm:flex-row">
+                      <CustomCheckbox
+                        checked={checkedCookies.includes(cookie.id)}
+                        onCheckedChange={(checked) =>
+                          toggleCheckedCookies(cookie.id, checked)
+                        }
+                        className={cn({ hidden: cookie.quantity == 0 })}
+                      />
+                      <CardTitle className="flex items-center gap-1">
+                        <Cookie size={18} className="text-amber-900" />
+                        {cookie.name}
+                      </CardTitle>
+                      <Badge
+                        variant="destructive"
+                        className={cn({ hidden: cookie.quantity > 0 })}
+                      >
+                        Consumed
+                      </Badge>
+                    </div>
+                    <div className="flex flex-col items-center justify-between lg:flex-row">
+                      <CardDescription>
+                        Calories: {cookie.calories}
+                      </CardDescription>
+                      <div className="flex justify-center">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => generateCookiesToSend(cookie.id)}
                         >
-                          Consumed
-                        </Badge>
-                      </div>
-                      <div className="flex flex-col items-center justify-between lg:flex-row">
-                        <CardDescription>
-                          Calories: {cookie.calories}
-                        </CardDescription>
-                        <div className="flex justify-center">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => generateCookiesToSend(cookie.id)}
-                          >
-                            <Eye />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() =>
-                              setModalState({
-                                isOpen: true,
-                                cookieData: cookie,
-                              })
-                            }
-                          >
-                            <Pencil />
-                          </Button>
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button variant="ghost" size="icon">
-                                <Trash2 />
-                              </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>
-                                  {`Are you absolutely sure you want to delete ${cookie.name}`}
-                                </AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  {`This action cannot be undone. This will permanently
+                          <Eye />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() =>
+                            setModalState({
+                              isOpen: true,
+                              cookieData: cookie,
+                            })
+                          }
+                        >
+                          <Pencil />
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <Trash2 />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                {`Are you absolutely sure you want to delete ${cookie.name}`}
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                {`This action cannot be undone. This will permanently
                           delete ${cookie.name}`}
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction
-                                  className="bg-red-600 hover:bg-red-700"
-                                  onClick={() => {
-                                    handleDeleteCookies(cookie);
-                                    generateCookiesToSend([]);
-                                  }}
-                                >
-                                  Continue
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
-                        </div>
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                className="bg-red-600 hover:bg-red-700"
+                                onClick={() => {
+                                  handleDeleteCookies(cookie);
+                                  generateCookiesToSend([]);
+                                }}
+                              >
+                                Continue
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
-                    </Card>
-                  </div>
-                ))}
+                    </div>
+                  </Card>
+                </div>
+              ))}
             </div>
           </ScrollArea>
         ) : (
