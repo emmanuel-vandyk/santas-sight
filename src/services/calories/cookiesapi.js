@@ -84,8 +84,11 @@ export const useAddQuantity = () => {
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cookies"] });
+      queryClient.refetchQueries(["cookies"]);
       queryClient.refetchQueries(["calories"]);
+    },
+    onError: () => {
+      console.log("Error updating cookies");
     },
   });
 };
