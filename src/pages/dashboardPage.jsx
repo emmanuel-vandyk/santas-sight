@@ -1,4 +1,4 @@
-import { MapPin, Users, MailOpen, Cookie } from 'lucide-react';
+import { MapPin, Users, MailOpen, Cookie } from "lucide-react";
 import { StatCard } from "@/components/dashboard/statCard";
 import { ReindeerChart } from "@/components/dashboard/reindeerChart";
 import { ElvesChart } from "@/components/dashboard/elvesChart";
@@ -8,7 +8,10 @@ import { Countdown } from "@/components/dashboard/countDown";
 import { UnderlineTitle } from "@/components/global/underlineTitle";
 import { ChartContainer } from "@/components/ui/chart";
 import { useChildren } from "@/services/children/childrenapi";
-import { useCookiesForSanta, useSantaCalories } from "@/services/calories/cookiesapi";
+import {
+  useCookiesForSanta,
+  useSantaCalories,
+} from "@/services/calories/cookiesapi";
 import { useElves } from "@/services/elvescrud/elvesapi";
 import { useReindeersOrganizations } from "@/services/reindeer/organizationapi";
 import { useReindeers } from "@/services/reindeer/reindeerapi";
@@ -24,24 +27,31 @@ export const DashboardPage = () => {
   const { data: elvesData } = useElves();
   const { data: organizationsData } = useReindeersOrganizations();
   const { data: reindeersData } = useReindeers();
-  const { data: searchHistoryData } = useQuery({ queryKey: ['searchHistory'], queryFn: getSearchHistory });
-  const { data: lettersData } = useQuery({ queryKey: ['letters'], queryFn: fetchLetters });
+  const { data: searchHistoryData } = useQuery({
+    queryKey: ["searchHistory"],
+    queryFn: getSearchHistory,
+  });
+  const { data: lettersData } = useQuery({
+    queryKey: ["letters"],
+    queryFn: fetchLetters,
+  });
 
   // Calculate statistics
   const totalChildren = childrenData?.length || 0;
   const letters = Array.isArray(lettersData?.data) ? lettersData.data : [];
   const totalLetters = letters.length;
-  const readLetters = letters.filter(letter => letter.isRead).length;
+  const readLetters = letters.filter((letter) => letter.isRead).length;
   const unreadLetters = totalLetters - readLetters;
   const totalSearches = searchHistoryData?.data?.length || 0;
   const totalElves = elvesData?.data?.length || 0;
-  const availableElves = elvesData?.data?.filter(elf => !elf.isDeleted).length || 0;
+  const availableElves =
+    elvesData?.data?.filter((elf) => !elf.isDeleted).length || 0;
   const unavailableElves = totalElves - availableElves;
 
   const reindeerStats = {
-    master: reindeersData?.filter(r => r.type === 'master').length || 0,
-    junior: reindeersData?.filter(r => r.type === 'junior').length || 0,
-    trainee: reindeersData?.filter(r => r.type === 'trainee').length || 0,
+    master: reindeersData?.filter((r) => r.type === "master").length || 0,
+    junior: reindeersData?.filter((r) => r.type === "junior").length || 0,
+    trainee: reindeersData?.filter((r) => r.type === "trainee").length || 0,
   };
 
   const calories = {
@@ -57,11 +67,11 @@ export const DashboardPage = () => {
   }, {});
 
   const behaviorColors = {
-    Kind: "#4299E1",     
-    Respectful: "#48BB78", 
-    Lazy: "#ED8936",     
-    Helpful: "#ECC94B",   
-    Curious: "#ED64A6"   
+    Kind: "#4299E1",
+    Respectful: "#48BB78",
+    Lazy: "#ED8936",
+    Helpful: "#ECC94B",
+    Curious: "#ED64A6",
   };
 
   return (
@@ -96,7 +106,7 @@ export const DashboardPage = () => {
         />
         <StatCard
           icon={<Cookie className="h-4 w-4" />}
-          title="Calories Consumed"
+          title="Calories consumed"
           value={calories.totalCalories}
           subtitle={`${calories.consumedCookies} of ${calories.totalCookies} cookies`}
         />
@@ -115,15 +125,19 @@ export const DashboardPage = () => {
             data={[
               { name: "Master", value: reindeerStats.master, color: "#D32F2F" },
               { name: "Junior", value: reindeerStats.junior, color: "#4d7c0f" },
-              { name: "Trainee", value: reindeerStats.trainee, color: "#ffc658" },
+              {
+                name: "Trainee",
+                value: reindeerStats.trainee,
+                color: "#ffc658",
+              },
             ]}
           />
         </ChartContainer>
 
         <ChartContainer
           config={{
-            consumed: { label: "Consumed", color: "#ED8936" },
-            available: { label: "Available", color: "#48BB78" },
+            consumed: { label: "consumed", color: "#ED8936" },
+            available: { label: "available", color: "#48BB78" },
           }}
           className="min-h-[300px] w-full mt-20 md:mt-0"
         >
@@ -133,7 +147,10 @@ export const DashboardPage = () => {
         <ChartContainer
           config={{
             Kind: { label: "Kind", color: behaviorColors.Kind },
-            Respectful: { label: "Respectful", color: behaviorColors.Respectful },
+            Respectful: {
+              label: "Respectful",
+              color: behaviorColors.Respectful,
+            },
             Lazy: { label: "Lazy", color: behaviorColors.Lazy },
             Helpful: { label: "Helpful", color: behaviorColors.Helpful },
             Curious: { label: "Curious", color: behaviorColors.Curious },
@@ -141,11 +158,15 @@ export const DashboardPage = () => {
           className="min-h-[300px] w-full mt-20 md:mt-0"
         >
           <PieChart
-            data={behaviorSummary ? Object.entries(behaviorSummary).map(([behavior, count]) => ({
-              name: behavior,
-              value: count,
-              color: behaviorColors[behavior],
-            })) : []}
+            data={
+              behaviorSummary
+                ? Object.entries(behaviorSummary).map(([behavior, count]) => ({
+                    name: behavior,
+                    value: count,
+                    color: behaviorColors[behavior],
+                  }))
+                : []
+            }
           />
         </ChartContainer>
       </div>
@@ -153,15 +174,23 @@ export const DashboardPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-28">
         <ChartContainer
           config={{
-            availableElves: { label: "Available Elves", color: "#4d7c0f" },
-            unavailableElves: { label: "Unavailable Elves", color: "#D32F2F" },
+            availableElves: { label: "Available elves", color: "#4d7c0f" },
+            unavailableElves: { label: "Unavailable elves", color: "#D32F2F" },
           }}
           className="min-h-[300px] w-full"
         >
           <ElvesChart
             data={[
-              { name: "Available Elves", value: availableElves, color: "#4d7c0f" },
-              { name: "Unavailable Elves", value: unavailableElves, color: "#D32F2F" },
+              {
+                name: "Available elves",
+                value: availableElves,
+                color: "#4d7c0f",
+              },
+              {
+                name: "Unavailable elves",
+                value: unavailableElves,
+                color: "#D32F2F",
+              },
             ]}
           />
         </ChartContainer>
@@ -181,5 +210,4 @@ export const DashboardPage = () => {
       </div>
     </div>
   );
-}
-
+};

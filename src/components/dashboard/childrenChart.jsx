@@ -1,5 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
 import { ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import PropTypes from "prop-types";
 
@@ -9,7 +17,7 @@ const colors = ["#4299E1", "#48BB78", "#ED8936", "#ECC94B", "#ED64A6"];
 export const ChildrenChart = ({ data }) => (
   <Card className="col-span-1">
     <CardHeader>
-      <CardTitle>Children&apos;s Behavior Over Time</CardTitle>
+      <CardTitle>Children&apos;s behavior over time</CardTitle>
     </CardHeader>
     <CardContent>
       <ResponsiveContainer width="100%" height={300}>
@@ -20,11 +28,11 @@ export const ChildrenChart = ({ data }) => (
           <ChartTooltip content={<ChartTooltipContent />} />
           <Legend />
           {behaviors.map((behavior, index) => (
-            <Line 
+            <Line
               key={behavior}
-              type="monotone" 
-              dataKey={behavior} 
-              stroke={colors[index]} 
+              type="monotone"
+              dataKey={behavior}
+              stroke={colors[index]}
               activeDot={{ r: 8 }}
             />
           ))}

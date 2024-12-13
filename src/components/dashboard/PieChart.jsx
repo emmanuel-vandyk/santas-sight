@@ -1,15 +1,24 @@
-import { PieChart as RechartsPieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import propTypes from 'prop-types';
+import {
+  PieChart as RechartsPieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+import propTypes from "prop-types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 export const PieChart = ({ data }) => {
   return (
     <Card className="col-span-1">
       <CardHeader>
-        <CardTitle>Children&apos;s Behavior</CardTitle>
+        <CardTitle>Children&apos;s behavior</CardTitle>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
-          <RechartsPieChart margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
+          <RechartsPieChart
+            margin={{ top: 10, right: 10, left: 10, bottom: 10 }}
+          >
             <Pie
               data={data}
               cx="50%"
@@ -29,11 +38,11 @@ export const PieChart = ({ data }) => {
               verticalAlign="bottom"
               align="center"
               wrapperStyle={{
-                paddingTop: '20px',
-                fontSize: '12px',
-                '@media (max-width: 480px)': {
-                  fontSize: '10px'
-                }
+                paddingTop: "20px",
+                fontSize: "12px",
+                "@media (max-width: 480px)": {
+                  fontSize: "10px",
+                },
               }}
             />
           </RechartsPieChart>
@@ -52,4 +61,3 @@ PieChart.propTypes = {
     })
   ).isRequired,
 };
-
