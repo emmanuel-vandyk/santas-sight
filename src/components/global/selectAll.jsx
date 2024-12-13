@@ -11,7 +11,9 @@ export default function SelectAll({
 }) {
   // Determine if all items are selected
   const isAllSelected =
-    selectedItems.length === items.length && items.length > 0;
+    items.length > 0 &&
+    items.every((item) => selectedItems.includes(item.id)) &&
+    selectedItems.length <= items.length;
 
   // Handle the change in selection state
   const handleSelectionChange = (checked) => {
