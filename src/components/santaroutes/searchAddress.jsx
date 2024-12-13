@@ -118,3 +118,4 @@ SearchAddress.propTypes = {
     onSearch: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired
 }
+
