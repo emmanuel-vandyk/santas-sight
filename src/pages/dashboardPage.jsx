@@ -75,7 +75,7 @@ export const DashboardPage = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 sm:p-6 max-w-[100vw] overflow-x-hidden">
+    <div className="container mx-auto p-4 sm:px-6 max-w-[100vw] overflow-x-hidden">
       <h1 className="text-4xl text-center font-bold text-red-600 mb-8">
         <UnderlineTitle text="Santa's Dashboard" />
       </h1>

@@ -74,9 +74,11 @@ export default function ElvesTable() {
   const toast = useToast();
 
   const debouncedSetFilter = useCallback(
-    debounce((value) => {
-      setDebouncedFilter(value ? { name: value } : {});
-    }, 500),
+    (value) => {
+      debounce(() => {
+        setDebouncedFilter(value ? { name: value } : {});
+      }, 500)();
+    },
     []
   );
 
@@ -205,18 +207,19 @@ export default function ElvesTable() {
       ),
     },
     {
-      accessorKey: "status",
+      id: "status",
+      accessorKey: "isDeleted",
       header: ({ column }) => <p className="hidden md:block">Status</p>,
       cell: ({ row }) => (
         <div className="w-full">
           <Badge
             className={`hidden md:inline-flex text-center ${
-              row.getValue("isDeleted")
+              row.getValue("status")
                 ? "bg-red-600 text-white px-3"
                 : "bg-green-600 text-white px-5"
             }`}
           >
-            {row.getValue("isDeleted") ? "Unavailable" : "Available"}
+            {row.getValue("status") ? "Unavailable" : "Available"}
           </Badge>
         </div>
       ),
@@ -377,8 +380,8 @@ export default function ElvesTable() {
   );
 
   return (
-    <div className="flex flex-col items-center gap-8 p-4 md:p-8">
-      <div className="w-full max-w-7xl">
+    <div className="flex flex-col items-center gap-8 p-4 md:px-8">
+      <div className="w-full">
         <section className="mb-2 md:mb-4 flex flex-col-reverse gap-2 md:flex-row justify-between">
           <Input
             placeholder="Filter names..."
