@@ -1,27 +1,35 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Cell } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+  Cell,
+} from "recharts";
 import { ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import PropTypes from "prop-types";
 
 export const ElvesChart = ({ data }) => (
   <Card className="col-span-1 lg:col-span-2">
     <CardHeader>
-      <CardTitle>Elves Workforce</CardTitle>
+      <CardTitle>Elves workforce</CardTitle>
     </CardHeader>
     <CardContent>
       <ResponsiveContainer width="100%" height={300}>
-        <BarChart 
-          data={data} 
-          margin={{ 
-            top: 20, 
-            right: 10, 
-            left: 0, 
-            bottom: 5 
+        <BarChart
+          data={data}
+          margin={{
+            top: 20,
+            right: 10,
+            left: 0,
+            bottom: 5,
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis 
-            dataKey="name" 
+          <XAxis
+            dataKey="name"
             tick={{ fontSize: 12 }}
             interval={0}
             angle={0}
@@ -50,4 +58,3 @@ ElvesChart.propTypes = {
     })
   ).isRequired,
 };
-
