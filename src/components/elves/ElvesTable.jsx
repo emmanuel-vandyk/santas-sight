@@ -205,18 +205,19 @@ export default function ElvesTable() {
       ),
     },
     {
-      accessorKey: "status",
+      id: "status",
+      accessorKey: "isDeleted",
       header: ({ column }) => <p className="hidden md:block">Status</p>,
       cell: ({ row }) => (
         <div className="w-full">
           <Badge
             className={`hidden md:inline-flex text-center ${
-              row.getValue("isDeleted")
+              row.getValue("status")
                 ? "bg-red-600 text-white px-3"
                 : "bg-green-600 text-white px-5"
             }`}
           >
-            {row.getValue("isDeleted") ? "Unavailable" : "Available"}
+            {row.getValue("status") ? "Unavailable" : "Available"}
           </Badge>
         </div>
       ),
