@@ -205,6 +205,7 @@ export default function ElvesTable() {
       ),
     },
     {
+      id: "Status",
       accessorKey: "isDeleted",
       header: ({ column }) => <p className="hidden md:block">Status</p>,
       cell: ({ row }) => (
