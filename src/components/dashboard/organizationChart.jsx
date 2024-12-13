@@ -1,24 +1,26 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 export const OrganizationChart = ({ organizations, selectedOrganization }) => {
   const data = [
-    { name: 'Selected', value: 1 },
-    { name: 'Others', value: organizations - 1 },
+    { name: "Selected", value: 1 },
+    { name: "Others", value: organizations - 1 },
   ];
 
   return (
     <Card className="col-span-1">
       <CardHeader>
-        <CardTitle>Organization Overview</CardTitle>
+        <CardTitle>Organization overview</CardTitle>
       </CardHeader>
       <CardContent>
         <p className="text-2xl font-bold mb-2">{organizations}</p>
-        <p className="text-sm text-gray-500 mb-4">Total Organizations</p>
-        <Badge variant="secondary" className="mb-2">Selected: {selectedOrganization}</Badge>
+        <p className="text-sm text-gray-500 mb-4">Total organizations</p>
+        <Badge variant="secondary" className="mb-2">
+          Selected: {selectedOrganization}
+        </Badge>
         <ResponsiveContainer width="100%" height={200}>
           <PieChart margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
             <Pie
@@ -32,7 +34,10 @@ export const OrganizationChart = ({ organizations, selectedOrganization }) => {
               dataKey="value"
             >
               {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={`var(--color-${entry.name.toLowerCase()})`} />
+                <Cell
+                  key={`cell-${index}`}
+                  fill={`var(--color-${entry.name.toLowerCase()})`}
+                />
               ))}
             </Pie>
             <ChartTooltip content={<ChartTooltipContent />} />
@@ -47,4 +52,3 @@ OrganizationChart.propTypes = {
   organizations: PropTypes.number.isRequired,
   selectedOrganization: PropTypes.string.isRequired,
 };
-

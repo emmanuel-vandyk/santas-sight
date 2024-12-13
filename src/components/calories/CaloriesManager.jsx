@@ -24,8 +24,6 @@ export default function CaloriesManager({
   // State to track updates to the cookies consume data
   const [cookiesConsumed, setCookiesConsumed] = React.useState([]);
 
-  console.log(cookiesConsumed);
-
   // useEffect to update the default state when the component reloads with different cookiesData
   React.useEffect(() => {
     if (cookiesData) {
