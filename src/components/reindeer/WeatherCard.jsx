@@ -34,16 +34,16 @@ export const WeatherCard = () => {
   }
 
   return (
-    <Card className="flex flex-col md:flex-row w-full md:w-auto justify-center items-center sm:p-4 text-white border-none relative mb-6 sm:mb-0 mt-4">
+    <Card className="flex flex-col md:flex-row w-full md:w-auto justify-center md:justify-start items-center sm:p-4 text-white border-none relative mb-6 sm:mb-0 mt-4">
       <div
-        className="absolute inset-0 bg-cover bg-center rounded-xl flex flex-col w-full h-48 items-center justify-center"
+        className="absolute inset-0 bg-cover bg-center rounded-xl flex flex-col w-full h-48 items-center md:items-start justify-center md:px-20"
         style={{
           backgroundImage: `url(${fondoweather})`,
           backgroundSize: "cover",
         }}
       >
         <Button
-        className="bg-gradient-to-b from-green-800 to-emerald-600 hover:bg-gradient-to-r hover:from-green-600 hover:to-emerald-700 rounded-md ring-0 text-white z-20 mt-16 "
+        className="bg-gradient-to-b from-green-800 to-emerald-600 hover:bg-gradient-to-r hover:from-green-600 hover:to-emerald-700 rounded-md ring-0 text-white z-20 mt-16 flex md:justify-start"
         onClick={handleWeatherRequest}
         disabled={isWeatherRequested && isLoading} // Desactiva el botón mientras se carga
       >{isWeatherRequested && isLoading ? "Loading..." : "Show the weather"}
